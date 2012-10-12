@@ -8,20 +8,19 @@ import javax.persistence.*;
 /**
  * Entity Room
  *
- * @author Andrej
+ * @author Thanh Dang Hoang Minh
  */
-@Entity
+@Entity(name="Room")
+@TableGenerator(name="Room")
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
     private boolean vacant;
-    
     private BigDecimal pricePerNight;
-    
+
     @ManyToOne
     private Hotel hotel;
 
@@ -70,7 +69,8 @@ public class Room implements Serializable {
             return false;
         }
         Room other = (Room) object;
-        if (this.id != null && Objects.equals(this.id, other.id)) {
+
+        if (this.id != null && !Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
