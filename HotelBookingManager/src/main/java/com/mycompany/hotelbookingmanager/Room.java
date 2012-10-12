@@ -18,7 +18,9 @@ public class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name="VACANT", nullable=false)
     private boolean vacant;
+    @Column(name="PRICEPERNIGHT", nullable=false, length=15)
     private BigDecimal pricePerNight;
 
     @ManyToOne
