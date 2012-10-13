@@ -48,30 +48,35 @@ public class HotelDAOImplTest {
         assertThat(hotel, is(equalTo(hotel2)));
     }
 
-//    /**
-//     * Test of create method, of class HotelDAOImpl, with wrong attributes.
-//     */
-//    @Test
-//    public void testCreateHotelWithWrongAttributes() {
-//        // create with null parameter
-//        try {
-//            hotelDAO.create(null);
-//            fail("No IllegalArgumentException for empty input.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
-//        // manually setting id
-//        Contact contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
-//        Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
-//        hotel.setId(5l);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("Cannot change id for existing hotel.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
+    /**
+     * Test of create method, of class HotelDAOImpl, with wrong attributes.
+     */
+    @Test
+    public void testCreateHotelWithWrongAttributes() {
+        // create with null parameter
+        try {
+            hotelDAO.create(null);
+            fail("No IllegalArgumentException for empty input.");
+        } catch (IllegalArgumentException e) {
+            //OK
+        }
+        
+        // manually setting id
+        Contact contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
+        Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
+        hotel.setId(5l);
+        try {
+            hotelDAO.create(hotel);
+            fail("Cannot change id for existing hotel.");
+        } catch (IllegalArgumentException e) {
+            //OK
+        }
+        
+        // Nasledovnych par testov neprechadza, pretoze databaza vyhadzuje nechytatelnu vynimku
+        // ConstraintViolationException. Dovodom je, ze JPA anotacie iba nastavuju databazu avsak
+        // nesluzia na validaciu. Riesenim by bolo pouzit tzv. Hibernate Validator a nahradit JPA
+        // anotacie anotaciami Validatora.
+        
 //        // create hotel with null contact attribute
 //        hotel = App.DatabaseSampler.buildHotel("Hilton", null);
 //        try {
@@ -148,7 +153,7 @@ public class HotelDAOImplTest {
 //        } catch (IllegalArgumentException e) {
 //            //OK
 //        }
-//    }
+    }
     
     /**
      * Test of get method, of class HotelDAOImpl.
