@@ -23,9 +23,12 @@ public class Reservation implements Serializable {
     @OneToOne
     private Room room;
     @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     private Date fromDate;
     @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     private Date toDate;
+    @Column(nullable = false)
     private BigDecimal price;
 
     public Long getId() {
