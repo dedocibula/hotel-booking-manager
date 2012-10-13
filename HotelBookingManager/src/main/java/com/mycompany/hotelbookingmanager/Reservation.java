@@ -89,7 +89,7 @@ public class Reservation implements Serializable {
             return false;
         }
         Reservation other = (Reservation) object;
-        if (this.id != null && Objects.equals(this.id, other.id)) {
+        if (this.id != null && !Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;

@@ -18,11 +18,13 @@ public class Hotel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column(nullable = false, length = 30)
     private String name;
     
+    @Column(nullable = false)
     private Contact contact;
     
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Room> rooms;
 
     public Long getId() {
@@ -70,7 +72,7 @@ public class Hotel implements Serializable {
             return false;
         }
         Hotel other = (Hotel) object;
-        if (this.id != null && Objects.equals(this.id, other.id)) {
+        if (this.id != null && !Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;

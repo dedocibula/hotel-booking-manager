@@ -2,6 +2,7 @@ package com.mycompany.hotelbookingmanager;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
@@ -12,10 +13,19 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Contact implements Serializable {
 
+    @Column(nullable = false, length = 30)
     private String phone;
+    
+    @Column(nullable = false, length = 50)
     private String email;
+    
+    @Column(nullable = false, length = 50)
     private String address;
+    
+    @Column(nullable = false, length = 30)
     private String city;
+    
+    @Column(nullable = false, length = 50)
     private String country;
 
     public String getPhone() {
