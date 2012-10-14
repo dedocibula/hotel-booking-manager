@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 /**
  * Implementation of RoomDAO Interface
  *
- * @author Thanh Dang Hoang Minh
+ * @author Felipe
  */
 public class RoomDAOImpl implements RoomDAO{
 

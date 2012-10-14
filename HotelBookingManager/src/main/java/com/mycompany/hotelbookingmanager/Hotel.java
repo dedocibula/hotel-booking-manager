@@ -8,7 +8,7 @@ import javax.persistence.*;
 /**
  * Entity Hotel
  *
- * @author Andrej
+ * @author Felipe
  */
 @Entity
 public class Hotel implements Serializable {

@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  *
- * @author Andrej
+ * @author Thanh Dang Hoang Minh
  */
 public interface HotelDAO {
     

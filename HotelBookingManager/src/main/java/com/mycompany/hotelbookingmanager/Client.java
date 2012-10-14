@@ -2,6 +2,7 @@ package com.mycompany.hotelbookingmanager;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +11,7 @@ import javax.persistence.Id;
 /**
  * Entity Client
  * 
- * @author Andrej
+ * @author Thanh Dang Hoang Minh
  */
 @Entity
 public class Client implements Serializable {
@@ -20,10 +21,13 @@ public class Client implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column(nullable = false, length = 100)
     private String firstName;
     
+    @Column(nullable = false, length = 100)
     private String lastName;
     
+    @Column(nullable = false)
     private Contact contact;
     
     public Long getId() {

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * DAO Interface for the entity Reservation
  * 
- * @author Felipe
+ * @author Marian
  */
 public interface ReservationDAO {
     

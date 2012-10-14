@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Andrej
+ * @author Marian
  */
 public class HotelDAOImpl implements HotelDAO {
 

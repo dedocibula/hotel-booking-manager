@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.hotelbookingmanager;
 
 import java.util.List;
@@ -10,7 +6,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Felipe
+ * @author Thanh Dang Hoang Minh
  */
 public class ReservationDAOImpl implements ReservationDAO{
 

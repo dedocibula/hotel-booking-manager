@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * DAO Interface for the entity Room
  *
- * @author Thanh Dang Hoang Minh
+ * @author Andrej
  */
 public interface RoomDAO {
 

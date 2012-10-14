@@ -8,7 +8,7 @@ import javax.persistence.*;
 /**
  * Entity Room
  *
- * @author Thanh Dang Hoang Minh
+ * @author Marian
  */
 @Entity(name="Room")
 @TableGenerator(name="Room")
