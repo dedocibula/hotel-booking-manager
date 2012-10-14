@@ -17,7 +17,7 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 /**
  * Tests for RoomDAOImpl class
  *
- * @author Thanh Dang Hoang Minh
+ * @author Marián Rusnák
  */
 public class RoomDAOImplTest {
     EntityManagerFactory emf;
