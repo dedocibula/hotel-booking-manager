@@ -2,7 +2,9 @@ package com.mycompany.hotelbookingmanager;
 
 import com.sun.media.sound.RIFFInvalidDataException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import static org.hamcrest.CoreMatchers.*;
@@ -35,7 +37,7 @@ public class RoomDAOImplTest {
     }
 
     @Test
-    public void testCreateAndGetRoom() throws UnavailableDatabaseException {
+    public void testCreateAndGetRoom() {
 
         //Create a null Room
         try {
@@ -53,7 +55,25 @@ public class RoomDAOImplTest {
             //Works as intended
         }
 
-        Room room = newRoom(true, BigDecimal.valueOf(777), null);
+        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), true, new Hotel());
+        room.setHotel(null);
+        //Create a Room with null Hotel
+        try {
+            roomDAO.create(room);
+            fail("Room with null Hotel was created.");
+        } catch (IllegalArgumentException iae) {
+            //All works well
+        }
+
+        Contact contact = App.DatabaseSampler.buildContact("123456789", "random@email.address", "street1", "city2", "country3");
+        Hotel hotel = App.DatabaseSampler.buildHotel("MyNewHotel", contact);
+
+        room.setHotel(hotel);
+
+        HotelDAOImpl hotelDAO = new HotelDAOImpl();
+        hotelDAO.setEntityManagerFactory(emf);
+        hotelDAO.create(hotel);
+
         roomDAO.create(room);
 
         Long id = room.getId();
@@ -64,17 +84,17 @@ public class RoomDAOImplTest {
     }
 
     @Test
-    public void testUpdateRoom() throws UnavailableDatabaseException {
-        Hotel hotel = new Hotel();
-        Contact contact = new Contact();
-            contact.setAddress("ulicá");
-            contact.setCity("city");
-            contact.setCountry("contriez");
-            contact.setEmail("something@random.wtf");
-            contact.setPhone("123456789");
+    public void testUpdateRoom() {
+        Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
+        Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
 
-        hotel.setContact(null);
-        Room room = newRoom(true, BigDecimal.valueOf(333), null);
+        HotelDAOImpl hotelDAO = new HotelDAOImpl();
+        hotelDAO.setEntityManagerFactory(emf);
+        hotelDAO.create(hotel);
+
+        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(333), true, hotel);
+
+
         roomDAO.create(room);
 
         //Change vacancy status
@@ -82,25 +102,27 @@ public class RoomDAOImplTest {
         roomDAO.update(room);
         assertThat("Vacancy not changed!", room.isVacant(), is(equalTo(false)));
         assertThat("Price per night changed!", room.getPricePerNight(), is(equalTo(BigDecimal.valueOf(333))));
-        assertThat("Hotel changed!", room.getHotel(), is(equalTo(null)));
+        assertThat("Hotel changed!", room.getHotel(), is(equalTo(hotel)));
 
         //Change price per night
         room.setPricePerNight(BigDecimal.valueOf(777));
         roomDAO.update(room);
         assertThat("Vacancy changed!", room.isVacant(), is(equalTo(false)));
         assertThat("Price per night not changed!", room.getPricePerNight(), is(equalTo(BigDecimal.valueOf(777))));
-        assertThat("Hotel changed!", room.getHotel(), is(equalTo(null)));
+        assertThat("Hotel changed!", room.getHotel(), is(equalTo(hotel)));
 
         //Change Hotel
+        Hotel hotel2 = hotel;
+        hotel2.setName("myNewHotel");
         room.setHotel(hotel);
         roomDAO.update(room);
         assertThat("Vacancy changed!", room.isVacant(), is(equalTo(false)));
         assertThat("Price per night changed!", room.getPricePerNight(), is(equalTo(BigDecimal.valueOf(777))));
-        assertThat("Hotel not changed!", room.getHotel(), is(equalTo(hotel)));
+        assertThat("Hotel not changed!", room.getHotel(), is(equalTo(hotel2)));
     }
 
     @Test
-    public void testDeleteRoom() throws UnavailableDatabaseException {
+    public void testDeleteRoom() {
         //Delete a null Room
         try {
             roomDAO.delete(null);
@@ -109,9 +131,17 @@ public class RoomDAOImplTest {
             //All works as intended
         }
 
-        Room room1 = newRoom(true, BigDecimal.ONE, null);
-        Room room2 = newRoom(false, BigDecimal.TEN, null);
+        Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
+        Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
+
+        HotelDAOImpl hotelDAO = new HotelDAOImpl();
+        hotelDAO.setEntityManagerFactory(emf);
+        hotelDAO.create(hotel);
+
+        Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, true, hotel);
+
         roomDAO.create(room1);
+        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, false, hotel);
         roomDAO.create(room2);
 
         assertThat(roomDAO.get(room1.getId()), is(not(nullValue())));
@@ -124,27 +154,26 @@ public class RoomDAOImplTest {
    }
 
    @Test
-   public void testFindAllVacantRooms() throws UnavailableDatabaseException {
+   public void testFindAllVacantRooms() {
        for (Room room : roomDAO.findAllRooms()) {
            roomDAO.delete(room);
        }
-       assertTrue(roomDAO.findAllVacantRooms().isEmpty());
+       assertTrue("There are still Rooms in the database after deletion.", roomDAO.findAllVacantRooms().isEmpty());
 
-       Room room1 = newRoom(true, BigDecimal.valueOf(123), null);
-       Room room2 = newRoom(false, BigDecimal.valueOf(987), null);
+       Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
+       Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
 
+       HotelDAOImpl hotelDAO = new HotelDAOImpl();
+       hotelDAO.setEntityManagerFactory(emf);
+       hotelDAO.create(hotel);
+
+       Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, true, hotel);
        roomDAO.create(room1);
+
+       Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.TEN, false, hotel);
        roomDAO.create(room2);
 
        assertThat(roomDAO.findAllVacantRooms(), hasItems(room1));
        assertThat(roomDAO.findAllVacantRooms(), not(hasItems(room2)));
    }
-
-    private static Room newRoom(boolean vacant, BigDecimal pricePerNight, Hotel hotel) {
-        Room room = new Room();
-        room.setVacant(vacant);
-        room.setPricePerNight(pricePerNight);
-        room.setHotel(hotel);
-        return room;
-    }
 }

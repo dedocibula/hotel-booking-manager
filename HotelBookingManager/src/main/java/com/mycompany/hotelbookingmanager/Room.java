@@ -24,6 +24,7 @@ public class Room implements Serializable {
     private BigDecimal pricePerNight;
 
     @ManyToOne
+    @JoinColumn(name="HOTEL_ID", nullable=false)
     private Hotel hotel;
 
     public Long getId() {
