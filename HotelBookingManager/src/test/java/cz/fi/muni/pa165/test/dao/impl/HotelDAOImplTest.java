@@ -6,6 +6,7 @@ import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.HotelDAOImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.validation.ConstraintViolationException;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
 import static org.junit.Assert.*;
@@ -72,87 +73,82 @@ public class HotelDAOImplTest {
             //OK
         }
         
-        // Nasledovnych par testov neprechadza, pretoze databaza vyhadzuje nechytatelnu vynimku
-        // ConstraintViolationException. Dovodom je, ze JPA anotacie iba nastavuju databazu avsak
-        // nesluzia na validaciu. Riesenim by bolo pouzit tzv. Hibernate Validator a nahradit JPA
-        // anotacie anotaciami Validatora.
+        // create hotel with null contact attribute
+        hotel = App.DatabaseSampler.buildHotel("Hilton", null);
+        try {
+            hotelDAO.create(hotel);
+            fail("Contact cannot be null.");
+        } catch (ConstraintViolationException e) {
+            //OK
+        }
         
-//        // create hotel with null contact attribute
-//        hotel = App.DatabaseSampler.buildHotel("Hilton", null);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("Contact cannot be null.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
-//        // create hotel with null name attribute
-//        hotel = App.DatabaseSampler.buildHotel(null, contact);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("Name cannot be null.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
-//        // create hotel with too long name
-//        hotel = App.DatabaseSampler.buildHotel("Trololololololololololololololololololololololo", contact);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("Name cannot exceed 30 characters.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
-//        // create hotel with contact missing phone number
-//        contact = App.DatabaseSampler.buildContact(null, "dude@dude.sk", "address", "city", "country");
-//        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("Phone number cannot be null.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
-//        // create hotel with contact missing email address
-//        contact = App.DatabaseSampler.buildContact("123", null, "address", "city", "country");
-//        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("Email address cannot be null.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
-//        // create hotel with contact missing address
-//        contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", null, "city", "country");
-//        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("Address cannot be null.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
-//        // create hotel with contact missing city
-//        contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", null, "country");
-//        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("City cannot be null.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
-//        
-//        // create hotel with contact missing country
-//        contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", null);
-//        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
-//        try {
-//            hotelDAO.create(hotel);
-//            fail("Country cannot be null.");
-//        } catch (IllegalArgumentException e) {
-//            //OK
-//        }
+        // create hotel with null name attribute
+        hotel = App.DatabaseSampler.buildHotel(null, contact);
+        try {
+            hotelDAO.create(hotel);
+            fail("Name cannot be null.");
+        } catch (ConstraintViolationException e) {
+            //OK
+        }
+        
+        // create hotel with too long name
+        hotel = App.DatabaseSampler.buildHotel("Trololololololololololololololololololololololo", contact);
+        try {
+            hotelDAO.create(hotel);
+            fail("Name cannot exceed 30 characters.");
+        } catch (ConstraintViolationException e) {
+            System.out.println("");
+        }
+        
+        // create hotel with contact missing phone number
+        contact = App.DatabaseSampler.buildContact(null, "dude@dude.sk", "address", "city", "country");
+        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
+        try {
+            hotelDAO.create(hotel);
+            fail("Phone number cannot be null.");
+        } catch (ConstraintViolationException e) {
+            //OK
+        }
+        
+        // create hotel with contact missing email address
+        contact = App.DatabaseSampler.buildContact("123", null, "address", "city", "country");
+        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
+        try {
+            hotelDAO.create(hotel);
+            fail("Email address cannot be null.");
+        } catch (ConstraintViolationException e) {
+            //OK
+        }
+        
+        // create hotel with contact missing address
+        contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", null, "city", "country");
+        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
+        try {
+            hotelDAO.create(hotel);
+            fail("Address cannot be null.");
+        } catch (ConstraintViolationException e) {
+            //OK
+        }
+        
+        // create hotel with contact missing city
+        contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", null, "country");
+        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
+        try {
+            hotelDAO.create(hotel);
+            fail("City cannot be null.");
+        } catch (ConstraintViolationException e) {
+            //OK
+        }
+        
+        // create hotel with contact missing country
+        contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", null);
+        hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
+        try {
+            hotelDAO.create(hotel);
+            fail("Country cannot be null.");
+        } catch (ConstraintViolationException e) {
+            //OK
+        }
     }
     
     /**

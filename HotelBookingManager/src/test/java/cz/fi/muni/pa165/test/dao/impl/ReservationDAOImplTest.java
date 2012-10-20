@@ -4,21 +4,22 @@ package cz.fi.muni.pa165.test.dao.impl;
 import cz.fi.muni.pa165.hotelbookingmanager.App;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.ReservationDAOImpl;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.validation.ConstraintViolationException;
+import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.*;
 
 /**
  *
@@ -29,10 +30,8 @@ public class ReservationDAOImplTest {
     ReservationDAOImpl reservationDAO;
     EntityManagerFactory emf;
     
-
     @Before
     public void setUp() {
-        
         reservationDAO = new ReservationDAOImpl();
         emf = Persistence.createEntityManagerFactory("HotelBookingManagerPU");
         reservationDAO.setEmf(emf);
@@ -40,7 +39,6 @@ public class ReservationDAOImplTest {
 
     @After
     public void tearDown() {
-        
         reservationDAO = null;
     }
 
@@ -97,8 +95,8 @@ public class ReservationDAOImplTest {
         try {
             reservation.setClient(null);        
             reservationDAO.create(reservation);
-            fail("No IllegalArgumentException thrown while creating Reservation with null client.");
-        } catch (IllegalArgumentException iae) {
+            fail("No ConstraintViolationException thrown while creating Reservation with null client.");
+        } catch (ConstraintViolationException iae) {
             //Works as intended
         }
        
@@ -110,8 +108,8 @@ public class ReservationDAOImplTest {
             reservation.setRoom(null);
             em.getTransaction().commit();
             reservationDAO.create(reservation);
-            fail("No IllegalArgumentException thrown while creating Reservation with null room.");
-        } catch (IllegalArgumentException iae) {
+            fail("No ConstraintViolationException thrown while creating Reservation with null room.");
+        } catch (ConstraintViolationException iae) {
             //Works as intended
         }
         
@@ -120,8 +118,8 @@ public class ReservationDAOImplTest {
             reservation.setRoom(room);
             reservation.setPrice(null);
             reservationDAO.create(reservation);
-            fail("No IllegalArgumentException thrown while creating Reservation with null price.");
-        } catch (Exception e) {
+            fail("No ConstraintViolationException thrown while creating Reservation with null price.");
+        } catch (ConstraintViolationException e) {
             //Works as intended
         }
          
@@ -130,12 +128,12 @@ public class ReservationDAOImplTest {
             reservation.setPrice(BigDecimal.valueOf(1580));
             reservation.setFromDate(null);
             reservationDAO.create(reservation);
-            fail("No IllegalArgumentException thrown while creating Reservation with null date.");
-        } catch (Exception e) {
+            fail("No ConstraintViolationException thrown while creating Reservation with null date.");
+        } catch (ConstraintViolationException e) {
             //Works as intended   
         }   
        
-        }
+    }
        
     
         

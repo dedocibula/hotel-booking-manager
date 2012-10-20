@@ -3,11 +3,10 @@ package cz.fi.muni.pa165.hotelbookingmanager.entities;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Entity Client
@@ -22,12 +21,18 @@ public class Client implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Column(nullable = false, length = 100)
+    @NotNull
+    @Size(min = 2, max = 50)
+    @Column(nullable = false, length = 50)
     private String firstName;
     
-    @Column(nullable = false, length = 100)
+    @NotNull
+    @Size(min = 2, max = 50)
+    @Column(nullable = false, length = 50)
     private String lastName;
     
+    @NotNull
+    @Valid
     @Column(nullable = false)
     private Contact contact;
     

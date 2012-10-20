@@ -1,11 +1,13 @@
 package cz.fi.muni.pa165.hotelbookingmanager.entities;
 
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Entity Hotel
@@ -20,9 +22,13 @@ public class Hotel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @NotNull
+    @Size(min = 2, max = 30)
     @Column(nullable = false, length = 30)
     private String name;
     
+    @NotNull
+    @Valid
     @Column(nullable = false)
     private Contact contact;
     

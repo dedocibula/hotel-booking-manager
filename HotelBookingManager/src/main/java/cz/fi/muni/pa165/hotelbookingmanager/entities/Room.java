@@ -4,27 +4,32 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity Room
  *
  * @author Marián Rusnák
  */
-@Entity(name="Room")
-@TableGenerator(name="Room")
+@Entity
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(nullable=false)
-    private boolean vacant;
-    @Column(nullable=false, length=15)
+    
+    @NotNull
+    @Column(nullable = false)
+    private boolean vacant = true;
+    
+    @NotNull
+    @Column(nullable = false, length = 15)
     private BigDecimal pricePerNight;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(nullable=false)
+    @JoinColumn(nullable = false)
     private Hotel hotel;
 
     public Long getId() {

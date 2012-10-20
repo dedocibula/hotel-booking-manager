@@ -1,12 +1,11 @@
 package cz.fi.muni.pa165.hotelbookingmanager.entities;
 
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity Reservation
@@ -20,17 +19,27 @@ public class Reservation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @NotNull
     @OneToOne
     private Client client;
+    
+    @NotNull
     @OneToOne
     private Room room;
+    
+    @NotNull
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date fromDate;
+    
+    @NotNull
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date toDate;
-    @Column(nullable = false)
+    
+    @NotNull
+    @Column(nullable = false, length = 15)
     private BigDecimal price;
 
     public Long getId() {

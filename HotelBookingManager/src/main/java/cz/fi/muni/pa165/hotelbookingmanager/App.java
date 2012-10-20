@@ -1,8 +1,8 @@
 package cz.fi.muni.pa165.hotelbookingmanager;
 
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.math.BigDecimal;
 import java.util.ArrayList;

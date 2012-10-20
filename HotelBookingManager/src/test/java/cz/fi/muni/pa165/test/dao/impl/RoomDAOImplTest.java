@@ -2,13 +2,14 @@ package cz.fi.muni.pa165.test.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
-import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.RoomDAOImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.HotelDAOImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.RoomDAOImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.math.BigDecimal;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.validation.ConstraintViolationException;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
 import static org.junit.Assert.*;
@@ -17,7 +18,6 @@ import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
 /**
- * Tests for RoomDAOImpl class
  *
  * @author Thanh Dang Hoang Minh
  */
@@ -49,7 +49,7 @@ public class RoomDAOImplTest {
             //Works as intended
         }
 
-        //Remove a null Room
+        //Get a null Room
         try {
             roomDAO.get(null);
             fail("No IllegalArgumentException thrown while removing a null Room.");
@@ -63,7 +63,7 @@ public class RoomDAOImplTest {
         try {
             roomDAO.create(room);
             fail("Room with null Hotel was created.");
-        } catch (IllegalArgumentException iae) {
+        } catch (ConstraintViolationException iae) {
             //All works well
         }
 

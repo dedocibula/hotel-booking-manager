@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces;
 
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import java.util.List;
 
 /**
- * DAO Interface for the entity Reservation
  * 
  * @author Marián Rusnák
  */
@@ -20,6 +15,7 @@ public interface ReservationDAO {
      * @param reservation reservation to create.
      * @throws IllegalArgumentException if reservation is null, any of its attributes is null,
      *         the client/room doesn't exist or the room is not vacant.
+     * @throws ConstraintViolationException if reservation has any invalid parameter.
      */
     void create(Reservation reservation);
 
@@ -37,6 +33,7 @@ public interface ReservationDAO {
      *
      * @param reservation reservation to update.
      * @throws IllegalArgumentException if the reservation is null or if the client/room of the reservation are non-existent.
+     * @throws ConstraintViolationException if reservation has any invalid parameter.
      */
     void update(Reservation reservation);
 

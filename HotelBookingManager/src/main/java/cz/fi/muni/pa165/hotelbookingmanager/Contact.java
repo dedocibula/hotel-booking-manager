@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * Embeddable class Contact
@@ -13,18 +16,30 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Contact implements Serializable {
 
+    @NotNull
+    @Size(max = 30)
+    @Pattern(regexp = "[0-9]*")
     @Column(nullable = false, length = 30)
     private String phone;
     
+    @NotNull
+    @Size(min = 6, max = 50)
+    @Pattern(regexp = ".+@.+\\.[a-z]+")
     @Column(nullable = false, length = 50)
     private String email;
     
+    @NotNull
+    @Size(max = 50)
     @Column(nullable = false, length = 50)
     private String address;
     
+    @NotNull
+    @Size(min = 2, max = 30)
     @Column(nullable = false, length = 30)
     private String city;
     
+    @NotNull
+    @Size(min = 2, max = 50)
     @Column(nullable = false, length = 50)
     private String country;
 

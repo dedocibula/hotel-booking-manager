@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces;
 
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import java.util.List;
+import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -18,6 +15,7 @@ public interface HotelDAO {
      * 
      * @param hotel hotel to add.
      * @throws IllegalArgumentException if parameter is null or has assigned id.
+     * @throws ConstraintViolationException if hotel has any invalid parameter. 
      */
     void create(Hotel hotel);
     
@@ -35,6 +33,7 @@ public interface HotelDAO {
      * 
      * @param hotel hotel to update (specified by id) with new attributes.
      * @throws IllegalArgumentException if parameter is null.
+     * @throws ConstraintViolationException if hotel has any invalid parameter.
      */
     void update(Hotel hotel);
     

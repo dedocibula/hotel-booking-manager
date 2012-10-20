@@ -14,6 +14,7 @@ public interface ClientDAO {
      * 
      * @param client client to add.
      * @throws IllegalArgumentException if parameter is null or has assigned id.
+     * @throws ConstraintViolationException if client has any invalid parameter.
      */
     void create(Client client);
     
@@ -31,6 +32,7 @@ public interface ClientDAO {
      * 
      * @param client client to update (specified by id) with new attributes.
      * @throws IllegalArgumentException if parameter is null.
+     * @throws ConstraintViolationException if client has any invalid parameter.
      */
     void update(Client client);
     

@@ -7,32 +7,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
- * Implementation of RoomDAO Interface
  *
- * @author Filip Bogyai
+ * @author Felipe
  */
 public class RoomDAOImpl implements RoomDAO{
 
     private EntityManagerFactory emf;
 
     public void setEmf(EntityManagerFactory emf) {
-        if (emf == null) {
+        if (emf == null)
             throw new IllegalArgumentException("EntityManagerFactory cannot be null.");
-        }
         this.emf = emf;
     }
 
     @Override
     public void create(Room room){
-        if (room == null) {
-            throw new IllegalArgumentException("room cannot be null!");
-        }
-        if (room.getHotel() == null) {
-            throw new IllegalArgumentException("Hotel parameter of Room cannot be null.");
-        }
-        if (room != null && room.getId() != null) {
+        if (room != null && room.getId() != null)
             throw new IllegalArgumentException("ID of Room is to be set automatically.");
-        }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(room);
@@ -42,18 +33,12 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public Room get(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id cannot be null!");
-        }
         EntityManager em = emf.createEntityManager();
         return em.find(Room.class, id);
     }
 
     @Override
     public void update(Room room) {
-        if (room == null) {
-            throw new IllegalArgumentException("room cannot be null!");
-        }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.merge(room);
@@ -63,9 +48,6 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public void delete(Room room) {
-        if (room == null) {
-            throw new IllegalArgumentException("room cannot be null!");
-        }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.remove(em.merge(room));
