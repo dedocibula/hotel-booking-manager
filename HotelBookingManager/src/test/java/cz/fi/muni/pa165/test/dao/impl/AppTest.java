@@ -1,4 +1,4 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.test.dao.impl;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

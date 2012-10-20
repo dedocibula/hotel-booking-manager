@@ -1,5 +1,7 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.dao.impl;
 
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ReservationDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

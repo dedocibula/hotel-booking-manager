@@ -1,4 +1,4 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -8,7 +8,7 @@ import javax.persistence.*;
 /**
  * Entity Room
  *
- * @author Marian
+ * @author Marián Rusnák
  */
 @Entity(name="Room")
 @TableGenerator(name="Room")

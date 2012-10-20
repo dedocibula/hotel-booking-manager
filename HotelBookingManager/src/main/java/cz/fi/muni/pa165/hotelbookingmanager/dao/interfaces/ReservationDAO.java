@@ -2,14 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces;
 
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import java.util.List;
 
 /**
  * DAO Interface for the entity Reservation
  * 
- * @author Marian
+ * @author Marián Rusnák
  */
 public interface ReservationDAO {
     

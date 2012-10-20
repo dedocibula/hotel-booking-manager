@@ -1,4 +1,4 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,7 +8,7 @@ import javax.persistence.Embeddable;
 /**
  * Embeddable class Contact
  * 
- * @author Andrej
+ * @author Andrej Galád
  */
 @Embeddable
 public class Contact implements Serializable {

@@ -1,5 +1,6 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.entities;
 
+import cz.fi.muni.pa165.hotelbookingmanager.Contact;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;

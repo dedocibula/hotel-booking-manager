@@ -1,5 +1,7 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.entities;
 
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -9,7 +11,7 @@ import javax.persistence.*;
 /**
  * Entity Reservation
  *
- * @author Andrej
+ * @author Andrej Galád
  */
 @Entity
 public class Reservation implements Serializable {

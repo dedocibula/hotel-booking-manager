@@ -1,10 +1,12 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.test.dao.impl;
 
-import com.sun.media.sound.RIFFInvalidDataException;
+import cz.fi.muni.pa165.hotelbookingmanager.App;
+import cz.fi.muni.pa165.hotelbookingmanager.Contact;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.RoomDAOImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.HotelDAOImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import static org.hamcrest.CoreMatchers.*;

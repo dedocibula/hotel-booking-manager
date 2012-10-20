@@ -1,11 +1,12 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces;
 
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.util.List;
 
 /**
  * DAO Interface for the entity Room
  *
- * @author Andrej
+ * @author Andrej Galád
  */
 public interface RoomDAO {
 

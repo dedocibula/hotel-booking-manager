@@ -2,10 +2,10 @@
 <persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/ persistence http://java.sun.com/xml/ns/persistence/ persistence_1_0.xsd">
   <persistence-unit name="HotelBookingManagerPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>com.mycompany.hotelbookingmanager.Client</class>
-    <class>com.mycompany.hotelbookingmanager.Hotel</class>
-    <class>com.mycompany.hotelbookingmanager.Room</class>
-    <class>com.mycompany.hotelbookingmanager.Reservation</class>
+    <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Room</class>
+    <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel</class>
+    <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Client</class>
+    <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation</class>
     <properties>
       <property name="hibernate.connection.username" value="Client"/>
       <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver"/>

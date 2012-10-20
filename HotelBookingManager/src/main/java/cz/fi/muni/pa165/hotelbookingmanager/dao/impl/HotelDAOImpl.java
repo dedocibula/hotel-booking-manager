@@ -2,15 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.dao.impl;
 
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.HotelDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Marian
+ * @author Marián Rusnák
  */
 public class HotelDAOImpl implements HotelDAO {
 

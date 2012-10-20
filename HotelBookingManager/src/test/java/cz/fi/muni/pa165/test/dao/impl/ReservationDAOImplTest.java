@@ -1,6 +1,13 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.test.dao.impl;
 
 
+import cz.fi.muni.pa165.hotelbookingmanager.App;
+import cz.fi.muni.pa165.hotelbookingmanager.Contact;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.ReservationDAOImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.EntityManager;
@@ -12,11 +19,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.*;
-import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
- * @author Felipe
+ * @author Filip Bogyai
  */
 public class ReservationDAOImplTest {
     

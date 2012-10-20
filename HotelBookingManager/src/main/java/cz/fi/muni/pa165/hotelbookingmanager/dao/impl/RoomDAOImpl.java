@@ -1,5 +1,7 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.dao.impl;
 
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -7,7 +9,7 @@ import javax.persistence.EntityManagerFactory;
 /**
  * Implementation of RoomDAO Interface
  *
- * @author Felipe
+ * @author Filip Bogyai
  */
 public class RoomDAOImpl implements RoomDAO{
 

@@ -1,5 +1,7 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.hotelbookingmanager.entities;
 
+import cz.fi.muni.pa165.hotelbookingmanager.Contact;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +10,7 @@ import javax.persistence.*;
 /**
  * Entity Hotel
  *
- * @author Felipe
+ * @author Filip Bogyai
  */
 @Entity
 public class Hotel implements Serializable {

@@ -1,5 +1,9 @@
-package com.mycompany.hotelbookingmanager;
+package cz.fi.muni.pa165.test.dao.impl;
 
+import cz.fi.muni.pa165.hotelbookingmanager.App;
+import cz.fi.muni.pa165.hotelbookingmanager.Contact;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.ClientDAOImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import static org.hamcrest.CoreMatchers.*;
@@ -11,7 +15,7 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 
 /**
  *
- * @author Marian
+ * @author Marián Rusnák
  */
 public class ClientDAOImplTest {
     
