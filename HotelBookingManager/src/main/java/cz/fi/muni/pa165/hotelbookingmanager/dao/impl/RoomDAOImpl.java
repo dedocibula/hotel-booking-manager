@@ -43,6 +43,7 @@ public class RoomDAOImpl implements RoomDAO{
     public void update(Room room) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
+        em.merge(em.find(Room.class, room.getId()).getHotel());
         em.merge(room);
         em.merge(room.getHotel());
         em.getTransaction().commit();

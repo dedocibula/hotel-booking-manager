@@ -18,13 +18,13 @@ public class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @NotNull
     @Column(nullable = false)
     private boolean vacant = true;
-    
+
     @NotNull
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 15, precision=13, scale = 2)
     private BigDecimal pricePerNight;
 
     @NotNull

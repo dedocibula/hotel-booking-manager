@@ -57,7 +57,7 @@ public class RoomDAOImplTest {
             //Works as intended
         }
 
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), true, new Hotel());
+        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777.00), true, new Hotel());
         room.setHotel(null);
         //Create a Room with null Hotel
         try {
@@ -94,7 +94,7 @@ public class RoomDAOImplTest {
         hotelDAO.setEntityManagerFactory(emf);
         hotelDAO.create(hotel);
 
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(333), true, hotel);
+        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(333.00), true, hotel);
 
 
         roomDAO.create(room);
@@ -102,25 +102,31 @@ public class RoomDAOImplTest {
         //Change vacancy status
         room.setVacant(false);
         roomDAO.update(room);
-        assertThat("Vacancy not changed!", room.isVacant(), is(equalTo(false)));
-        assertThat("Price per night changed!", room.getPricePerNight(), is(equalTo(BigDecimal.valueOf(333))));
-        assertThat("Hotel changed!", room.getHotel(), is(equalTo(hotel)));
+        Room tempRoom = roomDAO.get(room.getId());
+        assertThat("Vacancy not changed!", tempRoom.isVacant(), is(equalTo(false)));
+        assertThat("Price per night changed!", tempRoom.getPricePerNight(), is(equalTo(BigDecimal.valueOf(333).setScale(2))));
+        assertThat("Hotel changed!", tempRoom.getHotel(), is(equalTo(hotel)));
 
         //Change price per night
         room.setPricePerNight(BigDecimal.valueOf(777));
         roomDAO.update(room);
-        assertThat("Vacancy changed!", room.isVacant(), is(equalTo(false)));
-        assertThat("Price per night not changed!", room.getPricePerNight(), is(equalTo(BigDecimal.valueOf(777))));
-        assertThat("Hotel changed!", room.getHotel(), is(equalTo(hotel)));
+        tempRoom = roomDAO.get(room.getId());
+        assertThat("Vacancy changed!", tempRoom.isVacant(), is(equalTo(false)));
+        assertThat("Price per night not changed!", tempRoom.getPricePerNight(), is(equalTo(BigDecimal.valueOf(777).setScale(2))));
+        assertThat("Hotel changed!", tempRoom.getHotel(), is(equalTo(hotel)));
 
         //Change Hotel
-        Hotel hotel2 = hotel;
-        hotel2.setName("myNewHotel");
-        room.setHotel(hotel);
+        Hotel hotel2 = App.DatabaseSampler.buildHotel("MyHotelToChangeTo", contact);
+        hotelDAO.create(hotel2);
+        room.setHotel(hotel2);
         roomDAO.update(room);
-        assertThat("Vacancy changed!", room.isVacant(), is(equalTo(false)));
-        assertThat("Price per night changed!", room.getPricePerNight(), is(equalTo(BigDecimal.valueOf(777))));
-        assertThat("Hotel not changed!", room.getHotel(), is(equalTo(hotel2)));
+        tempRoom = roomDAO.get(room.getId());
+        assertThat("Vacancy changed!", tempRoom.isVacant(), is(equalTo(false)));
+        assertThat("Price per night changed!", tempRoom.getPricePerNight(), is(equalTo(BigDecimal.valueOf(777).setScale(2))));
+        assertThat("Hotel not changed!", tempRoom.getHotel(), is(equalTo(hotel2)));
+        assertThat("Room list of hotel not changed!", hotelDAO.get(room.getHotel().getId()).getRooms(), hasItems(room));
+        assertThat("Previous hotel still has Room present!", hotelDAO.get(hotel.getId()).getRooms(), not(hasItems(room)));
+
     }
 
     @Test
