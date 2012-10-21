@@ -149,7 +149,12 @@ public class RoomDAOImplTest {
         assertThat(roomDAO.get(room1.getId()), is(not(nullValue())));
         assertThat(roomDAO.get(room2.getId()), is(not(nullValue())));
 
+
+        assertThat(hotelDAO.get(hotel.getId()).getRooms(), hasItems(room1));
+
         roomDAO.delete(room1);
+
+        assertThat(hotelDAO.get(hotel.getId()).getRooms(), not(hasItems(room1)));
 
         assertThat(roomDAO.get(room1.getId()), is(nullValue()));
         assertThat(roomDAO.get(room2.getId()), is(not(nullValue())));

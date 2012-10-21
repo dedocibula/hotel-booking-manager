@@ -15,15 +15,17 @@ public class RoomDAOImpl implements RoomDAO{
     private EntityManagerFactory emf;
 
     public void setEmf(EntityManagerFactory emf) {
-        if (emf == null)
+        if (emf == null) {
             throw new IllegalArgumentException("EntityManagerFactory cannot be null.");
+        }
         this.emf = emf;
     }
 
     @Override
     public void create(Room room){
-        if (room != null && room.getId() != null)
+        if (room != null && room.getId() != null) {
             throw new IllegalArgumentException("ID of Room is to be set automatically.");
+        }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(room);
@@ -42,6 +44,7 @@ public class RoomDAOImpl implements RoomDAO{
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.merge(room);
+        em.merge(room.getHotel());
         em.getTransaction().commit();
         em.close();
     }
