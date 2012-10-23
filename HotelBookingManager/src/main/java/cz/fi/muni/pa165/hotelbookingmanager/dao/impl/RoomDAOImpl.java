@@ -26,11 +26,15 @@ public class RoomDAOImpl implements RoomDAO{
         if (room != null && room.getId() != null) {
             throw new IllegalArgumentException("ID of Room is to be set automatically.");
         }
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(room);
-        em.getTransaction().commit();
-        em.close();
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.persist(room);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
@@ -41,23 +45,31 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public void update(Room room) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(em.find(Room.class, room.getId()).getHotel());
-        em.merge(room);
-        em.merge(room.getHotel());
-        em.getTransaction().commit();
-        em.close();
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.merge(em.find(Room.class, room.getId()).getHotel());
+            em.merge(room);
+            em.merge(room.getHotel());
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public void delete(Room room) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(em.merge(room));
-        em.merge(room.getHotel());
-        em.getTransaction().commit();
-        em.close();
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.remove(em.merge(room));
+            em.merge(room.getHotel());
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override

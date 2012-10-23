@@ -13,22 +13,28 @@ import javax.persistence.EntityManagerFactory;
 public class ClientDAOImpl implements ClientDAO {
 
     private EntityManagerFactory emf;
-    
+
     public void setEntityManagerFactory(EntityManagerFactory emf) {
-        if (emf == null)
+        if (emf == null) {
             throw new IllegalArgumentException("entityManagerFactory cannot be null");
+        }
         this.emf = emf;
     }
-    
+
     @Override
     public void create(Client client) {
-        if (client != null && client.getId() != null)
+        if (client != null && client.getId() != null) {
             throw new IllegalArgumentException("Cannot create entity with set id.");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(client);
-        em.getTransaction().commit();
-        em.close();
+        }
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.persist(client);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
@@ -39,20 +45,28 @@ public class ClientDAOImpl implements ClientDAO {
 
     @Override
     public void update(Client client) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(client);
-        em.getTransaction().commit();
-        em.close();
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.merge(client);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public void delete(Client client) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(em.merge(client));
-        em.getTransaction().commit();
-        em.close();
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.remove(em.merge(client));
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override

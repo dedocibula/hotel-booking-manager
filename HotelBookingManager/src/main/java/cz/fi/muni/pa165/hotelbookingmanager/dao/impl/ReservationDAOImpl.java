@@ -15,38 +15,52 @@ public class ReservationDAOImpl implements ReservationDAO{
     private EntityManagerFactory emf;
 
     public void setEmf(EntityManagerFactory emf) {
-        if (emf == null)
+        if (emf == null) {
             throw new IllegalArgumentException("entityManagerFactory cannot be null");
+        }
         this.emf = emf;
     }
 
     @Override
     public void create(Reservation reservation) {
-        if(reservation != null && reservation.getId()!=null)
+        if(reservation != null && reservation.getId()!=null) {
             throw new IllegalArgumentException("ID of reservation cannot be set");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(reservation);
-        em.getTransaction().commit();
-        em.close();        
+        }
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.persist(reservation);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
-   
+
     @Override
     public void delete(Reservation reservation) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(em.merge(reservation));
-        em.getTransaction().commit();
-        em.close();  
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.remove(em.merge(reservation));
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public void update(Reservation reservation) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(reservation);
-        em.getTransaction().commit();
-        em.close(); 
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.merge(reservation);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
@@ -61,5 +75,5 @@ public class ReservationDAOImpl implements ReservationDAO{
         List<Reservation> reservations = em.createQuery("Select r FROM Reservation r").getResultList();
         return reservations;
     }
-   
+
 }
