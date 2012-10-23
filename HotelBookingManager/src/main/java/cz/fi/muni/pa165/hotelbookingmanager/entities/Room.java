@@ -20,10 +20,6 @@ public class Room implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(nullable = false)
-    private boolean vacant = true;
-
-    @NotNull
     @Column(nullable = false, length = 15, precision=13, scale = 2)
     private BigDecimal pricePerNight;
 
@@ -38,14 +34,6 @@ public class Room implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public boolean isVacant() {
-        return this.vacant;
-    }
-
-    public void setVacant(boolean vacant) {
-        this.vacant = vacant;
     }
 
     public BigDecimal getPricePerNight() {
@@ -86,6 +74,6 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
-        return "Room{" + "id=" + id + ", vacant=" + vacant + ", pricePerNight=" + pricePerNight + ", hotel=" + hotel + '}';
+        return "Room{" + "id=" + id + ", pricePerNight=" + pricePerNight + ", hotel=" + hotel + '}';
     }
 }

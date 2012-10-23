@@ -74,10 +74,9 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public List<Room> findAllVacantRooms() {
-        EntityManager em = emf.createEntityManager();
-        List<Room> rooms = em.createQuery("SELECT r FROM Room r WHERE VACANT = TRUE").getResultList();
-        return rooms;
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
+
 
     @Override
     public List<Room> findAllRooms() {
