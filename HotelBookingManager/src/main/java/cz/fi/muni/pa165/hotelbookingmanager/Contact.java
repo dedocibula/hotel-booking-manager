@@ -18,13 +18,13 @@ public class Contact implements Serializable {
 
     @NotNull
     @Size(max = 30)
-    @Pattern(regexp = "[0-9]*")
+    @Pattern(regexp = "\\d*")
     @Column(nullable = false, length = 30)
     private String phone;
     
     @NotNull
     @Size(min = 6, max = 50)
-    @Pattern(regexp = ".+@.+\\.[a-z]+")
+    @Pattern(regexp = "[\\w\\-\\.\\+]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-z]+")
     @Column(nullable = false, length = 50)
     private String email;
     

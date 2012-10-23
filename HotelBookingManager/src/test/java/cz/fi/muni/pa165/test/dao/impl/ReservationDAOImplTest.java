@@ -197,6 +197,8 @@ public class ReservationDAOImplTest {
         Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, new Date(96, 5, 20), new Date(96, 7, 21), BigDecimal.valueOf(410));
 
+        Room room3 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(32), hotel2);
+        
         EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
@@ -204,44 +206,45 @@ public class ReservationDAOImplTest {
         em.persist(client);
         em.persist(client2);
         em.persist(room);
-        em.persist(room2);
+        em.persist(room2); 
+        em.persist(room3);
         em.getTransaction().commit();
         reservationDAO.create(reservation1);
         reservationDAO.create(reservation2);
-
+        
         // changing reservation client
         reservation1.setClient(client2);
         reservationDAO.update(reservation1);
         Reservation temp = reservationDAO.get(reservation1.getId());
         assertThat("Reservation client not updated", temp.getClient(), is(equalTo(client2)));
-
-
+        
+        
         // changing reservation price
         reservation1.setPrice(BigDecimal.valueOf(10));
         reservationDAO.update(reservation1);
         temp = reservationDAO.get(reservation1.getId());
         assertThat("Reservation price not updated", temp.getPrice().toBigInteger(), is(equalTo(BigDecimal.valueOf(10).toBigInteger())));
-
-
+        
+        
         // changing reservation FromDate
         reservation1.setFromDate(new Date(91,1,1));
         reservationDAO.update(reservation1);
         temp = reservationDAO.get(reservation1.getId());
         assertThat("Reservation name fromDate not updated", temp.getFromDate(), is(equalTo((new Date(91,1,1)))));
-
+                
         // changing reservation ToDate
         reservation1.setToDate(new Date(92,2,2));
         reservationDAO.update(reservation1);
         temp = reservationDAO.get(reservation1.getId());
         assertThat("Reservation toDate not updated", temp.getToDate(), is(equalTo(new Date(92,2,2))));
-
+       
         // changing reservation city
-        reservation1.setRoom(room2);
+        reservation1.setRoom(room3);
         reservationDAO.update(reservation1);
         temp = reservationDAO.get(reservation1.getId());
-        assertThat("Reservation room not updated ", temp.getRoom(), is(equalTo(room2)));
-
-
+        assertThat("Reservation room not updated ", temp.getRoom(), is(equalTo(room3)));
+             
+       
     }
 
     /**
@@ -259,14 +262,14 @@ public class ReservationDAOImplTest {
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
-        Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, new Date(98, 5, 2), new Date(98, 6, 2), BigDecimal.valueOf(1580));
-
+        Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, new Date(98, 5, 2), new Date(98, 6, 2), BigDecimal.valueOf(1580));    
+                
         Contact contact2 = App.DatabaseSampler.buildContact("7", "smajda@azet.sk", "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
         Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
-        Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, new Date(96, 5, 20), new Date(96, 7, 21), BigDecimal.valueOf(410));
-
+        Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, new Date(96, 5, 20), new Date(96, 7, 21), BigDecimal.valueOf(410));  
+        
         EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
@@ -274,16 +277,16 @@ public class ReservationDAOImplTest {
         em.persist(client);
         em.persist(client2);
         em.persist(room);
-        em.persist(room2);
+        em.persist(room2);       
         em.getTransaction().commit();
         reservationDAO.create(reservation1);
         reservationDAO.create(reservation2);
-
+        
         assertThat(reservationDAO.get(reservation1.getId()), is(notNullValue()));
         assertThat(reservationDAO.get(reservation2.getId()), is(notNullValue()));
-
+        
         reservationDAO.delete(reservation1);
-
+        
         assertThat(reservationDAO.get(reservation1.getId()), is(nullValue()));
         assertThat(reservationDAO.get(reservation2.getId()), is(notNullValue()));
     }
@@ -294,19 +297,19 @@ public class ReservationDAOImplTest {
     @Test
     public void testFindAllReservations() {
         assertTrue(reservationDAO.findAllReservations().isEmpty());
-
+        
         Contact contact = App.DatabaseSampler.buildContact("13", "blondina@azet.sk", "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
-        Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, new Date(98, 5, 2), new Date(98, 6, 2), BigDecimal.valueOf(1580));
-
+        Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, new Date(98, 5, 2), new Date(98, 6, 2), BigDecimal.valueOf(1580));    
+                
         Contact contact2 = App.DatabaseSampler.buildContact("7", "smajda@azet.sk", "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
         Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
-        Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, new Date(96, 5, 20), new Date(96, 7, 21), BigDecimal.valueOf(410));
-
+        Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, new Date(96, 5, 20), new Date(96, 7, 21), BigDecimal.valueOf(410));  
+        
         EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
@@ -314,11 +317,11 @@ public class ReservationDAOImplTest {
         em.persist(client);
         em.persist(client2);
         em.persist(room);
-        em.persist(room2);
+        em.persist(room2);       
         em.getTransaction().commit();
         reservationDAO.create(reservation1);
         reservationDAO.create(reservation2);
-
+        
         assertThat(reservationDAO.findAllReservations(), hasItems(reservation1, reservation2));
     }
 
