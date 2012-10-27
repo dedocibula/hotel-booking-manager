@@ -2,10 +2,8 @@ package cz.fi.muni.pa165.test.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
-import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.HotelDAOImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.HotelDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.validation.ConstraintViolationException;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
@@ -13,20 +11,25 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Andrej Galád
  */
+@TransactionConfiguration(defaultRollback = true)
+@Transactional
 public class HotelDAOImplTest {
     
-    private HotelDAOImpl hotelDAO;
+    private HotelDAO hotelDAO;
 
     @Before
     public void setUp() {
-        hotelDAO = new HotelDAOImpl();
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("HotelBookingManagerPU");
-        hotelDAO.setEntityManagerFactory(emf);
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        hotelDAO = context.getBean(HotelDAO.class);
     }
     
     @After

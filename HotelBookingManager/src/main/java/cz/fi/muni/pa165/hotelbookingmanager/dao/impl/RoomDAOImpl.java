@@ -4,72 +4,43 @@ import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Felipe
  */
+@Repository
 public class RoomDAOImpl implements RoomDAO{
 
-    private EntityManagerFactory emf;
-
-    public void setEmf(EntityManagerFactory emf) {
-        if (emf == null) {
-            throw new IllegalArgumentException("EntityManagerFactory cannot be null.");
-        }
-        this.emf = emf;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void create(Room room){
-        if (room != null && room.getId() != null) {
+        if (room != null && room.getId() != null)
             throw new IllegalArgumentException("ID of Room is to be set automatically.");
-        }
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            em.getTransaction().begin();
-            em.persist(room);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        em.getTransaction().begin();
     }
 
     @Override
     public Room get(Long id) {
-        EntityManager em = emf.createEntityManager();
         return em.find(Room.class, id);
     }
 
     @Override
     public void update(Room room) {
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            em.getTransaction().begin();
-            em.merge(em.find(Room.class, room.getId()).getHotel());
-            em.merge(room);
-            em.merge(room.getHotel());
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        em.merge(em.find(Room.class, room.getId()).getHotel());
+        em.merge(room);
+        em.merge(room.getHotel());
     }
 
     @Override
     public void delete(Room room) {
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            em.getTransaction().begin();
-            em.remove(em.merge(room));
-            em.merge(room.getHotel());
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        em.getTransaction().begin();
+        em.remove(em.merge(room));
+        em.merge(room.getHotel());
     }
 
     @Override
@@ -80,7 +51,6 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public List<Room> findAllRooms() {
-        EntityManager em = emf.createEntityManager();
         List<Room> rooms = em.createQuery("SELECT r FROM Room r").getResultList();
         return rooms;
     }

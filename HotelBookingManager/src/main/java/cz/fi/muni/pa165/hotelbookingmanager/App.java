@@ -6,10 +6,13 @@ import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.orm.jpa.JpaTransactionManager;
 
 /**
  * Main class containing sampler
@@ -19,7 +22,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("HotelBookingManagerPU");
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        JpaTransactionManager jtm = context.getBean(JpaTransactionManager.class);
+        EntityManagerFactory emf = jtm.getEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
         DatabaseSampler.feedDatabase(em);
         System.out.println( "Database is working!" );
@@ -90,15 +95,27 @@ public class App
             hotel.setContact(contact);
             return hotel;
         }
+        
+        public static Hotel buildHotelWithRooms(String name, Contact contact, Room... rooms) {
+            Hotel hotel = new Hotel();
+            hotel.setName(name);
+            hotel.setContact(contact);
+            if (hotel.getRooms() == null)
+                hotel.setRooms(new ArrayList<Room>());
+            hotel.getRooms().addAll(Arrays.asList(rooms));
+            return hotel;
+        }
 
         public static Room buildRoom(BigDecimal pricePerNight, Hotel hotel) {
             Room room = new Room();
             room.setPricePerNight(pricePerNight);
             room.setHotel(hotel);
-            if (hotel.getRooms() == null) {
-                hotel.setRooms(new ArrayList<Room>());
+            if (hotel != null)
+            {
+                if (hotel.getRooms() == null)
+                    hotel.setRooms(new ArrayList<Room>());
+                hotel.getRooms().add(room);
             }
-            hotel.getRooms().add(room);
             return room;
         }
 

@@ -29,7 +29,7 @@ public class RoomDAOImplTest {
     public void setUp() {
         roomDAO = new RoomDAOImpl();
         emf = Persistence.createEntityManagerFactory("HotelBookingManagerPU");
-        roomDAO.setEmf(emf);
+        //roomDAO.setEmf(emf);
     }
 
     @After
@@ -73,7 +73,7 @@ public class RoomDAOImplTest {
         room.setHotel(hotel);
 
         HotelDAOImpl hotelDAO = new HotelDAOImpl();
-        hotelDAO.setEntityManagerFactory(emf);
+        //hotelDAO.setEntityManagerFactory(emf);
         hotelDAO.create(hotel);
 
         roomDAO.create(room);
@@ -91,7 +91,7 @@ public class RoomDAOImplTest {
         Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
 
         HotelDAOImpl hotelDAO = new HotelDAOImpl();
-        hotelDAO.setEntityManagerFactory(emf);
+        //hotelDAO.setEntityManagerFactory(emf);
         hotelDAO.create(hotel);
 
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(333.00), hotel);
@@ -134,7 +134,7 @@ public class RoomDAOImplTest {
         Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
 
         HotelDAOImpl hotelDAO = new HotelDAOImpl();
-        hotelDAO.setEntityManagerFactory(emf);
+        //hotelDAO.setEntityManagerFactory(emf);
         hotelDAO.create(hotel);
 
         Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
@@ -168,7 +168,7 @@ public class RoomDAOImplTest {
        Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
 
        HotelDAOImpl hotelDAO = new HotelDAOImpl();
-       hotelDAO.setEntityManagerFactory(emf);
+       //hotelDAO.setEntityManagerFactory(emf);
        hotelDAO.create(hotel);
 
        Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);

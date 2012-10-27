@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.hotelbookingmanager.service.impl;
 
-import cz.fi.muni.pa165.hotelbookingmanager.service.RoomService;
+import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
 
 /**
  *
