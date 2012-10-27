@@ -23,7 +23,6 @@ public interface HotelService {
      *         if any of hotel's rooms is already created.
      *         if validation for hotel attributes fails.
      *         if validation for hotel's rooms fails provided it has any.
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     void createHotel(Hotel hotel);
     
@@ -33,7 +32,6 @@ public interface HotelService {
      * @param id primary key of requested hotel.
      * @return hotel with given id or null if such hotel doesn't exist.
      * @throws IllegalArgumentException when given id is null.
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     Hotel findHotel(Long id);
     
@@ -46,7 +44,6 @@ public interface HotelService {
      *         if any of hotel's rooms is already created and doesn't have hotel attached.
      *         if validation for hotel attributes fails.
      *         if validation for hotel's rooms fails provided it has any.   
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     void updateHotel(Hotel hotel);
     
@@ -55,7 +52,6 @@ public interface HotelService {
      * 
      * @param hotel hotel to remove (specified by id).
      * @throws IllegalArgumentException if parameter is null.
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     void deleteHotel(Hotel hotel);
     
@@ -63,7 +59,6 @@ public interface HotelService {
      * Returns list of all hotels.
      * 
      * @return all hotels in the DB or empty list if there are none. 
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     List<Hotel> findAllHotels();
     
@@ -73,7 +68,6 @@ public interface HotelService {
      * @param name name of requested hotels
      * @return all hotels with given name or empty list if there are none.
      * @throws IllegalArgumentException if parameter is null or empty string.
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     List<Hotel> findHotelsByName(String name);
     
@@ -83,7 +77,6 @@ public interface HotelService {
      * @param address address of requested hotels
      * @return all hotels with given address or empty list if there are none.
      * @throws IllegalArgumentException if parameter is null or empty string.
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     List<Hotel> findHotelsByAddress(String address);
     
@@ -93,7 +86,6 @@ public interface HotelService {
      * @param city city of requested hotels
      * @return all hotels with given city or empty list if there are none.
      * @throws IllegalArgumentException if parameter is null or empty string.
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     List<Hotel> findHotelsByCity(String city);
     
@@ -103,7 +95,6 @@ public interface HotelService {
      * @param country country of requested hotels
      * @return all hotels with given country or empty list if there are none.
      * @throws IllegalArgumentException if parameter is null or empty string.
-     * @throws DataAccessException in case of any exception on persistence layer.
      */
     List<Hotel> findHotelsByCountry(String country);
 }
