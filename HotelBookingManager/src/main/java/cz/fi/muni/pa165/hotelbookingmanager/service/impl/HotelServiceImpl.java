@@ -68,7 +68,6 @@ public class HotelServiceImpl implements HotelService {
             for (Room room : hotel.getRooms()) {
                 if (room == null || room.getId() != null || roomDAO.get(room.getId()).getHotel() != hotel)
                     throw new IllegalArgumentException("room cannot be null or have attached a different hotel");
-                room.setHotel(hotel);
                 validateAttachedRoomAttributes(room);
             }
         }
@@ -110,7 +109,7 @@ public class HotelServiceImpl implements HotelService {
             throw new IllegalArgumentException("address cannot be empty");
         List<Hotel> hotels = new ArrayList<>();
         for (Hotel hotel : hotelDAO.findAll()) {
-            if (hotel.getName().contains(address))
+            if (hotel.getContact().getAddress().contains(address))
                 hotels.add(hotel);
         }
         return hotels;
@@ -123,7 +122,7 @@ public class HotelServiceImpl implements HotelService {
             throw new IllegalArgumentException("city cannot be empty");
         List<Hotel> hotels = new ArrayList<>();
         for (Hotel hotel : hotelDAO.findAll()) {
-            if (hotel.getName().contains(city))
+            if (hotel.getContact().getCity().contains(city))
                 hotels.add(hotel);
         }
         return hotels;
@@ -136,7 +135,7 @@ public class HotelServiceImpl implements HotelService {
             throw new IllegalArgumentException("country cannot be empty");
         List<Hotel> hotels = new ArrayList<>();
         for (Hotel hotel : hotelDAO.findAll()) {
-            if (hotel.getName().contains(country))
+            if (hotel.getContact().getCountry().contains(country))
                 hotels.add(hotel);
         }
         return hotels;
