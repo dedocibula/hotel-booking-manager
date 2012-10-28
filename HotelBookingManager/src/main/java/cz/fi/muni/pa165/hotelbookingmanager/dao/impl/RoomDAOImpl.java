@@ -2,9 +2,11 @@ package cz.fi.muni.pa165.hotelbookingmanager.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -44,8 +46,11 @@ public class RoomDAOImpl implements RoomDAO{
     }
 
     @Override
-    public List<Room> findAllVacantRooms() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public List<Room> findAllVacantRooms(Date from, Date to) {
+        Query query = em.createQuery("SELECT r FROM Room r WHERE r NOT IN (SELECT p.room FROM Reservation p WHERE fromDate >= :from AND toDate <= :to");
+        query.setParameter("from", from);
+        query.setParameter("to", to);
+        return (List<Room>)query.getResultList();
     }
 
 

@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces;
 
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,9 +48,11 @@ public interface RoomDAO {
     /**
      * Returns list of all vacant rooms in the database.
      * 
+     * @param from Start of interval
+     * @param to End of interval
      * @return List of all vacant rooms
      */
-    List<Room> findAllVacantRooms();
+    List<Room> findAllVacantRooms(Date from, Date to);
 
     /**
      * Returns list of all rooms in the database.
