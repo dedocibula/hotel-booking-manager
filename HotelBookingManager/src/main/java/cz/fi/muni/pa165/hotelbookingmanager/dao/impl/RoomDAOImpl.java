@@ -21,9 +21,13 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public void create(Room room){
-        if (room != null && room.getId() != null)
+        if (room != null && room.getId() != null) {
             throw new IllegalArgumentException("ID of Room is to be set automatically.");
-        em.getTransaction().begin();
+        }
+        if (room.getHotel() == null) {
+            throw new IllegalArgumentException("Hotel attribute cannot be null.");
+        }
+        em.persist(room);
     }
 
     @Override
@@ -40,7 +44,6 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public void delete(Room room) {
-        em.getTransaction().begin();
         em.remove(em.merge(room));
         em.merge(room.getHotel());
     }

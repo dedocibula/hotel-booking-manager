@@ -2,13 +2,16 @@ package cz.fi.muni.pa165.test.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
-import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.HotelDAOImpl;
-import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.RoomDAOImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ClientDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.HotelDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ReservationDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.math.BigDecimal;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import java.util.Date;
 import javax.validation.ConstraintViolationException;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
@@ -16,26 +19,36 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author Thanh Dang Hoang Minh
  */
 public class RoomDAOImplTest {
-    EntityManagerFactory emf;
-    RoomDAOImpl roomDAO;
+    private RoomDAO roomDAO;
+    private ClientDAO clientDAO;
+    private ReservationDAO reservationDAO;
+    private HotelDAO hotelDAO;
+
+    private ApplicationContext context;
 
     @Before
     public void setUp() {
-        roomDAO = new RoomDAOImpl();
-        emf = Persistence.createEntityManagerFactory("HotelBookingManagerPU");
-        //roomDAO.setEmf(emf);
+        context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        roomDAO = context.getBean(RoomDAO.class);
+        hotelDAO = context.getBean(HotelDAO.class);
+        clientDAO = context.getBean(ClientDAO.class);
+        reservationDAO = context.getBean(ReservationDAO.class);
     }
 
     @After
     public void tearDown() {
-        emf = null;
         roomDAO = null;
+        hotelDAO = null;
+        clientDAO = null;
+        reservationDAO = null;
     }
 
     @Test
@@ -63,7 +76,7 @@ public class RoomDAOImplTest {
         try {
             roomDAO.create(room);
             fail("Room with null Hotel was created.");
-        } catch (ConstraintViolationException iae) {
+        } catch (ConstraintViolationException cve) {
             //All works well
         }
 
@@ -72,8 +85,6 @@ public class RoomDAOImplTest {
 
         room.setHotel(hotel);
 
-        HotelDAOImpl hotelDAO = new HotelDAOImpl();
-        //hotelDAO.setEntityManagerFactory(emf);
         hotelDAO.create(hotel);
 
         roomDAO.create(room);
@@ -90,8 +101,6 @@ public class RoomDAOImplTest {
         Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
         Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
 
-        HotelDAOImpl hotelDAO = new HotelDAOImpl();
-        //hotelDAO.setEntityManagerFactory(emf);
         hotelDAO.create(hotel);
 
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(333.00), hotel);
@@ -133,8 +142,6 @@ public class RoomDAOImplTest {
         Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
         Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
 
-        HotelDAOImpl hotelDAO = new HotelDAOImpl();
-        //hotelDAO.setEntityManagerFactory(emf);
         hotelDAO.create(hotel);
 
         Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
@@ -162,13 +169,11 @@ public class RoomDAOImplTest {
        for (Room room : roomDAO.findAllRooms()) {
            roomDAO.delete(room);
        }
-       assertTrue("There are still Rooms in the database after deletion.", roomDAO.findAllVacantRooms().isEmpty());
+       //assertTrue("There are still Rooms in the database after deletion.", roomDAO.findAllVacantRooms().isEmpty());
 
        Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
        Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
 
-       HotelDAOImpl hotelDAO = new HotelDAOImpl();
-       //hotelDAO.setEntityManagerFactory(emf);
        hotelDAO.create(hotel);
 
        Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
@@ -177,7 +182,14 @@ public class RoomDAOImplTest {
        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.TEN, hotel);
        roomDAO.create(room2);
 
-       assertThat(roomDAO.findAllVacantRooms(), hasItems(room1));
-       assertThat(roomDAO.findAllVacantRooms(), not(hasItems(room2)));
+       Client client = App.DatabaseSampler.buildClient("first", "last", contact);
+       clientDAO.create(client);
+       Date from = new Date(1990, 1, 1);
+       Date to = new Date(2000, 1, 1);
+       Reservation reservation = App.DatabaseSampler.buildReservation(client, room2, from, to, BigDecimal.ZERO);
+       reservationDAO.create(reservation);
+
+       assertThat(roomDAO.findAllVacantRooms(from, to), hasItems(room1));
+       assertThat(roomDAO.findAllVacantRooms(from, to), not(hasItems(room2)));
    }
 }
