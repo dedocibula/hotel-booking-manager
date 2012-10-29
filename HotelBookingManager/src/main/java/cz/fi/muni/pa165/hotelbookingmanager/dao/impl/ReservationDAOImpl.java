@@ -4,76 +4,45 @@ import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ReservationDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Thanh Dang Hoang Minh
  */
-public class ReservationDAOImpl implements ReservationDAO{
+@Repository
+public class ReservationDAOImpl implements ReservationDAO {
 
-    private EntityManagerFactory emf;
-
-    public void setEmf(EntityManagerFactory emf) {
-        if (emf == null) {
-            throw new IllegalArgumentException("entityManagerFactory cannot be null");
-        }
-        this.emf = emf;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void create(Reservation reservation) {
-        if(reservation != null && reservation.getId()!=null) {
+        if (reservation != null && reservation.getId() != null) {
             throw new IllegalArgumentException("ID of reservation cannot be set");
         }
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            em.getTransaction().begin();
-            em.persist(reservation);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        em.persist(reservation);
     }
 
     @Override
     public void delete(Reservation reservation) {
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            em.getTransaction().begin();
-            em.remove(em.merge(reservation));
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        em.remove(em.merge(reservation));
     }
 
     @Override
     public void update(Reservation reservation) {
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            em.getTransaction().begin();
-            em.merge(reservation);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        em.merge(reservation);
     }
 
     @Override
     public Reservation get(Long id) {
-        EntityManager em = emf.createEntityManager();
         return em.find(Reservation.class, id);
     }
 
     @Override
     public List<Reservation> findAllReservations() {
-        EntityManager em = emf.createEntityManager();
         List<Reservation> reservations = em.createQuery("Select r FROM Reservation r").getResultList();
         return reservations;
     }
-
 }

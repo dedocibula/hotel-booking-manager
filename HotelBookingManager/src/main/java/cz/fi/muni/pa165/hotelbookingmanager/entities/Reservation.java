@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -21,24 +24,29 @@ public class Reservation implements Serializable {
     private Long id;
     
     @NotNull
+    @Valid
     @OneToOne
     private Client client;
     
     @NotNull
+    @Valid
     @OneToOne
     private Room room;
     
     @NotNull
+    @Future
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date fromDate;
     
     @NotNull
+    @Future
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date toDate;
     
     @NotNull
+    @Min(value = 0)
     @Column(nullable = false, length = 15)
     private BigDecimal price;
 

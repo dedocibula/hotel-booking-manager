@@ -3,7 +3,7 @@ package cz.fi.muni.pa165.test.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
-import cz.fi.muni.pa165.hotelbookingmanager.dao.impl.ReservationDAOImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ReservationDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
@@ -20,21 +21,27 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Filip Bogyai
  */
+@TransactionConfiguration(defaultRollback = true)
+@Transactional
 public class ReservationDAOImplTest {
 
-    ReservationDAOImpl reservationDAO;
-    EntityManagerFactory emf;
+    ReservationDAO reservationDAO;
+    EntityManager em;
 
     @Before
     public void setUp() {
-        reservationDAO = new ReservationDAOImpl();
-        emf = Persistence.createEntityManagerFactory("HotelBookingManagerPU");
-        reservationDAO.setEmf(emf);
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        reservationDAO = context.getBean(ReservationDAO.class);
+        em = context.getBean(EntityManagerFactory.class).createEntityManager();
     }
 
     @After
@@ -58,7 +65,6 @@ public class ReservationDAOImplTest {
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
         Reservation reservation = App.DatabaseSampler.buildReservation(client, room, new Date(98, 5, 2), new Date(98, 6, 2), BigDecimal.valueOf(1580));
 
-        EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
         em.persist(client);
@@ -84,7 +90,6 @@ public class ReservationDAOImplTest {
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
         Reservation reservation = App.DatabaseSampler.buildReservation(client, room, new Date(98, 5, 2), new Date(98, 6, 2), BigDecimal.valueOf(1580));
 
-        EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
         em.persist(client);
@@ -153,7 +158,6 @@ public class ReservationDAOImplTest {
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
         Reservation reservation = App.DatabaseSampler.buildReservation(client, room, new Date(98, 5, 2), new Date(98, 6, 2), BigDecimal.valueOf(1580));
 
-        EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
         em.persist(client);
@@ -199,7 +203,6 @@ public class ReservationDAOImplTest {
 
         Room room3 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(32), hotel2);
         
-        EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
         em.persist(hotel2);
@@ -270,7 +273,6 @@ public class ReservationDAOImplTest {
         Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, new Date(96, 5, 20), new Date(96, 7, 21), BigDecimal.valueOf(410));  
         
-        EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
         em.persist(hotel2);
@@ -310,7 +312,6 @@ public class ReservationDAOImplTest {
         Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, new Date(96, 5, 20), new Date(96, 7, 21), BigDecimal.valueOf(410));  
         
-        EntityManager em= emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(hotel);
         em.persist(hotel2);
