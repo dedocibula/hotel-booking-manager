@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -18,6 +19,7 @@ public class ReservationDAOImpl implements ReservationDAO {
     private EntityManager em;
 
     @Override
+    @Transactional
     public void create(Reservation reservation) {
         if (reservation != null && reservation.getId() != null) {
             throw new IllegalArgumentException("ID of reservation cannot be set");
@@ -26,11 +28,13 @@ public class ReservationDAOImpl implements ReservationDAO {
     }
 
     @Override
+    @Transactional
     public void delete(Reservation reservation) {
         em.remove(em.merge(reservation));
     }
 
     @Override
+    @Transactional
     public void update(Reservation reservation) {
         em.merge(reservation);
     }

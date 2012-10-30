@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -18,6 +19,7 @@ public class HotelDAOImpl implements HotelDAO {
     private EntityManager em;
 
     @Override
+    @Transactional
     public void create(Hotel hotel) {
         if (hotel != null && hotel.getId() != null)
             throw new IllegalArgumentException("The id of hotel is automatically set, must not be set manually.");
@@ -30,11 +32,13 @@ public class HotelDAOImpl implements HotelDAO {
     }
 
     @Override
+    @Transactional
     public void update(Hotel hotel) {
         em.merge(hotel);
     }
 
     @Override
+    @Transactional
     public void delete(Hotel hotel) {
         em.remove(em.merge(hotel));
     }

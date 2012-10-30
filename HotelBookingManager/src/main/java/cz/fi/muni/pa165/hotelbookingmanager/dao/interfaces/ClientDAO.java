@@ -50,4 +50,13 @@ public interface ClientDAO {
      * @return all clients in the DB or empty list if there are none.
      */
     List<Client> findAll();
+    
+    /**
+     * Returns list of clients with given name
+     * 
+     * @param name name of requested clients
+     * @return all clients with given name or empty list if there are none.
+     * @throws IllegalArgumentException if parameter is null or empty string.
+     */
+    List<Client> findClientsByName(String name);
 }

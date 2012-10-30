@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -20,6 +21,7 @@ public class RoomDAOImpl implements RoomDAO{
     private EntityManager em;
 
     @Override
+    @Transactional
     public void create(Room room){
         if (room != null && room.getId() != null) {
             throw new IllegalArgumentException("ID of Room is to be set automatically.");
@@ -36,6 +38,7 @@ public class RoomDAOImpl implements RoomDAO{
     }
 
     @Override
+    @Transactional
     public void update(Room room) {
         em.merge(em.find(Room.class, room.getId()).getHotel());
         em.merge(room);
@@ -43,6 +46,7 @@ public class RoomDAOImpl implements RoomDAO{
     }
 
     @Override
+    @Transactional
     public void delete(Room room) {
         em.remove(em.merge(room));
         em.merge(room.getHotel());
