@@ -37,7 +37,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    @Transactional
     public Client findClient(Long id) {
         if (id == null)
             throw new IllegalArgumentException("id cannot be null");
@@ -58,20 +57,18 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
-    public void deleteCleint(Client client) {
+    public void deleteClient(Client client) {
         if (client == null)
             throw new IllegalArgumentException("client cannot be null");
         clientDAO.delete(client);
     }
 
     @Override
-    @Transactional
     public List<Client> findAllClients() {
         return clientDAO.findAll();
     }
 
      @Override
-     @Transactional
      public List<Client> findClientsByName(String name) {
          if((name == null) || (name.trim().equals("")))
              throw new IllegalArgumentException("name cannot be null");

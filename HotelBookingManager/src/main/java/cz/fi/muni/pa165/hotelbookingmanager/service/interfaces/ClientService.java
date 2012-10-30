@@ -47,7 +47,7 @@ public interface ClientService {
      * @param client client to remove (specified by id).
      * @throws IllegalArgumentException if parameter is null.
      */
-    void deleteCleint(Client client);
+    void deleteClient(Client client);
     
     /**
      * Returns list of all clients.
