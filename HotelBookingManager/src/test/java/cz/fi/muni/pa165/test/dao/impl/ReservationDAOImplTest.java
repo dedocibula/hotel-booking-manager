@@ -39,7 +39,7 @@ public class ReservationDAOImplTest {
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
         reservationDAO = context.getBean(ReservationDAO.class);
         em = context.getBean(EntityManagerFactory.class).createEntityManager();
     }

@@ -33,7 +33,7 @@ public class HotelServiceImplTest {
     
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
         hotelService = context.getBean(HotelService.class);
     }
     
@@ -382,6 +382,7 @@ public class HotelServiceImplTest {
         }
         
         // One of hotel's room has null id
+        room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelWithRooms("Hilton", contact, room1);
         hotelService.createHotel(hotel);
         room2 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, null);
@@ -394,6 +395,7 @@ public class HotelServiceImplTest {
         }
         
         // One of hotel's room belongs to another hotel
+        room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelWithRooms("Hilton", contact, room1);
         hotelService.createHotel(hotel);
         room2 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, null);
@@ -407,6 +409,7 @@ public class HotelServiceImplTest {
         }
         
         // One of hotel's room has null pricePerNight
+        room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelWithRooms("Hilton", contact, room1);
         hotelService.createHotel(hotel);
         hotel.getRooms().get(0).setPricePerNight(null);

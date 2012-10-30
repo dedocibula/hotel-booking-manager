@@ -50,7 +50,6 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    @Transactional
     public Hotel findHotel(Long id) {
         if (id == null)
             throw new IllegalArgumentException("id cannot be null");
@@ -84,13 +83,11 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    @Transactional
     public List<Hotel> findAllHotels() {
         return hotelDAO.findAll();
     }
 
     @Override
-    @Transactional
     public List<Hotel> findHotelsByName(String name) {
         if (name == null || "".equals(name.trim()))
             throw new IllegalArgumentException("name cannot be empty");
@@ -103,7 +100,6 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    @Transactional
     public List<Hotel> findHotelsByAddress(String address) {
         if (address == null || "".equals(address.trim()))
             throw new IllegalArgumentException("address cannot be empty");
@@ -116,7 +112,6 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    @Transactional
     public List<Hotel> findHotelsByCity(String city) {
         if (city == null || "".equals(city.trim()))
             throw new IllegalArgumentException("city cannot be empty");
@@ -129,7 +124,6 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    @Transactional
     public List<Hotel> findHotelsByCountry(String country) {
         if (country == null || "".equals(country.trim()))
             throw new IllegalArgumentException("country cannot be empty");

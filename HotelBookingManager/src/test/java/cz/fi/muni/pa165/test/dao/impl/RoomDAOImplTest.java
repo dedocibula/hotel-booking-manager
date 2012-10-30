@@ -36,7 +36,7 @@ public class RoomDAOImplTest {
 
     @Before
     public void setUp() {
-        context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
         roomDAO = context.getBean(RoomDAO.class);
         hotelDAO = context.getBean(HotelDAO.class);
         clientDAO = context.getBean(ClientDAO.class);

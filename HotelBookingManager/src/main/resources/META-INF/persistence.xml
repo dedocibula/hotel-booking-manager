@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="HotelBookingManagerPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Room</class>
-    <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel</class>
+    <jta-data-source>jdbc/dataSource</jta-data-source>
     <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Client</class>
+    <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel</class>
     <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation</class>
+    <class>cz.fi.muni.pa165.hotelbookingmanager.entities.Room</class>
     <properties>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>

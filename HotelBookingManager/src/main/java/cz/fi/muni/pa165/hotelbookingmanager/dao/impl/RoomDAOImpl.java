@@ -23,12 +23,8 @@ public class RoomDAOImpl implements RoomDAO{
     @Override
     @Transactional
     public void create(Room room){
-        if (room != null && room.getId() != null) {
+        if (room != null && room.getId() != null)
             throw new IllegalArgumentException("ID of Room is to be set automatically.");
-        }
-        if (room.getHotel() == null) {
-            throw new IllegalArgumentException("Hotel attribute cannot be null.");
-        }
         em.persist(room);
     }
 

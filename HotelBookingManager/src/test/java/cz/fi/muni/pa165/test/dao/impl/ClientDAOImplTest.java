@@ -28,7 +28,7 @@ public class ClientDAOImplTest {
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
         clientDAO = context.getBean(ClientDAO.class);
         
     }

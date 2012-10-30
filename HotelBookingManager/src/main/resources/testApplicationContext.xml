@@ -8,13 +8,8 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" xmlns:jdbc="http://www.springframework.org/schema/jdbc">
     
-    <!-- Production database -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="username" value="Client"/>
-        <property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver"/>
-        <property name="password" value="Client"/>
-        <property name="url" value="jdbc:derby://localhost:1527/HotelBookingManagerDB"/>
-    </bean>
+    <!-- Test in memory database -->
+    <jdbc:embedded-database id="dataSource" type="DERBY" />
     
     <context:component-scan base-package="cz.fi.muni.pa165.hotelbookingmanager"/>
 

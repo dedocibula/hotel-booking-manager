@@ -33,7 +33,7 @@ public class ReservationServiceImplTest {
     
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
         reservationService = context.getBean(ReservationService.class);
     }
     

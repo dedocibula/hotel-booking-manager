@@ -40,7 +40,7 @@ public class RoomServiceImplTest {
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
         roomService = context.getBean(RoomService.class);
         hotelService = context.getBean(HotelService.class);
         clientService = context.getBean(ClientService.class);
