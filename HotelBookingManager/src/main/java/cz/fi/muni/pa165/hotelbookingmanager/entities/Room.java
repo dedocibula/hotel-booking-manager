@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -26,6 +27,7 @@ public class Room implements Serializable {
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false)
+    @Valid
     private Hotel hotel;
 
     public Long getId() {

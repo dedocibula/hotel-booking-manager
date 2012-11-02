@@ -12,7 +12,7 @@ public interface RoomDAO {
 
     /**
      * Adds new room to the database.
-     * 
+     *
      * @param room Room to create
      * @throws IllegalArgumentException if room is null or if Hotel parameter of room is null or if ID of room is already set
      * @throws ConstraintViolationException if room has any invalid parameter
@@ -21,7 +21,7 @@ public interface RoomDAO {
 
     /**
      * Returns room with given id.
-     * 
+     *
      * @param id ID of the Room to get
      * @return Room with the entered ID
      * @throws IllegalArgumentException if id is null
@@ -30,7 +30,7 @@ public interface RoomDAO {
 
     /**
      * Updates existing room.
-     * 
+     *
      * @param room Room to update
      * @throws IllegalArgumentException if room is null
      */
@@ -38,7 +38,7 @@ public interface RoomDAO {
 
     /**
      * Removes existing room.
-     * 
+     *
      * @param room Room to delete
      * @throws IllegalArgumentException if room is null
      * @throws ConstraintViolationException if room has any invalid parameter
@@ -47,7 +47,7 @@ public interface RoomDAO {
 
     /**
      * Returns list of all vacant rooms in the database.
-     * 
+     *
      * @param from Start of interval
      * @param to End of interval
      * @return List of all vacant rooms
@@ -55,8 +55,17 @@ public interface RoomDAO {
     List<Room> findAllVacantRooms(Date from, Date to);
 
     /**
+     * Returns true if the room is vacant between the from and to dates, false otherwise
+     * @param room room, which vacancy is to be checked
+     * @param from the beginning of the date interval
+     * @param to the end of the date interval
+     * @return true if the room is vacant between the from and to dates, false otherwise
+     */
+    boolean isVacant(Room room, Date from, Date to);
+
+    /**
      * Returns list of all rooms in the database.
-     * 
+     *
      * @return List of all Rooms
      */
     List<Room> findAllRooms();

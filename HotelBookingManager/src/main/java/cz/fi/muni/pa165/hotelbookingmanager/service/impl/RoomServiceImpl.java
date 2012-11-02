@@ -82,13 +82,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    @Transactional
     public List<Room> findAllRooms() {
         return roomDAO.findAllRooms();
     }
 
     @Override
-    @Transactional
     public List<Room> findRoomsByHotel(Hotel hotel) {
         if (hotel == null) {
             throw new IllegalArgumentException("Hotel cannot be null.");
@@ -97,17 +95,10 @@ public class RoomServiceImpl implements RoomService {
             throw new IllegalArgumentException("Room must be in database.");
         }
 
-        List<Room> rooms = new ArrayList<>();
-        for (Room room : roomDAO.findAllRooms()) {
-            if (room.getHotel().equals(hotel)) {
-                rooms.add(room);
-            }
-        }
-        return rooms;
+        return hotel.getRooms();
     }
 
     @Override
-    @Transactional
     public List<Room> findVacantRooms(Date from, Date to, Hotel hotel) {
         if (from == null) {
             throw new IllegalArgumentException("From date cannot be null.");
@@ -140,7 +131,6 @@ public class RoomServiceImpl implements RoomService {
             throw new IllegalArgumentException("Room cannot be null.");
         }
         validateRoomAttributes(room);
-        validateRoomHotel(room);
     }
 
     private void validateRoomIncludingId(Room room) {
@@ -154,18 +144,6 @@ public class RoomServiceImpl implements RoomService {
         Set<ConstraintViolation<Room>> validationResults = validator.validate(room);
         if (!validationResults.isEmpty()) {
             throw new IllegalArgumentException("room parameters are invalid: " + validationResults.iterator().next().getMessage());
-        }
-    }
-
-
-    private void validateRoomHotel(Room room) {
-        Hotel hotel = hotelDAO.get(room.getHotel().getId());
-        if (room == null) {
-            throw new IllegalArgumentException("Room cannot be null.");
-        }
-        Set<ConstraintViolation<Hotel>> validationResults = validator.validate(hotel);
-        if (!validationResults.isEmpty()) {
-            throw new IllegalArgumentException("hotel parameters are invalid: " + validationResults.iterator().next().getMessage());
         }
     }
 }

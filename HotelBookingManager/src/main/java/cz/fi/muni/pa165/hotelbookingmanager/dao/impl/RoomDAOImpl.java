@@ -23,8 +23,9 @@ public class RoomDAOImpl implements RoomDAO{
     @Override
     @Transactional
     public void create(Room room){
-        if (room != null && room.getId() != null)
+        if (room != null && room.getId() != null) {
             throw new IllegalArgumentException("ID of Room is to be set automatically.");
+        }
         em.persist(room);
     }
 
@@ -50,12 +51,16 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public List<Room> findAllVacantRooms(Date from, Date to) {
-        Query query = em.createQuery("SELECT r FROM Room r WHERE r NOT IN (SELECT p.room FROM Reservation p WHERE fromDate >= :from AND toDate <= :to");
+        Query query = em.createQuery("SELECT r FROM Room r WHERE r NOT IN (SELECT p.room FROM Reservation p WHERE fromDate >= :from AND toDate <= :to)");
         query.setParameter("from", from);
         query.setParameter("to", to);
         return (List<Room>)query.getResultList();
     }
 
+    @Override
+    public boolean isVacant(Room room, Date from, Date to) {
+        return findAllVacantRooms(from, to).contains(room);
+    }
 
     @Override
     public List<Room> findAllRooms() {

@@ -92,8 +92,8 @@ public class RoomServiceImplTest {
         //Create a Room with null Hotel
         try {
             roomService.createRoom(room);
-            fail("Room with null Hotel was createRoomd.");
-        } catch (ConstraintViolationException cve) {
+            fail("Room with null Hotel was created.");
+        } catch (IllegalArgumentException iae) {
             //All works well
         }
     }
@@ -219,10 +219,11 @@ public class RoomServiceImplTest {
        roomService.createRoom(room2);
 
        Client client = App.DatabaseSampler.buildClient("first", "last", contact);
-       //TODO
-       //clientService.createClient(client);
-       Date from = new Date(1990, 1, 1);
-       Date to = new Date(2000, 1, 1);
+
+       clientService.createClient(client);
+       
+       Date from = new Date(150, 1, 1);
+       Date to = new Date(160, 1, 1);
        Reservation reservation = App.DatabaseSampler.buildReservation(client, room2, from, to, BigDecimal.ZERO);
        reservationService.createReservation(reservation);
 
