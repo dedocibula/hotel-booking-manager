@@ -31,5 +31,5 @@
     
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
     
-    <bean id="dozer" class="org.dozer.spring.DozerBeanMapperFactoryBean" />
+    <bean id="mapper" class="org.dozer.spring.DozerBeanMapperFactoryBean" />
 </beans>

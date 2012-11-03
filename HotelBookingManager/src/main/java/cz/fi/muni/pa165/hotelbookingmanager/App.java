@@ -4,6 +4,7 @@ import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,6 +129,66 @@ public class App
             reservation.setToDate(toDate);
             reservation.setPrice(price);
             return reservation;
+        }
+        
+        public static ClientTO buildClientTO(String firstName, String lastName, ContactTO contact) {
+            ClientTO clientTO = new ClientTO();
+            clientTO.setFirstName(firstName);
+            clientTO.setLastName(lastName);
+            clientTO.setContact(contact);
+            return clientTO;
+        }
+
+        public static ContactTO buildContactTO(String phone, String email,
+                String address, String city, String country) {
+            ContactTO contactTO = new ContactTO();
+            contactTO.setPhone(phone);
+            contactTO.setEmail(email);
+            contactTO.setAddress(address);
+            contactTO.setCity(city);
+            contactTO.setCountry(country);
+            return contactTO;
+        }
+
+        public static HotelTO buildHotelTO(String name, ContactTO contact) {
+            HotelTO hotelTO = new HotelTO();
+            hotelTO.setName(name);
+            hotelTO.setContact(contact);
+            return hotelTO;
+        }
+        
+        public static HotelTO buildHotelTOWithRooms(String name, ContactTO contact, RoomTO... rooms) {
+            HotelTO hotelTO = new HotelTO();
+            hotelTO.setName(name);
+            hotelTO.setContact(contact);
+            if (hotelTO.getRooms() == null)
+                hotelTO.setRooms(new ArrayList<RoomTO>());
+            hotelTO.getRooms().addAll(Arrays.asList(rooms));
+            return hotelTO;
+        }
+
+        public static RoomTO buildRoomTO(BigDecimal pricePerNight, HotelTO hotel) {
+            RoomTO roomTO = new RoomTO();
+            roomTO.setPricePerNight(pricePerNight);
+            roomTO.setHotel(hotel);
+            if (hotel != null)
+            {
+                if (hotel.getRooms() == null)
+                    hotel.setRooms(new ArrayList<RoomTO>());
+                hotel.getRooms().add(roomTO);
+            }
+            return roomTO;
+        }
+
+        public static ReservationTO buildReservationTO(ClientTO client, RoomTO room,
+                Date fromDate, Date toDate, BigDecimal price) {
+            ReservationTO reservationTO = new ReservationTO();
+            reservationTO.setClient(client);
+            reservationTO.setRoom(room);
+            reservationTO.setFromDate(fromDate);
+            reservationTO.setToDate(toDate);
+            reservationTO.setPrice(price);
+            return reservationTO;
         }
     }
 }
