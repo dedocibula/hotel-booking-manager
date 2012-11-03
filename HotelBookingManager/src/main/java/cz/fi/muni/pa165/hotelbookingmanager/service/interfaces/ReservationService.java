@@ -3,6 +3,9 @@ package cz.fi.muni.pa165.hotelbookingmanager.service.interfaces;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ReservationTO;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public interface ReservationService {
      *          reservation id is not null, the client/room doesn't exist or the room is not vacant.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void createReservation(Reservation reservation);
+    void createReservation(ReservationTO reservation);
 
     /**
      * Removes existing Reservation it from database
@@ -29,7 +32,7 @@ public interface ReservationService {
      * @throws IllegalArgumentException if reservation id is null and see createReservation() method.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void deleteReservation(Reservation reservation);
+    void deleteReservation(ReservationTO reservation);
 
      
     /**
@@ -39,7 +42,7 @@ public interface ReservationService {
      * @throws IllegalArgumentException if reservation id is null and see createReservation() method.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void updateReservation(Reservation reservation);
+    void updateReservation(ReservationTO reservation);
 
     /**
      * Returns the reservation that has the specified ID.
@@ -68,7 +71,7 @@ public interface ReservationService {
      * @throws IllegalArgumentException if client is null or client's id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    List<Reservation> findReservationsByClient(Client client);
+    List<Reservation> findReservationsByClient(ClientTO client);
     
     /**
      * Return reservations within given date interval.
@@ -93,6 +96,6 @@ public interface ReservationService {
      *          the date from is after the date to or hotel id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    List<Reservation> findReservationsByDate(Date from, Date to, Hotel hotel);
+    List<Reservation> findReservationsByDate(Date from, Date to, HotelTO hotel);
     
 }

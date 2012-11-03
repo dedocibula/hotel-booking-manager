@@ -26,7 +26,7 @@
     
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
     
-    <bean id="mapper" class="org.dozer.spring.DozerBeanMapperFactoryBean">
+    <bean id="mapper" class="org.dozer.spring.DozerBeanMapper">
     <property name="mappingFiles">
         <list>
             <value>dozerBeanMapping.xml</value>            

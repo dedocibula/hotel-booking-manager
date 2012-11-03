@@ -5,7 +5,6 @@
 package cz.fi.muni.pa165.hotelbookingmanager.service.interfaces;
 
 
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
 import java.util.List;
 
