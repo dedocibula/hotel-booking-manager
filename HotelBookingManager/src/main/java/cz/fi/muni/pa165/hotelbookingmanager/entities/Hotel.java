@@ -21,17 +21,17 @@ public class Hotel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    
     @NotNull
     @Size(min = 2, max = 30)
     @Column(nullable = false, length = 30)
     private String name;
-
+    
     @NotNull
     @Valid
     @Column(nullable = false)
     private Contact contact;
-
+    
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Room> rooms;
 
@@ -88,6 +88,6 @@ public class Hotel implements Serializable {
 
     @Override
     public String toString() {
-        return "Hotel{" + "id=" + id + ", name=" + name + ", contact=" + contact +  '}';
+        return "Hotel{" + "id=" + id + ", name=" + name + ", contact=" + contact + '}';
     }
 }

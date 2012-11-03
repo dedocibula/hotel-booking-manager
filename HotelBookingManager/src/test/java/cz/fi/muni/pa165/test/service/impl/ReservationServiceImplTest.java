@@ -6,35 +6,67 @@ package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ClientDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ReservationDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import cz.fi.muni.pa165.hotelbookingmanager.service.impl.ReservationServiceImpl;
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ReservationService;
+import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
+import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
+import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
+import javax.validation.Validator;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.matchers.JUnitMatchers.hasItems;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Marian Rusnak
  */
+@TransactionConfiguration(defaultRollback = true)
+@Transactional
 public class ReservationServiceImplTest {
     
-    private ReservationService reservationService;
+    private ReservationDAO mockReservationDao;
+    private ReservationServiceImpl reservationService;
     
+    private ClientService clientService;
+    private RoomService roomService;
+    private HotelService hotelService;
+            
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
-        reservationService = context.getBean(ReservationService.class);
+        
+        reservationService = new ReservationServiceImpl();
+        
+        mockReservationDao = mock(ReservationDAO.class);
+        
+        clientService = context.getBean(ClientService.class);
+        roomService = context.getBean(RoomService.class);
+        hotelService = context.getBean(HotelService.class);
+        
+        ClientDAO clientDao = context.getBean(ClientDAO.class);
+        RoomDAO roomDao = context.getBean(RoomDAO.class);
+        Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
+        
+        reservationService.setReservationDAO(mockReservationDao);
+        reservationService.setClientDAO(clientDao);
+        reservationService.setRoomDAO(roomDao);
+        reservationService.setValidator(validator);
+        //MockitoAnnotations.initMocks(this);
     }
     
     @After
@@ -48,15 +80,12 @@ public class ReservationServiceImplTest {
         
         reservationService.createReservation(reservation);
         
-        Reservation reservation2 = reservationService.getReservation(reservation.getId());
-        
-        assertNotSame(reservation2, reservation);
-        assertNotNull(reservation2);
-        assertEquals(reservation2, reservation);
+        verify(mockReservationDao).create(reservation);
     }
     
     @Test
     public void testCreateReservationWithWrongAttributes() {
+        // Test null
         try {
             reservationService.createReservation(null);
             fail("Cannot create null reservation.");
@@ -66,7 +95,7 @@ public class ReservationServiceImplTest {
         
         // Test of ID already set
         Reservation reservation = newReservation(sampleClient(), sampleRoom(), 
-                new Date(2013, 5, 20), new Date(2013, 5, 25), BigDecimal.ZERO);
+                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         reservation.setId(10L);
         try {
             reservationService.createReservation(reservation);
@@ -77,7 +106,7 @@ public class ReservationServiceImplTest {
         
         // Test null from date
         reservation = newReservation(sampleClient(), sampleRoom(), 
-                null, new Date(2013, 5, 20), BigDecimal.ZERO);
+                null, new Date(113, 5, 20), BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with null from date.");
@@ -87,7 +116,7 @@ public class ReservationServiceImplTest {
         
         // Test null to date
         reservation = newReservation(sampleClient(), sampleRoom(), 
-                new Date(2013, 5, 20), null, BigDecimal.ZERO);
+                new Date(113, 5, 20), null, BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with null to date.");
@@ -97,7 +126,7 @@ public class ReservationServiceImplTest {
         
         // Test the date from after the date to
         reservation = newReservation(sampleClient(), sampleRoom(), 
-                new Date(2013, 5, 20), new Date(2013, 5, 15), BigDecimal.ZERO);
+                new Date(113, 5, 20), new Date(113, 5, 15), BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with the date from after the date to.");
@@ -107,7 +136,7 @@ public class ReservationServiceImplTest {
         
         // Test date from in the past
         reservation = newReservation(sampleClient(), sampleRoom(), 
-                new Date(2011, 5, 20), new Date(2013, 5, 15), BigDecimal.ZERO);
+                new Date(111, 5, 20), new Date(113, 5, 15), BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with the date from in the past.");
@@ -117,7 +146,7 @@ public class ReservationServiceImplTest {
         
         // Test date to in the past
         reservation = newReservation(sampleClient(), sampleRoom(), 
-                new Date(2011, 5, 20), new Date(2011, 5, 25), BigDecimal.ZERO);
+                new Date(111, 5, 20), new Date(111, 5, 25), BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with the date to in the past.");
@@ -127,7 +156,7 @@ public class ReservationServiceImplTest {
         
         // Test null client
         reservation = newReservation(null, sampleRoom(), 
-                new Date(2013, 5, 20), new Date(2013, 5, 25), BigDecimal.ZERO);
+                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with null client.");
@@ -135,9 +164,10 @@ public class ReservationServiceImplTest {
             // OK
         }
         
-        // TODO Test client without id
-        reservation = newReservation(null, sampleRoom(), 
-                new Date(2013, 5, 20), new Date(2013, 5, 25), BigDecimal.ZERO);
+        // Test client without id
+        Client client = newClient("Jozko", "Mrkvicka", sampleContact());
+        reservation = newReservation(client, sampleRoom(), 
+                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with client not in the database.");
@@ -147,7 +177,7 @@ public class ReservationServiceImplTest {
         
         // Test null room
         reservation = newReservation(sampleClient(), null, 
-                new Date(2013, 5, 20), new Date(2013, 5, 25), BigDecimal.ZERO);
+                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with null room.");
@@ -155,9 +185,10 @@ public class ReservationServiceImplTest {
             // OK
         }
         
-        // TODO Test room without id
-        reservation = newReservation(sampleClient(), null, 
-                new Date(2013, 5, 20), new Date(2013, 5, 25), BigDecimal.ZERO);
+        // Test room without id
+        Room room = newRoom(BigDecimal.TEN, sampleHotel());
+        reservation = newReservation(sampleClient(), room, 
+                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with room not in the database.");
@@ -166,183 +197,189 @@ public class ReservationServiceImplTest {
         }
         
         // TODO Test not vacant room
+//        Room nonVacantRoom = newRoom(BigDecimal.TEN, sampleHotel());
+//        roomService.createRoom(nonVacantRoom);
+//        reservation = newReservation(sampleClient(), nonVacantRoom, 
+//                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
+//        reservationService.createReservation(reservation);
+//        try {
+//            reservationService.createReservation(reservation);
+//            fail("Cannot create reservation on room that is not vacant.");
+//        } catch (IllegalArgumentException ex) {
+//            // OK
+//        }
         
         // Test price less than zero
         reservation = newReservation(sampleClient(), sampleRoom(), 
-                new Date(2013, 5, 20), new Date(2013, 5, 25), new BigDecimal(-1));
+                new Date(113, 5, 20), new Date(113, 5, 25), new BigDecimal(-1));
         try {
             reservationService.createReservation(reservation);
             fail("Cannot create reservation with price less than zero.");
         } catch (IllegalArgumentException ex) {
             // OK
         }
+        
+        verify(mockReservationDao, never()).create(any(Reservation.class));
     }
 
     @Test
     public void testDeleteReservation() {
         Reservation reservation1 = sampleReservation();
         Reservation reservation2 = sampleReservation();
-        reservation2.setFromDate(new Date(2013, 2, 10));
-        
-        reservationService.createReservation(reservation1);
-        reservationService.createReservation(reservation2);
-        
-        assertNotNull(reservationService.getReservation(reservation1.getId()));
-        assertNotNull(reservationService.getReservation(reservation2.getId()));
-        
+        reservation2.setFromDate(new Date(113, 2, 10));
+        reservation1.setId(1L);
+        reservation2.setId(2L);
+
         reservationService.deleteReservation(reservation1);
         
-        assertNull(reservationService.getReservation(reservation1.getId()));
-        assertNotNull(reservationService.getReservation(reservation2.getId()));
+        verify(mockReservationDao).delete(reservation1);
+        verify(mockReservationDao, never()).delete(reservation2);
     }
 
     @Test
     public void testUpdateReservation() {
         Reservation reservation = sampleReservation();
-        
-        reservationService.createReservation(reservation);
-        
-        assertNotNull(reservationService.getReservation(reservation.getId()));
-        
-        Date newFromDate = new Date(2013, 4, 10);
-        Date newToDate = new Date(2013, 4, 20);
-        
-        reservation.setFromDate(newFromDate);
-        reservation.setToDate(newToDate);
+        reservation.setId(1L);
         
         reservationService.updateReservation(reservation);
         
-        Reservation reservation2 = reservationService.getReservation(reservation.getId());
-        
-        assertEquals(newFromDate, reservation2.getFromDate());
-        assertEquals(newToDate, reservation2.getToDate());
-        assertEquals(reservation.getPrice(), reservation2.getPrice());
-        assertEquals(reservation.getClient(), reservation2.getClient());
-        assertEquals(reservation.getRoom(), reservation2.getRoom());
+        verify(mockReservationDao).update(reservation);
     }
 
     @Test
     public void testGetReservation() {
-        Reservation reservation = sampleReservation();
+        reservationService.getReservation(1L);
         
-        reservationService.createReservation(reservation);
-        
-        Reservation reservation1 = reservationService.getReservation(reservation.getId());
-        Reservation reservation2 = reservationService.getReservation(reservation.getId());
-        
-        assertNotSame(reservation1, reservation2);
-        assertEquals(reservation1, reservation2);
-        assertEquals(reservation1.getClient(), reservation2.getClient());
-        assertEquals(reservation1.getFromDate(), reservation2.getFromDate());
-        assertEquals(reservation1.getToDate(), reservation2.getToDate());
-        assertEquals(reservation1.getPrice(), reservation2.getPrice());
-        assertEquals(reservation1.getRoom(), reservation2.getRoom());
+        verify(mockReservationDao).get(1L);
     }
 
     @Test
     public void testFindAllReservations() {
-        Reservation reservation1 = sampleReservation();
-        Reservation reservation2 = sampleReservation();
-        reservation2.setFromDate(new Date(2013, 2, 10));
+        reservationService.findAllReservations();
         
-        reservationService.createReservation(reservation1);
-        reservationService.createReservation(reservation2);
-        
-        assertNotNull(reservationService.getReservation(reservation1.getId()));
-        assertNotNull(reservationService.getReservation(reservation2.getId()));
-        
-        List<Reservation> reservations = reservationService.findAllReservations();
-        
-        assertThat(reservations, hasItems(reservation1, reservation2));
-    }
-
-    //@Test
-    public void testFindReservationsByRoom() {
-        // TODO
-        
-        Room room = sampleRoom();
-        Reservation reservation = sampleReservation();
-        reservation.setRoom(room);
-        
-        reservationService.createReservation(reservation);
-    }
-
-    //@Test
-    public void testFindReservationsByClient() {
-        // TODO
-    }
-
-    //@Test
-    public void testFindReservationsByHotel() {
-        // TODO
+        verify(mockReservationDao).findAllReservations();
     }
 
     @Test
-    public void testFindReservationsByDate_2args() {
-        Reservation reservation1 = sampleReservation();
-        reservation1.setFromDate(new Date(2013, 4, 10));
-        reservation1.setToDate(new Date(2013, 4, 20));
-        Reservation reservation2 = sampleReservation();
-        reservation2.setFromDate(new Date(2013, 3, 10));
-        reservation2.setToDate(new Date(2013, 3, 20));
+    public void testFindReservationsByClient() {
+        Client client = sampleClient();
+        client.setId(1L);
         
-        reservationService.createReservation(reservation1);
-        reservationService.createReservation(reservation2);
+        reservationService.findReservationsByClient(client);
         
-        assertNotNull(reservationService.getReservation(reservation1.getId()));
-        assertNotNull(reservationService.getReservation(reservation2.getId()));
+        verify(mockReservationDao).findReservationsByClient(client);
+    }
+    
+    @Test
+    public void testFindReservationsByClientWithWrongAttributes() {
+        // Test with null client
+        try {
+            reservationService.findReservationsByClient(null);
+            fail("Cannot find reservations of null client.");
+        } catch (IllegalArgumentException ex) {
+            // OK
+        }
         
-        List<Reservation> reservations = reservationService.findReservationsByDate(
-                new Date(2013, 3, 5), new Date(2013, 4, 25));
+        // Test with client with null id
+        Client client = newClient("Jozko", "Mrkvicka", sampleContact());
+        try {
+            reservationService.findReservationsByClient(client);
+            fail("Cannot find reservations of client with null id.");
+        } catch (IllegalArgumentException ex) {
+            // OK
+        }
         
-        assertThat(reservations, hasItems(reservation1, reservation2));
+        verify(mockReservationDao, never()).findReservationsByClient(any(Client.class));
     }
 
-    //@Test
+    @Test
     public void testFindReservationsByDate_3args() {
-        Reservation reservation1 = sampleReservation();
-        reservation1.setFromDate(new Date(2013, 4, 10));
-        reservation1.setToDate(new Date(2013, 4, 20));
-        Reservation reservation2 = sampleReservation();
-        reservation2.setFromDate(new Date(2013, 3, 10));
-        reservation2.setToDate(new Date(2013, 3, 20));
+        Date fromDate = new Date(100, 1, 1);
+        Date toDate = new Date(101, 2, 2);
+        Hotel hotel = sampleHotel();
         
-        // TODO room change
-        //Hotel = 
-        //reservation1.setRoom(null);
+        reservationService.findReservationsByDate(fromDate, toDate, hotel);
         
-        reservationService.createReservation(reservation1);
-        reservationService.createReservation(reservation2);
-        
-        assertNotNull(reservationService.getReservation(reservation1.getId()));
-        assertNotNull(reservationService.getReservation(reservation2.getId()));
-        
-        List<Reservation> reservations = reservationService.findReservationsByDate(
-                new Date(2013, 3, 5), new Date(2013, 4, 25), null);
-        
-        assertTrue(reservations.contains(reservation1));
-        assertFalse(reservations.contains(reservation2));
+        verify(mockReservationDao).findReservationsByDate(fromDate, toDate, hotel);
     }
     
-    private static Reservation sampleReservation() {
+    @Test
+    public void testFindReservationsByDate_3argsWithWrongAttributes() {      
+        Date fromDate = new Date(100, 1, 1);
+        Date toDate = new Date(101, 2, 2);
+        Hotel hotel = sampleHotel();
+        hotel.setId(1L);
+        
+        // Test with null from date
+        try {
+            reservationService.findReservationsByDate(null, toDate, hotel);
+            fail("From date cannot be null.");
+        } catch (IllegalArgumentException ex) {
+            // OK
+        }
+        
+        // Test with null to date
+        try {
+            reservationService.findReservationsByDate(fromDate, null, hotel);
+            fail("To date cannot be null.");
+        } catch (IllegalArgumentException ex) {
+            // OK
+        }
+        
+        // Test with from date after to date
+        try {
+            reservationService.findReservationsByDate(toDate, fromDate, hotel);
+            fail("From date must be after to date.");
+        } catch (IllegalArgumentException ex) {
+            // OK
+        }
+        
+        // Test with null hotel
+        try {
+            reservationService.findReservationsByDate(fromDate, toDate, null);
+            fail("Hotel cannot be null.");
+        } catch (IllegalArgumentException ex) {
+            // OK
+        }
+        
+        // Test with hotel with null id
+        hotel.setId(null);
+        try {
+            reservationService.findReservationsByDate(fromDate, null, hotel);
+            fail("To date cannot be null.");
+        } catch (IllegalArgumentException ex) {
+            // OK
+        }
+        
+        verify(mockReservationDao, never()).findReservationsByDate(any(Date.class), 
+                any(Date.class), any(Hotel.class));
+    }
+    
+    private Reservation sampleReservation() {
         return newReservation(sampleClient(), sampleRoom(), 
-                new Date(2013, 5, 20), new Date(2013, 5, 25), BigDecimal.TEN);
+                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.TEN);
     }
     
-    private static Client sampleClient() {
-        return newClient("Jozko", "Mrkvicka", sampleContact());
+    private Client sampleClient() {
+        Client client = newClient("Jozko", "Mrkvicka", sampleContact());
+        clientService.createClient(client);
+        return client;
     }
     
     private static Contact sampleContact() {
         return newContact("12345", "jozko@mail.com", "Address", "City", "Country");
     }
     
-    private static Room sampleRoom() {
-        return newRoom(BigDecimal.TEN, sampleHotel());
+    private Room sampleRoom() {
+        Room room = newRoom(BigDecimal.TEN, sampleHotel());
+        roomService.createRoom(room);
+        return room;
     }
     
-    private static Hotel sampleHotel() {
-        return newHotel("Hilton", sampleContact());
+    private Hotel sampleHotel() {
+        Hotel hotel = newHotel("Hilton", sampleContact());
+        hotelService.createHotel(hotel);
+        return hotel;
     }
     
     private static Reservation newReservation(Client client, Room room,

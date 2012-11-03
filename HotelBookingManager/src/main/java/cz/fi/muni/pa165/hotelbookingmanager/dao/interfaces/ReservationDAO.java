@@ -1,6 +1,9 @@
 package cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces;
 
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,9 +16,7 @@ public interface ReservationDAO {
      * Creates a new Reservation in the database.
      *
      * @param reservation reservation to create.
-     * @throws IllegalArgumentException if reservation is null, any of its attributes is null,
-     *         the client/room doesn't exist or the room is not vacant.
-     * @throws ConstraintViolationException if reservation has any invalid parameter.
+     * @throws DataAccessException in case of error.
      */
     void create(Reservation reservation);
 
@@ -23,7 +24,7 @@ public interface ReservationDAO {
      * Removes existing Reservation it from database
      *
      * @param reservation reservation to remove.
-     * @throws IllegalArgumentException if reservation is null.
+     * @throws DataAccessException in case of error.
      */
     void delete(Reservation reservation);
 
@@ -32,8 +33,7 @@ public interface ReservationDAO {
      * Updates the reservation according to the ID of the reservation in the parameter.
      *
      * @param reservation reservation to update.
-     * @throws IllegalArgumentException if the reservation is null or if the client/room of the reservation are non-existent.
-     * @throws ConstraintViolationException if reservation has any invalid parameter.
+     * @throws DataAccessException in case of error.
      */
     void update(Reservation reservation);
 
@@ -43,7 +43,7 @@ public interface ReservationDAO {
      * @param id id to search for.
      * @return reservation with corresponding id,
      *         null if such reservation doesn't exist.
-     * @throws IllegalArgumentException if id is null.
+     * @throws DataAccessException in case of error.
      */
     Reservation get(Long id);
 
@@ -51,7 +51,37 @@ public interface ReservationDAO {
      * Returns all reservations of client specified in the parameter.
      *
      * @return all reservations or empty list if there are none.
+     * @throws DataAccessException in case of error.
      */
     List<Reservation> findAllReservations();
-      
+    
+    /**
+     * Return all reservations of given client.
+     * 
+     * @param client client
+     * @return reservations of given client.
+     * @throws DataAccessException in case of error.
+     */
+    List<Reservation> findReservationsByClient(Client client);
+    
+    /**
+     * Return reservations within given date interval.
+     * 
+     * @param from start of the interval
+     * @param to end of the interval
+     * @return reservations within given date interval.
+     * @throws DataAccessException in case of error.
+     */
+    List<Reservation> findReservationsByDate(Date from, Date to);
+    
+    /**
+     * Return reservations withing given date interval in given hotel.
+     * 
+     * @param from start of the interval
+     * @param to end of the interval
+     * @param hotel hotel
+     * @return reservations withing given date interval in given hotel.
+     * @throws DataAccessException in case of error.
+     */
+    List<Reservation> findReservationsByDate(Date from, Date to, Hotel hotel);
 }

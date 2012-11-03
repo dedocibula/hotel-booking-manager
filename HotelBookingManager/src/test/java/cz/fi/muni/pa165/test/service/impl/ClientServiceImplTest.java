@@ -6,14 +6,15 @@ package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
-import static org.hamcrest.CoreMatchers.*;
+import cz.fi.muni.pa165.hotelbookingmanager.service.impl.ClientServiceImpl;
+import javax.validation.Validator;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.matchers.JUnitMatchers.hasItems;
+import static org.mockito.Mockito.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -27,12 +28,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ClientServiceImplTest {
     
-    private ClientService clientService;
+    private ClientDAO mockClientDao;
+    private ClientServiceImpl clientService;
     
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
-        clientService = context.getBean(ClientService.class);
+        
+        clientService = new ClientServiceImpl();
+        
+        mockClientDao = mock(ClientDAO.class);
+        Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
+        
+        clientService.setClientDAO(mockClientDao);
+        clientService.setValidator(validator);
     }
     
     @After
@@ -45,14 +54,11 @@ public class ClientServiceImplTest {
      */
     @Test
     public void testCreateClient() {
-        Contact contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
-        Client client = App.DatabaseSampler.buildClient("Andrej","Zamocky", contact);
+        Client client = sampleClient();
+        
         clientService.createClient(client);
         
-        Client client2 = clientService.findClient(client.getId());
-        assertThat(client2, is(not(sameInstance(client))));
-        assertThat(client2, is(notNullValue()));
-        assertThat(client, is(equalTo(client2)));
+        verify(mockClientDao).create(client);
     }
     
     /**
@@ -173,6 +179,8 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
+        
+        verify(mockClientDao, never()).create(any(Client.class));
     }
     
  
@@ -181,30 +189,18 @@ public class ClientServiceImplTest {
      */
     @Test
     public void testFindClient() {
-        assertThat(clientService.findClient(0l), is(nullValue()));
         try {
             clientService.findClient(null);
             fail("No IllegalArgumentException for null id");
         } catch (IllegalArgumentException e) {
             //Ok
         }
+        
+        verify(mockClientDao, never()).get(anyLong());
 
-        Contact contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
-        Client client = App.DatabaseSampler.buildClient("Andrej","Zamocky", contact);
-        clientService.createClient(client);
+        clientService.findClient(1L);
         
-        Client testClient1 = clientService.findClient(client.getId());
-        Client testClient2 = clientService.findClient(client.getId());
-        
-        assertThat(testClient1, is(not(sameInstance(testClient2))));
-        assertThat(testClient1, is(equalTo(testClient2)));
-        assertThat(testClient1.getLastName(), is(equalTo(testClient2.getLastName())));
-        assertThat(testClient1.getFirstName(), is(equalTo(testClient2.getFirstName())));
-        assertThat(testClient1.getContact().getAddress(), is(equalTo(testClient2.getContact().getAddress())));
-        assertThat(testClient1.getContact().getCity(), is(equalTo(testClient2.getContact().getCity())));
-        assertThat(testClient1.getContact().getCountry(), is(equalTo(testClient2.getContact().getCountry())));
-        assertThat(testClient1.getContact().getEmail(), is(equalTo(testClient2.getContact().getEmail())));
-        assertThat(testClient1.getContact().getPhone(), is(equalTo(testClient2.getContact().getPhone())));
+        verify(mockClientDao).get(1L);
     }
 
     /**
@@ -226,113 +222,24 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        Client client = App.DatabaseSampler.buildClient("Andrej","Zamocky", contact1);
-        client.setId(30l);
+        Client client2 = App.DatabaseSampler.buildClient("Andrej","Zamocky", contact1);
+        client2.setId(30l);
         try {
-            clientService.updateClient(client1);
+            clientService.updateClient(client2);
             fail("Cannot update a client not present in a database.");
         } catch (IllegalArgumentException e) {
             //OK
         }
-        clientService.createClient(client1);
         
-        Contact contact2 = App.DatabaseSampler.buildContact("333", "lol@lol.sk", "dress", "ty", "untry");
-        Client client2 = App.DatabaseSampler.buildClient("Marian", "Vysoky", contact2);
-        clientService.createClient(client2);
+        verify(mockClientDao, never()).update(any(Client.class));
         
-        // changing client first name
-        client1.setFirstName("Dude");
-        clientService.updateClient(client1);
-        Client temp = clientService.findClient(client1.getId());
-        assertThat("Client name not updated", temp.getFirstName(), is(equalTo("Dude")));
-        assertThat("Client name not updated", temp.getLastName(), is(equalTo("Zamocky")));
-        assertThat("Client phone number updated", temp.getContact().getPhone(), is(equalTo("123")));
-        assertThat("Client email address updated", temp.getContact().getEmail(), is(equalTo("dude@dude.sk")));
-        assertThat("Client address updated", temp.getContact().getAddress(), is(equalTo("address")));
-        assertThat("Client city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("Client country updated", temp.getContact().getCountry(), is(equalTo("country")));
+        Client client = sampleClient();
+        client.setId(1L);
+        when(mockClientDao.get(1L)).thenReturn(client);
         
-        // changing client last name
-        client1.setLastName("Nizky");
-        clientService.updateClient(client1);
-        temp = clientService.findClient(client1.getId());
-        assertThat("Client name not updated", temp.getFirstName(), is(equalTo("Dude")));
-        assertThat("Client name not updated", temp.getLastName(), is(equalTo("Nizky")));
-        assertThat("Client phone number updated", temp.getContact().getPhone(), is(equalTo("123")));
-        assertThat("Client email address updated", temp.getContact().getEmail(), is(equalTo("dude@dude.sk")));
-        assertThat("Client address updated", temp.getContact().getAddress(), is(equalTo("address")));
-        assertThat("Client city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("Client country updated", temp.getContact().getCountry(), is(equalTo("country")));
+        clientService.updateClient(client);
         
-        // changing client phone number
-        client1.getContact().setPhone("555");
-        clientService.updateClient(client1);
-        temp = clientService.findClient(client1.getId());
-        assertThat("Client name updated", temp.getFirstName(), is(equalTo("Dude")));
-         assertThat("Client name not updated", temp.getLastName(), is(equalTo("Nizky")));
-        assertThat("Client phone not number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("Client email address updated", temp.getContact().getEmail(), is(equalTo("dude@dude.sk")));
-        assertThat("Client address updated", temp.getContact().getAddress(), is(equalTo("address")));
-        assertThat("Client city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("Client country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing client email address
-        client1.getContact().setEmail("ahoj@dude.sk");
-        clientService.updateClient(client1);
-        temp = clientService.findClient(client1.getId());
-        assertThat("Client name updated", temp.getFirstName(), is(equalTo("Dude")));
-        assertThat("Client name not updated", temp.getLastName(), is(equalTo("Nizky")));
-        assertThat("Client phone number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("Client email not address updated", temp.getContact().getEmail(), is(equalTo("ahoj@dude.sk")));
-        assertThat("Client address updated", temp.getContact().getAddress(), is(equalTo("address")));
-        assertThat("Client city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("Client country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing client address
-        client1.getContact().setAddress("cowley");
-        clientService.updateClient(client1);
-        temp = clientService.findClient(client1.getId());
-        assertThat("Client name updated", temp.getFirstName(), is(equalTo("Dude")));
-         assertThat("Client name not updated", temp.getLastName(), is(equalTo("Nizky")));
-        assertThat("Client phone number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("Client email address updated", temp.getContact().getEmail(), is(equalTo("ahoj@dude.sk")));
-        assertThat("Client address not updated", temp.getContact().getAddress(), is(equalTo("cowley")));
-        assertThat("Client city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("Client country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing client city
-        client1.getContact().setCity("london");
-        clientService.updateClient(client1);
-        temp = clientService.findClient(client1.getId());
-        assertThat("Client name updated", temp.getFirstName(), is(equalTo("Dude")));
-         assertThat("Client name not updated", temp.getLastName(), is(equalTo("Nizky")));
-        assertThat("Client phone number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("Client email address updated", temp.getContact().getEmail(), is(equalTo("ahoj@dude.sk")));
-        assertThat("Client address updated", temp.getContact().getAddress(), is(equalTo("cowley")));
-        assertThat("Client city not updated", temp.getContact().getCity(), is(equalTo("london")));
-        assertThat("Client country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing client country
-        client1.getContact().setCountry("UK");
-        clientService.updateClient(client1);
-        temp = clientService.findClient(client1.getId());
-        assertThat("Client name updated", temp.getFirstName(), is(equalTo("Dude")));
-         assertThat("Client name not updated", temp.getLastName(), is(equalTo("Nizky")));
-        assertThat("Client phone number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("Client email address updated", temp.getContact().getEmail(), is(equalTo("ahoj@dude.sk")));
-        assertThat("Client address updated", temp.getContact().getAddress(), is(equalTo("cowley")));
-        assertThat("Client city updated", temp.getContact().getCity(), is(equalTo("london")));
-        assertThat("Client country not updated", temp.getContact().getCountry(), is(equalTo("UK")));
-        
-        // checking if client2 remained unaffected
-        temp = clientService.findClient(client2.getId());
-        assertThat("Saved client has wrong name", temp.getFirstName(), is(equalTo("Marian")));
-        assertThat("Client name not updated", temp.getLastName(), is(equalTo("Vysoky")));
-        assertThat("Saved client has wrong phone number", temp.getContact().getPhone(), is(equalTo("333")));
-        assertThat("Saved client has wrong email address", temp.getContact().getEmail(), is(equalTo("lol@lol.sk")));
-        assertThat("Saved client has wrong address", temp.getContact().getAddress(), is(equalTo("dress")));
-        assertThat("Saved client has wrong city", temp.getContact().getCity(), is(equalTo("ty")));
-        assertThat("Saved client has wrong country", temp.getContact().getCountry(), is(equalTo("untry")));
+        verify(mockClientDao).update(client);
     }
        
 
@@ -341,17 +248,9 @@ public class ClientServiceImplTest {
      */
     @Test
     public void testFindAllClients() {
-        assertTrue(clientService.findAllClients().isEmpty());
+        clientService.findAllClients();
         
-        Contact contact1 = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
-        Client client1 = App.DatabaseSampler.buildClient("Andrej","Zamocky", contact1);
-        clientService.createClient(client1);
-        
-        Contact contact2 = App.DatabaseSampler.buildContact("333", "lol@lol.sk", "dress", "ty", "untry");
-        Client client2 = App.DatabaseSampler.buildClient("Fesak","Moloch", contact2);
-        clientService.createClient(client2);
-        
-        assertThat(clientService.findAllClients(), hasItems(client1, client2));
+        verify(mockClientDao).findAll();
     }
 
     /**
@@ -372,32 +271,12 @@ public class ClientServiceImplTest {
         } catch (Exception e) {
             //OK
         }
-        /*
-        try {
-            clientService.findClientsByLastName("");
-            fail("Did not throw IllegalArgumentException on empty string");
-        } catch (Exception e) {
-            //OK
-        }
-        */
-        Contact contact1 = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
-        Client client1 = App.DatabaseSampler.buildClient("Andrej","Zamocky", contact1);
-        clientService.createClient(client1);
         
-        Contact contact2 = App.DatabaseSampler.buildContact("333", "lol@lol.sk", "dress", "ty", "untry");
-        Client client2 = App.DatabaseSampler.buildClient("Fesak","Moloch", contact2);
-        clientService.createClient(client2);
+        verify(mockClientDao, never()).findClientsByName(anyString());
         
-        Contact contact3 = App.DatabaseSampler.buildContact("321", "lolx@lolx.sk", "dressdress", "tyty", "untry");
-        Client client3 = App.DatabaseSampler.buildClient("Fesak","Vesely", contact3);
-        clientService.createClient(client3);
+        clientService.findClientsByName("Jozko");
         
-        assertThat(clientService.findClientsByName("Andrej"), hasItems(client1));
-        assertThat(clientService.findClientsByName("Fesak"), hasItems(client2, client3));
-        assertThat(clientService.findClientsByName("Vesely"), hasItems(client3));
-        assertThat(clientService.findClientsByName("Andrej Zamocky"), hasItems(client1));
-        assertThat(clientService.findClientsByName("Vesely Fesak"), hasItems(client3));
-        assertTrue(clientService.findClientsByName("Dude").isEmpty());
+        verify(mockClientDao).findClientsByName("Jozko");
     }
     
     /**
@@ -411,21 +290,26 @@ public class ClientServiceImplTest {
         } catch (Exception e) {
             //OK
         }
+        
+        verify(mockClientDao, never()).delete(any(Client.class));
+        
         Contact contact1 = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
         Client client1 = App.DatabaseSampler.buildClient("Anton","Vysmiaty", contact1);
-        clientService.createClient(client1);
+        client1.setId(1L);
         
         Contact contact2 = App.DatabaseSampler.buildContact("333", "lol@lol.sk", "dress", "ty", "untry");
         Client client2 = App.DatabaseSampler.buildClient("Zoltan","Zeleny", contact2);
-        clientService.createClient(client2);
-        
-        assertThat(clientService.findClient(client1.getId()), is(notNullValue()));
-        assertThat(clientService.findClient(client2.getId()), is(notNullValue()));
+        client2.setId(2L);
         
         clientService.deleteClient(client1);
         
-        assertThat(clientService.findClient(client1.getId()), is(nullValue()));
-        assertThat(clientService.findClient(client2.getId()), is(notNullValue()));
+        verify(mockClientDao).delete(client1);
+        verify(mockClientDao, never()).delete(client2);
+    }
+    
+    public static Client sampleClient() {
+        Contact contact = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
+        return App.DatabaseSampler.buildClient("Andrej","Zamocky", contact);
     }
 }
    

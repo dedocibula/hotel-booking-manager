@@ -8,7 +8,6 @@ import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ReservationService;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +35,22 @@ public class ReservationServiceImpl implements ReservationService{
     
     @Autowired
     private Validator validator;
+
+    public void setReservationDAO(ReservationDAO reservationDAO) {
+        this.reservationDAO = reservationDAO;
+    }
+
+    public void setClientDAO(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
+    }
+
+    public void setRoomDAO(RoomDAO roomDAO) {
+        this.roomDAO = roomDAO;
+    }
+
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
     
     @Override
     @Transactional
@@ -78,50 +93,13 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     @Transactional
-    public List<Reservation> findReservationsByRoom(Room room) {
-        if (room == null)
-            throw new IllegalArgumentException("Room cannot be null.");
-        if (room.getId() == null)
-            throw new IllegalArgumentException("Room must be in database.");
-        
-        List<Reservation> reservations = new ArrayList<>();
-        for (Reservation reservation : reservationDAO.findAllReservations()) {
-            if (reservation.getRoom().equals(room))
-                reservations.add(reservation);
-        }
-        return reservations;
-    }
-
-    @Override
-    @Transactional
     public List<Reservation> findReservationsByClient(Client client) {
         if (client == null)
             throw new IllegalArgumentException("Client cannot be null.");
         if (client.getId() == null)
-            throw new IllegalArgumentException("Client must be in database.");
+            throw new IllegalArgumentException("Client's id cannot be null.");
         
-        List<Reservation> reservations = new ArrayList<>();
-        for (Reservation reservation : reservationDAO.findAllReservations()) {
-            if (reservation.getClient().equals(client))
-                reservations.add(reservation);
-        }
-        return reservations;
-    }
-
-    @Override
-    @Transactional
-    public List<Reservation> findReservationsByHotel(Hotel hotel) {
-        if (hotel == null)
-            throw new IllegalArgumentException("Hotel cannot be null.");
-        if (hotel.getId() == null)
-            throw new IllegalArgumentException("Hotel must be in database.");
-        
-        List<Reservation> reservations = new ArrayList<>();
-        for (Reservation reservation : reservationDAO.findAllReservations()) {
-            if (reservation.getRoom().getHotel().equals(hotel))
-                reservations.add(reservation);
-        }
-        return reservations;
+        return reservationDAO.findReservationsByClient(client);
     }
 
     @Override
@@ -133,14 +111,8 @@ public class ReservationServiceImpl implements ReservationService{
             throw new IllegalArgumentException("To date cannot be null.");
         if (from.after(to))
             throw new IllegalArgumentException("From date must be after to date");
-
-        List<Reservation> reservations = new ArrayList<>();
-        for (Reservation reservation : reservationDAO.findAllReservations()) {
-            if (reservation.getFromDate().after(from) && reservation.getFromDate().before(to)) {
-                reservations.add(reservation);
-            }
-        }
-        return reservations;
+        
+        return reservationDAO.findReservationsByDate(from, to);
     }
 
     @Override
@@ -150,21 +122,14 @@ public class ReservationServiceImpl implements ReservationService{
             throw new IllegalArgumentException("From date cannot be null.");
         if (to == null)
             throw new IllegalArgumentException("To date cannot be null.");
+        if (from.after(to))
+            throw new IllegalArgumentException("From date must be after to date");
         if (hotel == null)
             throw new IllegalArgumentException("Hotel cannot be null.");
         if (hotel.getId() == null)
-            throw new IllegalArgumentException("Hotel must be in database.");
-        if (from.after(to))
-            throw new IllegalArgumentException("From date must be after to date");
+            throw new IllegalArgumentException("Hotel cannot be null.");
         
-        List<Reservation> reservations = new ArrayList<>();
-        for (Reservation reservation : reservationDAO.findAllReservations()) {
-            if (reservation.getFromDate().after(from) && 
-                    reservation.getFromDate().before(to) && 
-                    reservation.getRoom().getHotel().equals(hotel))
-                reservations.add(reservation);
-        }
-        return reservations;
+        return reservationDAO.findReservationsByDate(from, to, hotel);
     }
 
     private void validateReservation(Reservation reservation) {
@@ -199,19 +164,24 @@ public class ReservationServiceImpl implements ReservationService{
     }
     
     private void validateReservationClient(Reservation reservation) {
+        Long clientId = reservation.getClient().getId();
+        if (clientId == null)
+            throw new IllegalArgumentException("Client id cannot be null and client must exists.");
+        
         Client client = clientDAO.get(reservation.getClient().getId());
         if (client == null)
             throw new IllegalArgumentException("Client must exists.");
     }
     
     private void validateReservationRoom(Reservation reservation) {
-        Room room = roomDAO.get(reservation.getRoom().getId());
+        Long roomId = reservation.getRoom().getId();
+        if (roomId == null)
+            throw new IllegalArgumentException("Room id cannot be null and room must exists.");
+        
+        Room room = roomDAO.get(roomId);
         if (room == null)
             throw new IllegalArgumentException("Room must exists.");
-        
-        List<Room> vacantRooms = roomDAO.findAllVacantRooms(
-                reservation.getFromDate(), reservation.getToDate());
-        if (!vacantRooms.contains(room))
-            throw new IllegalArgumentException("Room must be vacant.");
+        //if (!roomDAO.isVacant(room, reservation.getFromDate(), reservation.getToDate()))
+        //    throw new IllegalArgumentException("Room must be vacant.");
     }
 }

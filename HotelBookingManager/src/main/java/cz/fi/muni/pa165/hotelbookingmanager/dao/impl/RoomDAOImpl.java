@@ -51,7 +51,7 @@ public class RoomDAOImpl implements RoomDAO{
 
     @Override
     public List<Room> findAllVacantRooms(Date from, Date to) {
-        Query query = em.createQuery("SELECT r FROM Room r WHERE r NOT IN (SELECT p.room FROM Reservation p WHERE fromDate >= :from AND toDate <= :to)");
+        Query query = em.createQuery("SELECT r FROM Room r WHERE r NOT IN (SELECT p.room FROM Reservation p WHERE (p.fromDate >= :from AND p.fromDate <= :to) OR (p.toDate >= :from AND p.toDate <= :to) OR (p.fromDate <= :from AND p.toDate >= :to))");
         query.setParameter("from", from);
         query.setParameter("to", to);
         return (List<Room>)query.getResultList();

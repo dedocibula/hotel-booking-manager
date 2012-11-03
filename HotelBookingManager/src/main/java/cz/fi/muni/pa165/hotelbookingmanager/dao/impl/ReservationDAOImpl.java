@@ -1,10 +1,14 @@
 package cz.fi.muni.pa165.hotelbookingmanager.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ReservationDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +52,29 @@ public class ReservationDAOImpl implements ReservationDAO {
     public List<Reservation> findAllReservations() {
         List<Reservation> reservations = em.createQuery("Select r FROM Reservation r").getResultList();
         return reservations;
+    }
+
+    @Override
+    public List<Reservation> findReservationsByClient(Client client) {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.client = :client");
+        query.setParameter("client" , client);
+        return (List<Reservation>) query.getResultList();
+    }
+
+    @Override
+    public List<Reservation> findReservationsByDate(Date from, Date to) {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.fromDate >= :from AND r.toDate <= :to");
+        query.setParameter("from" , from);
+        query.setParameter("to" , to);
+        return (List<Reservation>) query.getResultList();
+    }
+
+    @Override
+    public List<Reservation> findReservationsByDate(Date from, Date to, Hotel hotel) {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.fromDate >= :from AND r.toDate <= :to AND r.room.hotel = :hotel");
+        query.setParameter("from" , from);
+        query.setParameter("to" , to);
+        query.setParameter("hotel" , hotel);
+        return (List<Reservation>) query.getResultList();
     }
 }

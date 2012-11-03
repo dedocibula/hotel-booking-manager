@@ -13,8 +13,7 @@ public interface ClientDAO {
      * Adds new client to the database.
      * 
      * @param client client to add.
-     * @throws IllegalArgumentException if parameter is null or has assigned id.
-     * @throws ConstraintViolationException if client has any invalid parameter.
+     * @throws DataAccessException in case of error.
      */
     void create(Client client);
     
@@ -23,7 +22,7 @@ public interface ClientDAO {
      * 
      * @param id primary key of requested client.
      * @return client with given id or null if such client doesn't exist.
-     * @throws IllegalArgumentException when given id is null.
+     * @throws DataAccessException in case of error.
      */
     Client get(Long id);
     
@@ -31,8 +30,7 @@ public interface ClientDAO {
      * Updates existing client.
      * 
      * @param client client to update (specified by id) with new attributes.
-     * @throws IllegalArgumentException if parameter is null.
-     * @throws ConstraintViolationException if client has any invalid parameter.
+     * @throws DataAccessException in case of error.
      */
     void update(Client client);
     
@@ -40,7 +38,7 @@ public interface ClientDAO {
      * Removes existing client.
      * 
      * @param client client to remove (specified by id).
-     * @throws IllegalArgumentException if parameter is null.
+     * @throws DataAccessException in case of error.
      */
     void delete(Client client);
     
@@ -48,6 +46,7 @@ public interface ClientDAO {
      * Returns list of all clients in the database.
      * 
      * @return all clients in the DB or empty list if there are none.
+     * @throws DataAccessException in case of error.
      */
     List<Client> findAll();
     
@@ -56,7 +55,7 @@ public interface ClientDAO {
      * 
      * @param name name of requested clients
      * @return all clients with given name or empty list if there are none.
-     * @throws IllegalArgumentException if parameter is null or empty string.
+     * @throws DataAccessException in case of error.
      */
     List<Client> findClientsByName(String name);
 }

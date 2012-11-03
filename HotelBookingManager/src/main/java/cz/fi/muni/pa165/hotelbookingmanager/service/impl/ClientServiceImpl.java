@@ -24,6 +24,14 @@ public class ClientServiceImpl implements ClientService {
     
     @Autowired
     private Validator validator;
+
+    public void setClientDAO(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
+    }
+
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
     
     @Override
     @Transactional
