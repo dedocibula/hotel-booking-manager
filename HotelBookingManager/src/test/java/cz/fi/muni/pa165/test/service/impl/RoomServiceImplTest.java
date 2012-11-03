@@ -2,49 +2,67 @@ package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
 import cz.fi.muni.pa165.hotelbookingmanager.Contact;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
+import cz.fi.muni.pa165.hotelbookingmanager.service.impl.RoomServiceImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ReservationService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.validation.ConstraintViolationException;
+import java.util.List;
+import javax.validation.Validator;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Thanh Dang Hoang Minh
  */
-
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class RoomServiceImplTest {
 
-    private RoomService roomService;
+    private RoomDAO roomDAO;
+
+    private RoomService roomService = new RoomServiceImpl();
+
     private HotelService hotelService;
     private ClientService clientService;
     private ReservationService reservationService;
 
+
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
-        roomService = context.getBean(RoomService.class);
+
         hotelService = context.getBean(HotelService.class);
         clientService = context.getBean(ClientService.class);
         reservationService = context.getBean(ReservationService.class);
+
+        Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
+        roomDAO = Mockito.mock(RoomDAO.class);
+        ReflectionTestUtils.setField(roomService, "roomDAO", roomDAO);
+        roomService.setValidator(validator);
     }
 
     @After
@@ -55,6 +73,7 @@ public class RoomServiceImplTest {
         reservationService = null;
     }
 
+
     /**
      * Test of createRoomRoom method, of class RoomServiceImpl.
      */
@@ -64,15 +83,13 @@ public class RoomServiceImplTest {
         Hotel hotel = App.DatabaseSampler.buildHotel("mynewhotel", contact);
         hotelService.createHotel(hotel);
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
-        roomService.createRoom(room);
 
-        Room room2 = roomService.getRoom(room.getId());
-        assertThat(room2, is(not(sameInstance(room))));
-        assertThat(room2, is(notNullValue()));
-        assertThat(room, is(equalTo(room2)));
+        roomService.createRoom(room);
+        Mockito.verify(roomDAO, Mockito.times(1)).create(room);
 
         //Create a null Room
         try {
+            Mockito.doThrow(new IllegalArgumentException()).when(roomDAO).create(null);
             roomService.createRoom(null);
             fail("No IllegalArgumentException thrown while creating a null Room.");
         } catch (IllegalArgumentException iae) {
@@ -81,16 +98,17 @@ public class RoomServiceImplTest {
 
         //Get a null Room
         try {
+            Mockito.doThrow(new IllegalArgumentException()).when(roomDAO).get(null);
             roomService.getRoom(null);
             fail("No IllegalArgumentException thrown while removing a null Room.");
         } catch (IllegalArgumentException iae) {
             //Works as intended
         }
 
-        room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777.00), new Hotel());
         room.setHotel(null);
         //Create a Room with null Hotel
         try {
+            Mockito.doThrow(new IllegalArgumentException()).when(roomDAO).create(room);
             roomService.createRoom(room);
             fail("Room with null Hotel was created.");
         } catch (IllegalArgumentException iae) {
@@ -110,27 +128,20 @@ public class RoomServiceImplTest {
 
         Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(333.00), hotel);
 
+        room.setId(1L);
 
-        roomService.createRoom(room);
-
-
-        //Change price per night
-        room.setPricePerNight(BigDecimal.valueOf(777));
+        Mockito.doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) {
+                Object[] args = invocation.getArguments();
+                Room room = (Room) args[0];
+                return room;
+            }
+        }).when(roomDAO).update(room);
+        Mockito.when(roomDAO.get(room.getId())).thenReturn(room);
         roomService.updateRoom(room);
-        Room tempRoom = roomService.getRoom(room.getId());
-        assertThat("Price per night not changed!", tempRoom.getPricePerNight(), is(equalTo(BigDecimal.valueOf(777).setScale(2))));
-        assertThat("Hotel changed!", tempRoom.getHotel(), is(equalTo(hotel)));
+        Mockito.verify(roomDAO).update(room);
 
-        //Change Hotel
-        Hotel hotel2 = App.DatabaseSampler.buildHotel("MyHotelToChangeTo", contact);
-        hotelService.createHotel(hotel2);
-        room.setHotel(hotel2);
-        roomService.updateRoom(room);
-        tempRoom = roomService.getRoom(room.getId());
-        assertThat("Price per night changed!", tempRoom.getPricePerNight(), is(equalTo(BigDecimal.valueOf(777).setScale(2))));
-        assertThat("Hotel not changed!", tempRoom.getHotel(), is(equalTo(hotel2)));
-        assertThat("Room list of hotel not changed!", hotelService.findHotel(room.getHotel().getId()).getRooms(), hasItems(room));
-        assertThat("Previous hotel still has Room present!", hotelService.findHotel(hotel.getId()).getRooms(), not(hasItems(room)));
     }
 
     /**
@@ -148,27 +159,22 @@ public class RoomServiceImplTest {
 
         Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
         Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
-
         hotelService.createHotel(hotel);
 
-        Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
+        Room room = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
 
-        roomService.createRoom(room1);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
-        roomService.createRoom(room2);
+        room.setId(1L);
 
-        assertThat(roomService.getRoom(room1.getId()), is(not(nullValue())));
-        assertThat(roomService.getRoom(room2.getId()), is(not(nullValue())));
-
-
-        assertThat(hotelService.findHotel(hotel.getId()).getRooms(), hasItems(room1));
-
-        roomService.deleteRoom(room1);
-
-        assertThat(hotelService.findHotel(hotel.getId()).getRooms(), not(hasItems(room1)));
-
-        assertThat(roomService.getRoom(room1.getId()), is(nullValue()));
-        assertThat(roomService.getRoom(room2.getId()), is(not(nullValue())));
+        Mockito.doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) {
+                Object[] args = invocation.getArguments();
+                Room room = (Room) args[0];
+                return room;
+            }
+        }).when(roomDAO).delete(room);
+        roomService.deleteRoom(room);
+        Mockito.verify(roomDAO).delete(room);
     }
 
     /**
@@ -176,25 +182,8 @@ public class RoomServiceImplTest {
      */
     @Test
     public void testFindAllRooms() {
-        for (Room room : roomService.findAllRooms()) {
-           roomService.deleteRoom(room);
-       }
-       assertTrue("There are still Rooms in the database after deletion.", roomService.findAllRooms().isEmpty());
-
-       Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
-       Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
-
-       hotelService.createHotel(hotel);
-
-       Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
-       roomService.createRoom(room1);
-
-       Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.TEN, hotel);
-       roomService.createRoom(room2);
-
-       assertThat(roomService.findAllRooms(), hasItems(room1));
-       assertThat(roomService.findAllRooms(), hasItems(room2));
-       assertEquals(roomService.findAllRooms().size(), 2);
+       List<Room> rooms = roomService.findAllRooms();
+       Mockito.verify(roomDAO).findAllRooms();
     }
 
     /**
@@ -202,59 +191,20 @@ public class RoomServiceImplTest {
      */
     @Test
     public void testFindVacantRooms() {
-        for (Room room : roomService.findAllRooms()) {
-           roomService.deleteRoom(room);
-       }
-       assertTrue("There are still Rooms in the database after deletion.", roomService.findAllRooms().isEmpty());
+        Contact contact = App.DatabaseSampler.buildContact("123", "some@email.asdf", "address", "city", "country");
+        Hotel hotel = App.DatabaseSampler.buildHotel("mynewhotel", contact);
+        hotelService.createHotel(hotel);
 
-       Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
-       Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
-
-       hotelService.createHotel(hotel);
-
-       Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
-       roomService.createRoom(room1);
-
-       Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.TEN, hotel);
-       roomService.createRoom(room2);
-
-       Client client = App.DatabaseSampler.buildClient("first", "last", contact);
-
-       clientService.createClient(client);
-       
-       Date from = new Date(150, 1, 1);
-       Date to = new Date(160, 1, 1);
-       Reservation reservation = App.DatabaseSampler.buildReservation(client, room2, from, to, BigDecimal.ZERO);
-       reservationService.createReservation(reservation);
-
-       assertThat(roomService.findVacantRooms(from, to, hotel), hasItems(room1));
-       assertThat(roomService.findVacantRooms(from, to, hotel), not(hasItems(room2)));
+        List<Room> rooms = roomService.findVacantRooms(new Date(150,1,1), new Date(150,1,1), hotel);
+        Mockito.verify(roomDAO).findAllVacantRooms(new Date(150,1,1), new Date(150,1,1));
     }
 
     @Test
     public void testFindRoomsByHotel() {
-        for (Room room : roomService.findAllRooms()) {
-           roomService.deleteRoom(room);
-       }
-       assertTrue("There are still Rooms in the database after deletion.", roomService.findAllRooms().isEmpty());
-
-       Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
-       Hotel hotel1 = App.DatabaseSampler.buildHotel("MyHotel", contact);
-       Hotel hotel2 = App.DatabaseSampler.buildHotel("MyHotel2", contact);
-
-       hotelService.createHotel(hotel1);
-       hotelService.createHotel(hotel2);
-
-       Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel1);
-       roomService.createRoom(room1);
-
-       Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.TEN, hotel2);
-       roomService.createRoom(room2);
-
-
-       assertThat(roomService.findRoomsByHotel(hotel1), hasItems(room1));
-       assertThat(roomService.findRoomsByHotel(hotel1), not(hasItems(room2)));
-       assertThat(roomService.findRoomsByHotel(hotel2), hasItems(room2));
-       assertThat(roomService.findRoomsByHotel(hotel2), not(hasItems(room1)));
+        Contact contact = App.DatabaseSampler.buildContact("123", "some@email.asdf", "address", "city", "country");
+        Hotel hotel = App.DatabaseSampler.buildHotel("mynewhotel", contact);
+        hotelService.createHotel(hotel);
+        List<Room> rooms = roomService.findRoomsByHotel(hotel);
+        //TODO?!
     }
 }

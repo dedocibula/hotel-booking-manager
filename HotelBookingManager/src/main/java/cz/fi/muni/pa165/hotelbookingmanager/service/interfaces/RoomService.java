@@ -8,6 +8,7 @@ import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import java.util.Date;
 import java.util.List;
+import javax.validation.Validator;
 
 /**
  *
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public interface RoomService {
 
+    void setValidator(Validator validator);
 
     /**
      * Creates a new room

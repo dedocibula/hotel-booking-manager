@@ -23,10 +23,10 @@ public class HotelServiceImpl implements HotelService {
 
     @Autowired
     private HotelDAO hotelDAO;
-    
+
     @Autowired
     private RoomDAO roomDAO;
-    
+
     @Autowired
     private Validator validator;
 
@@ -61,7 +61,7 @@ public class HotelServiceImpl implements HotelService {
     public void updateHotel(Hotel hotel) {
         if (hotel == null)
             throw new IllegalArgumentException("hotel cannot be null");
-        if (hotel.getId() == null || hotelDAO.get(hotel.getId()) == null) 
+        if (hotel.getId() == null || hotelDAO.get(hotel.getId()) == null)
             throw new IllegalArgumentException("trying to update non-existent hotel");
         if (hotel.getRooms() != null) {
             for (Room room : hotel.getRooms()) {
@@ -134,13 +134,13 @@ public class HotelServiceImpl implements HotelService {
         }
         return hotels;
     }
-    
+
     private void validateHotelAttrributes(Hotel hotel) throws IllegalArgumentException {
         Set<ConstraintViolation<Hotel>> validationResults = validator.validate(hotel);
         if (!validationResults.isEmpty())
             throw new IllegalArgumentException("hotel parameters are invalid: " + validationResults.iterator().next().getMessage());
     }
-    
+
     private void validateAttachedRoomAttributes(Room room) throws IllegalArgumentException {
         Set<ConstraintViolation<Room>> validationResults = validator.validate(room);
         if (!validationResults.isEmpty())

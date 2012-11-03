@@ -1,6 +1,5 @@
 package cz.fi.muni.pa165.hotelbookingmanager.service.impl;
 
-import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.HotelDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
@@ -26,11 +25,13 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private RoomDAO roomDAO;
 
-    @Autowired
-    private HotelDAO hotelDAO;
 
     @Autowired
     private Validator validator;
+
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
 
     @Override
     @Transactional
@@ -115,9 +116,9 @@ public class RoomServiceImpl implements RoomService {
         if (from.after(to)) {
             throw new IllegalArgumentException("From date must be before to date");
         }
-
+        List<Room> daoRooms = roomDAO.findAllVacantRooms(from, to);
         List<Room> rooms = new ArrayList<>();
-        for (Room room : roomDAO.findAllVacantRooms(from, to)) {
+        for (Room room : daoRooms) {
             if (room.getHotel().equals(hotel)) {
                 rooms.add(room);
             }
