@@ -6,6 +6,7 @@ package cz.fi.muni.pa165.hotelbookingmanager.service.interfaces;
 
 
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public interface ClientService {
      *         if validation for client attributes fails.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void createClient(Client client);
+    void createClient(ClientTO client);
     
     /**
      * Returns client with given id.
@@ -32,7 +33,7 @@ public interface ClientService {
      * @throws IllegalArgumentException when given id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    Client findClient(Long id);
+    ClientTO findClient(Long id);
     
     /**
      * Updates existing client.
@@ -42,7 +43,7 @@ public interface ClientService {
      *         if validation for client attributes fails.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void updateClient(Client client);
+    void updateClient(ClientTO client);
     
     /**
      * Removes existing client.
@@ -51,7 +52,7 @@ public interface ClientService {
      * @throws IllegalArgumentException if parameter is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void deleteClient(Client client);
+    void deleteClient(ClientTO client);
     
     /**
      * Returns list of all clients.
@@ -59,7 +60,7 @@ public interface ClientService {
      * @return all clients in the DB or empty list if there are none. 
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    List<Client> findAllClients();
+    List<ClientTO> findAllClients();
     
     /**
      * Returns list of clients with given first name.
@@ -69,6 +70,6 @@ public interface ClientService {
      * @throws IllegalArgumentException if parameter is null or empty string.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    List<Client> findClientsByName(String name);
+    List<ClientTO> findClientsByName(String name);
             
 }

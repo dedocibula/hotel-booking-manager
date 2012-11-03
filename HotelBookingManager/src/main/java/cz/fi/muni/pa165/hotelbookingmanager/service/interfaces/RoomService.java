@@ -4,8 +4,8 @@
  */
 package cz.fi.muni.pa165.hotelbookingmanager.service.interfaces;
 
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.RoomTO;
 import java.util.Date;
 import java.util.List;
 import javax.validation.Validator;
@@ -23,21 +23,21 @@ public interface RoomService {
      * @param room room to be created
      * @throws IllegalArgumentException if room is null, hotel is null, or ID of room is manually set.
      */
-    void createRoom(Room room);
+    void createRoom(RoomTO room);
 
     /**
      * Deletes room.
      * @param room room to delete
      * @throws IllegalArgumentException if room is null.
      */
-    void deleteRoom(Room room);
+    void deleteRoom(RoomTO room);
 
     /**
      * Updates room.
      * @param room room to update
      * @throws IllegalArgumentException if room is null,
      */
-    void updateRoom(Room room);
+    void updateRoom(RoomTO room);
 
     /**
      * Returns hotel with given ID
@@ -45,13 +45,13 @@ public interface RoomService {
      * @return room with given ID
      * @throws IllegalArgumentException if id is null.
      */
-    Room getRoom(Long id);
+    RoomTO getRoom(Long id);
 
     /**
      * Returns all rooms.
      * @return all rooms
      */
-    List<Room> findAllRooms();
+    List<RoomTO> findAllRooms();
 
     /**
      * Returns all rooms attached to a hotel
@@ -60,7 +60,7 @@ public interface RoomService {
      * @return list of all rooms attached to a hotel
      * @throws IllegalArgumentException if hotel is null
      */
-    List<Room> findRoomsByHotel(Hotel hotel);
+    List<RoomTO> findRoomsByHotel(HotelTO hotel);
 
     /**
      * Returns all vacant rooms in the given hotel and date constraints
@@ -70,6 +70,6 @@ public interface RoomService {
      * @return list of vacant rooms in given hotel and date constraints
      * @throws IllegalArgumentException if from, to date, hotel are null, or if hotel is not in the database, or if from date is after to date.
      */
-    List<Room> findVacantRooms(Date from, Date to, Hotel hotel);
+    List<RoomTO> findVacantRooms(Date from, Date to, HotelTO hotel);
 
 }
