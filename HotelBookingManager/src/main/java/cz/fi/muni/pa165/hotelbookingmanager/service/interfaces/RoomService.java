@@ -8,15 +8,12 @@ import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.RoomTO;
 import java.util.Date;
 import java.util.List;
-import javax.validation.Validator;
 
 /**
  *
  * @author Thanh Dang Hoang Minh
  */
 public interface RoomService {
-
-    void setValidator(Validator validator);
 
     /**
      * Creates a new room

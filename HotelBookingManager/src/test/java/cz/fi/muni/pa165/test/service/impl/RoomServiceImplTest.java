@@ -1,27 +1,29 @@
 package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
-import cz.fi.muni.pa165.hotelbookingmanager.Contact;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
+import cz.fi.muni.pa165.hotelbookingmanager.service.impl.ClientServiceImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.service.impl.HotelServiceImpl;
+import cz.fi.muni.pa165.hotelbookingmanager.service.impl.ReservationServiceImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.service.impl.RoomServiceImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ReservationService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ContactTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.RoomTO;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.validation.Validator;
-import static org.hamcrest.CoreMatchers.*;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.junit.After;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.matchers.JUnitMatchers.hasItems;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -45,6 +47,7 @@ public class RoomServiceImplTest {
     private RoomDAO roomDAO;
 
     private RoomService roomService = new RoomServiceImpl();
+    private Mapper mapper;
 
     private HotelService hotelService;
     private ClientService clientService;
@@ -61,8 +64,10 @@ public class RoomServiceImplTest {
 
         Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
         roomDAO = Mockito.mock(RoomDAO.class);
+        mapper = context.getBean(DozerBeanMapper.class);
         ReflectionTestUtils.setField(roomService, "roomDAO", roomDAO);
-        roomService.setValidator(validator);
+        ReflectionTestUtils.setField(roomService, "mapper", mapper);
+        ReflectionTestUtils.setField(roomService, "validator", validator);
     }
 
     @After
@@ -71,6 +76,7 @@ public class RoomServiceImplTest {
         hotelService = null;
         clientService = null;
         reservationService = null;
+        mapper = null;
     }
 
 
@@ -79,13 +85,13 @@ public class RoomServiceImplTest {
      */
     @Test
     public void testCreateAndGetRoom() {
-        Contact contact = App.DatabaseSampler.buildContact("123", "some@email.asdf", "address", "city", "country");
-        Hotel hotel = App.DatabaseSampler.buildHotel("mynewhotel", contact);
+        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "some@email.asdf", "address", "city", "country");
+        HotelTO hotel = App.DatabaseSampler.buildHotelTO("mynewhotel", contact);
         hotelService.createHotel(hotel);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
+        RoomTO room = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, hotel);
 
         roomService.createRoom(room);
-        Mockito.verify(roomDAO, Mockito.times(1)).create(room);
+        Mockito.verify(roomDAO, Mockito.times(1)).create(mapper.map(room, Room.class));
 
         //Create a null Room
         try {
@@ -108,7 +114,7 @@ public class RoomServiceImplTest {
         room.setHotel(null);
         //Create a Room with null Hotel
         try {
-            Mockito.doThrow(new IllegalArgumentException()).when(roomDAO).create(room);
+            Mockito.doThrow(new IllegalArgumentException()).when(roomDAO).create(mapper.map(room, Room.class));
             roomService.createRoom(room);
             fail("Room with null Hotel was created.");
         } catch (IllegalArgumentException iae) {
@@ -121,12 +127,12 @@ public class RoomServiceImplTest {
      */
     @Test
     public void testUpdateRoom() {
-        Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
-        Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
+        ContactTO contact = App.DatabaseSampler.buildContactTO("12345", "something@random.wtf", "streetz", "town", "land");
+        HotelTO hotel = App.DatabaseSampler.buildHotelTO("MyHotel", contact);
 
         hotelService.createHotel(hotel);
 
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(333.00), hotel);
+        RoomTO room = App.DatabaseSampler.buildRoomTO(BigDecimal.valueOf(333.00), hotel);
 
         room.setId(1L);
 
@@ -137,10 +143,10 @@ public class RoomServiceImplTest {
                 Room room = (Room) args[0];
                 return room;
             }
-        }).when(roomDAO).update(room);
-        Mockito.when(roomDAO.get(room.getId())).thenReturn(room);
+        }).when(roomDAO).update(mapper.map(room, Room.class));
+        Mockito.when(roomDAO.get(room.getId())).thenReturn(mapper.map(room, Room.class));
         roomService.updateRoom(room);
-        Mockito.verify(roomDAO).update(room);
+        Mockito.verify(roomDAO).update(mapper.map(room, Room.class));
 
     }
 
@@ -157,11 +163,11 @@ public class RoomServiceImplTest {
             //All works as intended
         }
 
-        Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");
-        Hotel hotel = App.DatabaseSampler.buildHotel("MyHotel", contact);
+        ContactTO contact = App.DatabaseSampler.buildContactTO("12345", "something@random.wtf", "streetz", "town", "land");
+        HotelTO hotel = App.DatabaseSampler.buildHotelTO("MyHotel", contact);
         hotelService.createHotel(hotel);
 
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
+        RoomTO room = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, hotel);
 
         room.setId(1L);
 
@@ -172,9 +178,9 @@ public class RoomServiceImplTest {
                 Room room = (Room) args[0];
                 return room;
             }
-        }).when(roomDAO).delete(room);
+        }).when(roomDAO).delete(mapper.map(room, Room.class));
         roomService.deleteRoom(room);
-        Mockito.verify(roomDAO).delete(room);
+        Mockito.verify(roomDAO).delete(mapper.map(room, Room.class));
     }
 
     /**
@@ -182,7 +188,7 @@ public class RoomServiceImplTest {
      */
     @Test
     public void testFindAllRooms() {
-       List<Room> rooms = roomService.findAllRooms();
+       List<RoomTO> rooms = roomService.findAllRooms();
        Mockito.verify(roomDAO).findAllRooms();
     }
 
@@ -191,20 +197,20 @@ public class RoomServiceImplTest {
      */
     @Test
     public void testFindVacantRooms() {
-        Contact contact = App.DatabaseSampler.buildContact("123", "some@email.asdf", "address", "city", "country");
-        Hotel hotel = App.DatabaseSampler.buildHotel("mynewhotel", contact);
+        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "some@email.asdf", "address", "city", "country");
+        HotelTO hotel = App.DatabaseSampler.buildHotelTO("mynewhotel", contact);
         hotelService.createHotel(hotel);
 
-        List<Room> rooms = roomService.findVacantRooms(new Date(150,1,1), new Date(150,1,1), hotel);
+        List<RoomTO> rooms = roomService.findVacantRooms(new Date(150,1,1), new Date(150,1,1), hotel);
         Mockito.verify(roomDAO).findAllVacantRooms(new Date(150,1,1), new Date(150,1,1));
     }
 
     @Test
     public void testFindRoomsByHotel() {
-        Contact contact = App.DatabaseSampler.buildContact("123", "some@email.asdf", "address", "city", "country");
-        Hotel hotel = App.DatabaseSampler.buildHotel("mynewhotel", contact);
+        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "some@email.asdf", "address", "city", "country");
+        HotelTO hotel = App.DatabaseSampler.buildHotelTO("mynewhotel", contact);
         hotelService.createHotel(hotel);
-        List<Room> rooms = roomService.findRoomsByHotel(hotel);
+        List<RoomTO> rooms = roomService.findRoomsByHotel(hotel);
         //TODO?!
     }
 }

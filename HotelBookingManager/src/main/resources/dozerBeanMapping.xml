@@ -51,6 +51,7 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
             <a>contact</a>
             <b>contact</b>
             <b-hint>cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ContactTO</b-hint>
+        </field>
     </mapping>
 
  
@@ -96,8 +97,8 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
     </mapping>
     
     <mapping>
-        <class-a>cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel</class-a>
-        <class-b>cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO</class-b>
+        <class-a>cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation</class-a>
+        <class-b>cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ReservationTO</class-b>
         <field>
             <a>id</a>
             <b>id</b>

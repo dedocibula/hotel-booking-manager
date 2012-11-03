@@ -8,11 +8,16 @@ import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ReservationService;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ReservationTO;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +40,9 @@ public class ReservationServiceImpl implements ReservationService{
     
     @Autowired
     private Validator validator;
+    
+    @Autowired
+    private Mapper mapper;
 
     public void setReservationDAO(ReservationDAO reservationDAO) {
         this.reservationDAO = reservationDAO;
@@ -51,10 +59,15 @@ public class ReservationServiceImpl implements ReservationService{
     public void setValidator(Validator validator) {
         this.validator = validator;
     }
+
+    public void setMapper(Mapper mapper) {
+        this.mapper = mapper;
+    }
     
     @Override
     @Transactional
-    public void createReservation(Reservation reservation) {
+    public void createReservation(ReservationTO reservationTO) {
+        Reservation reservation = mapper.map(reservationTO, Reservation.class);
         validateReservation(reservation);
         if (reservation.getId() != null)
             throw new IllegalArgumentException("Reservation cannot have manually assigned id");
@@ -64,47 +77,53 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     @Transactional
-    public void deleteReservation(Reservation reservation) {
+    public void deleteReservation(ReservationTO reservationTO) {
+        Reservation reservation = mapper.map(reservationTO, Reservation.class);
         validateReservationIncludingId(reservation);
         reservationDAO.delete(reservation);
     }
 
     @Override
     @Transactional
-    public void updateReservation(Reservation reservation) {
+    public void updateReservation(ReservationTO reservationTO) {
+        Reservation reservation = mapper.map(reservationTO, Reservation.class);
         validateReservationIncludingId(reservation);
         reservationDAO.update(reservation);
     }
 
     @Override
-    @Transactional
-    public Reservation getReservation(Long id) {
+    public ReservationTO getReservation(Long id) {
         if (id == null)
             throw new IllegalArgumentException("ID cannot be null.");
         
-        return reservationDAO.get(id);
+        return mapper.map(reservationDAO.get(id), ReservationTO.class);
     }
 
     @Override
-    @Transactional
-    public List<Reservation> findAllReservations() {
-        return reservationDAO.findAllReservations();
+    public List<ReservationTO> findAllReservations() {
+        List<ReservationTO> reservationTOs = new ArrayList<>();
+        for (Reservation reservation : reservationDAO.findAllReservations()) {
+            reservationTOs.add(mapper.map(reservation, ReservationTO.class));
+        }
+        return reservationTOs;
     }
 
     @Override
-    @Transactional
-    public List<Reservation> findReservationsByClient(Client client) {
-        if (client == null)
+    public List<ReservationTO> findReservationsByClient(ClientTO clientTO) {
+        if (clientTO == null)
             throw new IllegalArgumentException("Client cannot be null.");
-        if (client.getId() == null)
+        if (clientTO.getId() == null)
             throw new IllegalArgumentException("Client's id cannot be null.");
-        
-        return reservationDAO.findReservationsByClient(client);
+        Client client = mapper.map(clientTO, Client.class);
+        List<ReservationTO> reservationTOs = new ArrayList<>();
+        for (Reservation reservation : reservationDAO.findReservationsByClient(client)) {
+            reservationTOs.add(mapper.map(reservation, ReservationTO.class));
+        }
+        return reservationTOs;
     }
 
     @Override
-    @Transactional
-    public List<Reservation> findReservationsByDate(Date from, Date to) {
+    public List<ReservationTO> findReservationsByDate(Date from, Date to) {
         if (from == null)
             throw new IllegalArgumentException("From date cannot be null.");
         if (to == null)
@@ -112,24 +131,31 @@ public class ReservationServiceImpl implements ReservationService{
         if (from.after(to))
             throw new IllegalArgumentException("From date must be after to date");
         
-        return reservationDAO.findReservationsByDate(from, to);
+        List<ReservationTO> reservationTOs = new ArrayList<>();
+        for (Reservation reservation : reservationDAO.findReservationsByDate(from, to)) {
+            reservationTOs.add(mapper.map(reservation, ReservationTO.class));
+        }
+        return reservationTOs;
     }
 
     @Override
-    @Transactional
-    public List<Reservation> findReservationsByDate(Date from, Date to, Hotel hotel) {
+    public List<ReservationTO> findReservationsByDate(Date from, Date to, HotelTO hotelTO) {
         if (from == null)
             throw new IllegalArgumentException("From date cannot be null.");
         if (to == null)
             throw new IllegalArgumentException("To date cannot be null.");
         if (from.after(to))
             throw new IllegalArgumentException("From date must be after to date");
-        if (hotel == null)
+        if (hotelTO == null)
             throw new IllegalArgumentException("Hotel cannot be null.");
-        if (hotel.getId() == null)
+        if (hotelTO.getId() == null)
             throw new IllegalArgumentException("Hotel cannot be null.");
-        
-        return reservationDAO.findReservationsByDate(from, to, hotel);
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);
+        List<ReservationTO> reservationTOs = new ArrayList<>();
+        for (Reservation reservation : reservationDAO.findReservationsByDate(from, to, hotel)) {
+            reservationTOs.add(mapper.map(reservation, ReservationTO.class));
+        }
+        return reservationTOs;
     }
 
     private void validateReservation(Reservation reservation) {

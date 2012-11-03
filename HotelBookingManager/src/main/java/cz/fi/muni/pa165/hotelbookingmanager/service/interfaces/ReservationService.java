@@ -1,8 +1,8 @@
 package cz.fi.muni.pa165.hotelbookingmanager.service.interfaces;
 
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ReservationTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ReservationTO;
@@ -18,34 +18,34 @@ public interface ReservationService {
     /**
      * Creates a new Reservation in the database.
      *
-     * @param reservation reservation to create.
+     * @param reservationTO transfer object describing reservation to create.
      * @throws IllegalArgumentException if reservation is null, any of its attributes except id is null,
      *          reservation id is not null, the client/room doesn't exist or the room is not vacant.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void createReservation(ReservationTO reservation);
+    void createReservation(ReservationTO reservationTO);
 
     /**
      * Removes existing Reservation it from database
      *
-     * @param reservation reservation to remove.
+     * @param reservationTO transfer object describing reservation to remove.
      * @throws IllegalArgumentException if reservation id is null and see createReservation() method.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void deleteReservation(ReservationTO reservation);
+    void deleteReservation(ReservationTO reservationTO);
 
      
     /**
      * Updates the reservation according to the ID of the reservation in the parameter.
      *
-     * @param reservation reservation to update.
+     * @param reservationTO transfer object describing reservation to update.
      * @throws IllegalArgumentException if reservation id is null and see createReservation() method.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    void updateReservation(ReservationTO reservation);
+    void updateReservation(ReservationTO reservationTO);
 
     /**
-     * Returns the reservation that has the specified ID.
+     * Returns the transfer object describing reservation that has the specified ID.
      *
      * @param id id to search for.
      * @return reservation with corresponding id,
@@ -53,28 +53,28 @@ public interface ReservationService {
      * @throws IllegalArgumentException if id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    Reservation getReservation(Long id);
+    ReservationTO getReservation(Long id);
 
     /**
-     * Returns all reservations.
+     * Returns transfer object describing all reservations.
      *
      * @return all reservations or empty list if there are none.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    List<Reservation> findAllReservations();
+    List<ReservationTO> findAllReservations();
     
     /**
-     * Return all reservations of given client.
+     * Return transfer object describing all reservations of given client.
      * 
      * @param client client
      * @return reservations of given client.
      * @throws IllegalArgumentException if client is null or client's id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    List<Reservation> findReservationsByClient(ClientTO client);
+    List<ReservationTO> findReservationsByClient(ClientTO clientTO);
     
     /**
-     * Return reservations within given date interval.
+     * Return transfer object describing reservations within given date interval.
      * 
      * @param from start of the interval
      * @param to end of the interval
@@ -83,19 +83,19 @@ public interface ReservationService {
      *          or the date from is after the date to.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    List<Reservation> findReservationsByDate(Date from, Date to);
+    List<ReservationTO> findReservationsByDate(Date from, Date to);
     
     /**
-     * Return reservations withing given date interval in given hotel.
+     * Return transfer object describing reservations within given date interval in given hotel.
      * 
      * @param from start of the interval
      * @param to end of the interval
      * @param hotel hotel
-     * @return reservations withing given date interval in given hotel.
+     * @return reservations within given date interval in given hotel.
      * @throws IllegalArgumentException if any of the parameters is null, 
      *          the date from is after the date to or hotel id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
-    List<Reservation> findReservationsByDate(Date from, Date to, HotelTO hotel);
+    List<ReservationTO> findReservationsByDate(Date from, Date to, HotelTO hotelTO);
     
 }

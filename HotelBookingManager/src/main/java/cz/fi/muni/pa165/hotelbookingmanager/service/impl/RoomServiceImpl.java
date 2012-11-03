@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,64 +28,56 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private RoomDAO roomDAO;
 
-
     @Autowired
     private Validator validator;
     
     @Autowired
-    private DozerBeanMapper mapper;
-
-    public void setValidator(Validator validator) {
-        this.validator = validator;
-    }
+    private Mapper mapper;
 
     @Override
     @Transactional
-    public void createRoom(RoomTO room) {
-        if (room == null) {
+    public void createRoom(RoomTO roomTO) {
+        if (roomTO == null) {
             throw new IllegalArgumentException("Room cannot be null.");
         }
-        if (room.getId() != null) {
+        if (roomTO.getId() != null) {
             throw new IllegalArgumentException("ID of room cannot be set manually.");
         }
-        Room roomDO = mapper.map(room, Room.class);
+        Room room = mapper.map(roomTO, Room.class);
         
-        validateRoom(roomDO);
-        roomDAO.create(roomDO);
+        validateRoom(room);
+        roomDAO.create(room);
     }
 
     @Override
     @Transactional
-    public void deleteRoom(RoomTO room) {
-        if (room == null) {
+    public void deleteRoom(RoomTO roomTO) {
+        if (roomTO == null) {
             throw new IllegalArgumentException("Cannot delete null room.");
         }
-        Room roomDO = mapper.map(room, Room.class);
-        
-        validateRoomIncludingId(roomDO);
-        roomDAO.delete(roomDO);
+        Room room = mapper.map(roomTO, Room.class);
+        validateRoomIncludingId(room);
+        roomDAO.delete(room);
     }
 
     @Override
     @Transactional
-    public void updateRoom(RoomTO room) {
-        if (room == null) {
+    public void updateRoom(RoomTO roomTO) {
+        if (roomTO == null) {
             throw new IllegalArgumentException("Room cannot be null");
         }
-        if (room.getId() == null || roomDAO.get(room.getId()) == null) {
+        if (roomTO.getId() == null || roomDAO.get(roomTO.getId()) == null) {
             throw new IllegalArgumentException("Cannot update non-existent room");
         }
-        if (room.getHotel() == null) {
+        if (roomTO.getHotel() == null) {
             throw new IllegalArgumentException("Hotel cannot be null.");
         }
-        Room roomDO = mapper.map(room, Room.class);
-        
-        validateRoomIncludingId(roomDO);
-        roomDAO.update(roomDO);
+        Room room = mapper.map(roomTO, Room.class);
+        validateRoomIncludingId(room);
+        roomDAO.update(room);
     }
 
     @Override
-    @Transactional
     public RoomTO getRoom(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null.");
@@ -100,7 +92,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomTO> findAllRooms() {
         
         List<Room> rooms= roomDAO.findAllRooms();
-        List<RoomTO> roomsTO = new ArrayList<RoomTO>();
+        List<RoomTO> roomsTO = new ArrayList<>();
         for(Room roomDO : rooms){
             roomsTO.add(mapper.map(roomDO, RoomTO.class));
         }        
@@ -108,17 +100,17 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomTO> findRoomsByHotel(HotelTO hotel) {
-        if (hotel == null) {
+    public List<RoomTO> findRoomsByHotel(HotelTO hotelTO) {
+        if (hotelTO == null) {
             throw new IllegalArgumentException("Hotel cannot be null.");
         }
-        if (hotel.getId() == null) {
+        if (hotelTO.getId() == null) {
             throw new IllegalArgumentException("Room must be in database.");
         }
-        Hotel hotelDO = mapper.map(hotel, Hotel.class);
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);
         
-        List<Room> rooms= hotelDO.getRooms();
-        List<RoomTO> roomsTO = new ArrayList<RoomTO>();
+        List<Room> rooms= hotel.getRooms();
+        List<RoomTO> roomsTO = new ArrayList<>();
         for(Room roomDO : rooms){
             roomsTO.add(mapper.map(roomDO, RoomTO.class));
         }        
@@ -127,32 +119,31 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomTO> findVacantRooms(Date from, Date to, HotelTO hotel) {
+    public List<RoomTO> findVacantRooms(Date from, Date to, HotelTO hotelTO) {
         if (from == null) {
             throw new IllegalArgumentException("From date cannot be null.");
         }
         if (to == null) {
             throw new IllegalArgumentException("To date cannot be null.");
         }
-        if (hotel == null) {
+        if (hotelTO == null) {
             throw new IllegalArgumentException("Hotel cannot be null.");
         }
-        if (hotel.getId() == null) {
+        if (hotelTO.getId() == null) {
             throw new IllegalArgumentException("Hotel must be in database.");
         }
         if (from.after(to)) {
             throw new IllegalArgumentException("From date must be before to date");
         }
-        Hotel hotelDO = mapper.map(hotel, Hotel.class);
-        
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);
         List<Room> daoRooms = roomDAO.findAllVacantRooms(from, to);
         List<Room> rooms = new ArrayList<>();
         for (Room room : daoRooms) {
-            if (room.getHotel().equals(hotelDO)) {
+            if (room.getHotel().equals(hotel)) {
                 rooms.add(room);
             }
         }
-        List<RoomTO> roomsTO = new ArrayList<RoomTO>();
+        List<RoomTO> roomsTO = new ArrayList<>();
         for(Room roomDO : rooms){
             roomsTO.add(mapper.map(roomDO, RoomTO.class));
         }        

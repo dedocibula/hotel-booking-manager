@@ -15,7 +15,7 @@ public interface HotelDAO {
      * 
      * @param hotel hotel to add.
      * @throws IllegalArgumentException if parameter is null or has assigned id.
-     * @throws ConstraintViolationException if hotel has any invalid parameter. 
+     * @throws ConstraintViolationException if hotel has any invalid parameter.
      */
     void create(Hotel hotel);
     
@@ -51,4 +51,33 @@ public interface HotelDAO {
      * @return all hotels in the DB or empty list if there are none.
      */
     List<Hotel> findAll();
+    
+    /**
+     * Returns list of hotels in the database with given name.
+     * 
+     * @return hotels with given name or empty list if there are none.
+     */
+    List<Hotel> findHotelsByName(String name);
+    
+    /**
+     * Returns list of hotels in the database with given address.
+     * 
+     * @return hotels with given address or empty list if there are none.
+     */
+    List<Hotel> findHotelsByAddress(String address);
+    
+    /**
+     * Returns list of hotels in the database with given city.
+     * 
+     * @return hotels with given city or empty list if there are none.
+     */
+    List<Hotel> findHotelsByCity(String city);
+    
+    /**
+     * Returns list of hotels in the database with given country.
+     * 
+     * 
+     * @return hotels with given country or empty list if there are none.
+     */
+    List<Hotel> findHotelsByCountry(String country);
 }

@@ -5,11 +5,13 @@ import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,10 +31,46 @@ public class HotelServiceImpl implements HotelService {
 
     @Autowired
     private Validator validator;
+    
+    @Autowired
+    private Mapper mapper;
+
+    public HotelDAO getHotelDAO() {
+        return hotelDAO;
+    }
+
+    public void setHotelDAO(HotelDAO hotelDAO) {
+        this.hotelDAO = hotelDAO;
+    }
+
+    public Mapper getMapper() {
+        return mapper;
+    }
+
+    public void setMapper(Mapper mapper) {
+        this.mapper = mapper;
+    }
+
+    public RoomDAO getRoomDAO() {
+        return roomDAO;
+    }
+
+    public void setRoomDAO(RoomDAO roomDAO) {
+        this.roomDAO = roomDAO;
+    }
+
+    public Validator getValidator() {
+        return validator;
+    }
+
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
 
     @Override
     @Transactional
-    public void createHotel(Hotel hotel) {
+    public void createHotel(HotelTO hotelTO) {
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);
         if (hotel == null)
             throw new IllegalArgumentException("hotel cannot be null");
         if (hotel.getId() != null)
@@ -45,20 +83,21 @@ public class HotelServiceImpl implements HotelService {
                 validateAttachedRoomAttributes(room);
             }
         }
-        validateHotelAttrributes(hotel);
+        validateHotelAttributes(hotel);
         hotelDAO.create(hotel);
     }
 
     @Override
-    public Hotel findHotel(Long id) {
+    public HotelTO findHotel(Long id) {
         if (id == null)
             throw new IllegalArgumentException("id cannot be null");
-        return hotelDAO.get(id);
+        return mapper.map(hotelDAO.get(id), HotelTO.class);
     }
 
     @Override
     @Transactional
-    public void updateHotel(Hotel hotel) {
+    public void updateHotel(HotelTO hotelTO) {
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);
         if (hotel == null)
             throw new IllegalArgumentException("hotel cannot be null");
         if (hotel.getId() == null || hotelDAO.get(hotel.getId()) == null)
@@ -70,72 +109,72 @@ public class HotelServiceImpl implements HotelService {
                 validateAttachedRoomAttributes(room);
             }
         }
-        validateHotelAttrributes(hotel);
+        validateHotelAttributes(hotel);
         hotelDAO.update(hotel);
     }
 
     @Override
     @Transactional
-    public void deleteHotel(Hotel hotel) {
-        if (hotel == null)
+    public void deleteHotel(HotelTO hotelTO) {
+        if (hotelTO == null)
             throw new IllegalArgumentException("hotel cannot be null");
-        hotelDAO.delete(hotel);
+        hotelDAO.delete(mapper.map(hotelTO, Hotel.class));
     }
 
     @Override
-    public List<Hotel> findAllHotels() {
-        return hotelDAO.findAll();
+    public List<HotelTO> findAllHotels() {
+        List<HotelTO> hotelTOs = new ArrayList<>();
+        for (Hotel hotel : hotelDAO.findAll()) {
+            hotelTOs.add(mapper.map(hotel, HotelTO.class));
+        }
+        return hotelTOs;
     }
 
     @Override
-    public List<Hotel> findHotelsByName(String name) {
+    public List<HotelTO> findHotelsByName(String name) {
         if (name == null || "".equals(name.trim()))
             throw new IllegalArgumentException("name cannot be empty");
-        List<Hotel> hotels = new ArrayList<>();
-        for (Hotel hotel : hotelDAO.findAll()) {
-            if (hotel.getName().contains(name))
-                hotels.add(hotel);
+        List<HotelTO> hotelTOs = new ArrayList<>();
+        for (Hotel hotel : hotelDAO.findHotelsByName(name)) {
+            hotelTOs.add(mapper.map(hotel, HotelTO.class));
         }
-        return hotels;
+        return hotelTOs;
     }
 
     @Override
-    public List<Hotel> findHotelsByAddress(String address) {
+    public List<HotelTO> findHotelsByAddress(String address) {
         if (address == null || "".equals(address.trim()))
             throw new IllegalArgumentException("address cannot be empty");
-        List<Hotel> hotels = new ArrayList<>();
-        for (Hotel hotel : hotelDAO.findAll()) {
-            if (hotel.getContact().getAddress().contains(address))
-                hotels.add(hotel);
+        List<HotelTO> hotelTOs = new ArrayList<>();
+        for (Hotel hotel : hotelDAO.findHotelsByAddress(address)) {
+            hotelTOs.add(mapper.map(hotel, HotelTO.class));
         }
-        return hotels;
+        return hotelTOs;
     }
 
     @Override
-    public List<Hotel> findHotelsByCity(String city) {
+    public List<HotelTO> findHotelsByCity(String city) {
         if (city == null || "".equals(city.trim()))
             throw new IllegalArgumentException("city cannot be empty");
-        List<Hotel> hotels = new ArrayList<>();
-        for (Hotel hotel : hotelDAO.findAll()) {
-            if (hotel.getContact().getCity().contains(city))
-                hotels.add(hotel);
+        List<HotelTO> hotelTOs = new ArrayList<>();
+        for (Hotel hotel : hotelDAO.findHotelsByCity(city)) {
+            hotelTOs.add(mapper.map(hotel, HotelTO.class));
         }
-        return hotels;
+        return hotelTOs;
     }
 
     @Override
-    public List<Hotel> findHotelsByCountry(String country) {
+    public List<HotelTO> findHotelsByCountry(String country) {
         if (country == null || "".equals(country.trim()))
             throw new IllegalArgumentException("country cannot be empty");
-        List<Hotel> hotels = new ArrayList<>();
-        for (Hotel hotel : hotelDAO.findAll()) {
-            if (hotel.getContact().getCountry().contains(country))
-                hotels.add(hotel);
+        List<HotelTO> hotelTOs = new ArrayList<>();
+        for (Hotel hotel : hotelDAO.findHotelsByCountry(country)) {
+            hotelTOs.add(mapper.map(hotel, HotelTO.class));
         }
-        return hotels;
+        return hotelTOs;
     }
 
-    private void validateHotelAttrributes(Hotel hotel) throws IllegalArgumentException {
+    private void validateHotelAttributes(Hotel hotel) throws IllegalArgumentException {
         Set<ConstraintViolation<Hotel>> validationResults = validator.validate(hotel);
         if (!validationResults.isEmpty())
             throw new IllegalArgumentException("hotel parameters are invalid: " + validationResults.iterator().next().getMessage());

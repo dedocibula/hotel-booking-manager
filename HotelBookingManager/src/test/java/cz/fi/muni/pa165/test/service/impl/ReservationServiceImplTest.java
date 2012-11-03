@@ -5,23 +5,24 @@
 package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
-import cz.fi.muni.pa165.hotelbookingmanager.Contact;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ReservationDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
-import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import cz.fi.muni.pa165.hotelbookingmanager.service.impl.ReservationServiceImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
+import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.validation.Validator;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.junit.After;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Matchers.any;
@@ -45,6 +46,8 @@ public class ReservationServiceImplTest {
     private ClientService clientService;
     private RoomService roomService;
     private HotelService hotelService;
+    
+    private Mapper mapper;
             
     @Before
     public void setUp() {
@@ -61,11 +64,13 @@ public class ReservationServiceImplTest {
         ClientDAO clientDao = context.getBean(ClientDAO.class);
         RoomDAO roomDao = context.getBean(RoomDAO.class);
         Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
+        mapper = context.getBean(DozerBeanMapper.class);
         
         reservationService.setReservationDAO(mockReservationDao);
         reservationService.setClientDAO(clientDao);
         reservationService.setRoomDAO(roomDao);
         reservationService.setValidator(validator);
+        reservationService.setMapper(mapper);
         //MockitoAnnotations.initMocks(this);
     }
     
@@ -76,11 +81,10 @@ public class ReservationServiceImplTest {
 
     @Test
     public void testCreateReservation() {
-        Reservation reservation = sampleReservation();
+        ReservationTO reservation = sampleReservation();
         
         reservationService.createReservation(reservation);
-        
-        verify(mockReservationDao).create(reservation);
+        verify(mockReservationDao).create(mapper.map(reservation, Reservation.class));
     }
     
     @Test
@@ -94,7 +98,7 @@ public class ReservationServiceImplTest {
         }
         
         // Test of ID already set
-        Reservation reservation = newReservation(sampleClient(), sampleRoom(), 
+        ReservationTO reservation = newReservation(sampleClient(), sampleRoom(), 
                 new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         reservation.setId(10L);
         try {
@@ -165,7 +169,7 @@ public class ReservationServiceImplTest {
         }
         
         // Test client without id
-        Client client = newClient("Jozko", "Mrkvicka", sampleContact());
+        ClientTO client = newClient("Jozko", "Mrkvicka", sampleContact());
         reservation = newReservation(client, sampleRoom(), 
                 new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         try {
@@ -186,7 +190,7 @@ public class ReservationServiceImplTest {
         }
         
         // Test room without id
-        Room room = newRoom(BigDecimal.TEN, sampleHotel());
+        RoomTO room = newRoom(BigDecimal.TEN, sampleHotel());
         reservation = newReservation(sampleClient(), room, 
                 new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         try {
@@ -224,26 +228,26 @@ public class ReservationServiceImplTest {
 
     @Test
     public void testDeleteReservation() {
-        Reservation reservation1 = sampleReservation();
-        Reservation reservation2 = sampleReservation();
+        ReservationTO reservation1 = sampleReservation();
+        ReservationTO reservation2 = sampleReservation();
         reservation2.setFromDate(new Date(113, 2, 10));
         reservation1.setId(1L);
         reservation2.setId(2L);
 
         reservationService.deleteReservation(reservation1);
         
-        verify(mockReservationDao).delete(reservation1);
-        verify(mockReservationDao, never()).delete(reservation2);
+        verify(mockReservationDao).delete(mapper.map(reservation1, Reservation.class));
+        verify(mockReservationDao, never()).delete(mapper.map(reservation2, Reservation.class));
     }
 
     @Test
     public void testUpdateReservation() {
-        Reservation reservation = sampleReservation();
+        ReservationTO reservation = sampleReservation();
         reservation.setId(1L);
         
         reservationService.updateReservation(reservation);
         
-        verify(mockReservationDao).update(reservation);
+        verify(mockReservationDao).update(mapper.map(reservation, Reservation.class));
     }
 
     @Test
@@ -262,12 +266,12 @@ public class ReservationServiceImplTest {
 
     @Test
     public void testFindReservationsByClient() {
-        Client client = sampleClient();
+        ClientTO client = sampleClient();
         client.setId(1L);
         
         reservationService.findReservationsByClient(client);
         
-        verify(mockReservationDao).findReservationsByClient(client);
+        verify(mockReservationDao).findReservationsByClient(mapper.map(client, Client.class));
     }
     
     @Test
@@ -281,7 +285,7 @@ public class ReservationServiceImplTest {
         }
         
         // Test with client with null id
-        Client client = newClient("Jozko", "Mrkvicka", sampleContact());
+        ClientTO client = newClient("Jozko", "Mrkvicka", sampleContact());
         try {
             reservationService.findReservationsByClient(client);
             fail("Cannot find reservations of client with null id.");
@@ -296,18 +300,18 @@ public class ReservationServiceImplTest {
     public void testFindReservationsByDate_3args() {
         Date fromDate = new Date(100, 1, 1);
         Date toDate = new Date(101, 2, 2);
-        Hotel hotel = sampleHotel();
+        HotelTO hotel = sampleHotel();
         
         reservationService.findReservationsByDate(fromDate, toDate, hotel);
         
-        verify(mockReservationDao).findReservationsByDate(fromDate, toDate, hotel);
+        verify(mockReservationDao).findReservationsByDate(fromDate, toDate, mapper.map(hotel, Hotel.class));
     }
     
     @Test
     public void testFindReservationsByDate_3argsWithWrongAttributes() {      
         Date fromDate = new Date(100, 1, 1);
         Date toDate = new Date(101, 2, 2);
-        Hotel hotel = sampleHotel();
+        HotelTO hotel = sampleHotel();
         hotel.setId(1L);
         
         // Test with null from date
@@ -355,52 +359,52 @@ public class ReservationServiceImplTest {
                 any(Date.class), any(Hotel.class));
     }
     
-    private Reservation sampleReservation() {
+    private ReservationTO sampleReservation() {
         return newReservation(sampleClient(), sampleRoom(), 
                 new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.TEN);
     }
     
-    private Client sampleClient() {
-        Client client = newClient("Jozko", "Mrkvicka", sampleContact());
+    private ClientTO sampleClient() {
+        ClientTO client = newClient("Jozko", "Mrkvicka", sampleContact());
         clientService.createClient(client);
         return client;
     }
     
-    private static Contact sampleContact() {
+    private static ContactTO sampleContact() {
         return newContact("12345", "jozko@mail.com", "Address", "City", "Country");
     }
     
-    private Room sampleRoom() {
-        Room room = newRoom(BigDecimal.TEN, sampleHotel());
+    private RoomTO sampleRoom() {
+        RoomTO room = newRoom(BigDecimal.TEN, sampleHotel());
         roomService.createRoom(room);
         return room;
     }
     
-    private Hotel sampleHotel() {
-        Hotel hotel = newHotel("Hilton", sampleContact());
+    private HotelTO sampleHotel() {
+        HotelTO hotel = newHotel("Hilton", sampleContact());
         hotelService.createHotel(hotel);
         return hotel;
     }
     
-    private static Reservation newReservation(Client client, Room room,
+    private static ReservationTO newReservation(ClientTO client, RoomTO room,
                 Date fromDate, Date toDate, BigDecimal price) {
-        return App.DatabaseSampler.buildReservation(client, room, fromDate, toDate, price);
+        return App.DatabaseSampler.buildReservationTO(client, room, fromDate, toDate, price);
     }
     
-    private static Client newClient(String firstName, String lastName, Contact contact) {
-        return App.DatabaseSampler.buildClient(firstName, lastName, contact);
+    private static ClientTO newClient(String firstName, String lastName, ContactTO contact) {
+        return App.DatabaseSampler.buildClientTO(firstName, lastName, contact);
     }
     
-    private static Contact newContact(String phone, String email, 
+    private static ContactTO newContact(String phone, String email, 
                 String address, String city, String country) {
-        return App.DatabaseSampler.buildContact(phone, email, address, city, country);
+        return App.DatabaseSampler.buildContactTO(phone, email, address, city, country);
     }
     
-    private static Room newRoom(BigDecimal pricePerNight, Hotel hotel) {
-        return App.DatabaseSampler.buildRoom(pricePerNight, hotel);
+    private static RoomTO newRoom(BigDecimal pricePerNight, HotelTO hotel) {
+        return App.DatabaseSampler.buildRoomTO(pricePerNight, hotel);
     }
     
-    private static Hotel newHotel(String name, Contact contact) {
-        return App.DatabaseSampler.buildHotel(name, contact);
+    private static HotelTO newHotel(String name, ContactTO contact) {
+        return App.DatabaseSampler.buildHotelTO(name, contact);
     }
 }

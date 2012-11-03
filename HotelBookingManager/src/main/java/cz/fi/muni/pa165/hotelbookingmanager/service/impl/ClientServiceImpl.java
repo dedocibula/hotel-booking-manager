@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ public class ClientServiceImpl implements ClientService {
     private Validator validator;
     
     @Autowired
-    private DozerBeanMapper mapper;
+    private Mapper mapper;
 
     public void setClientDAO(ClientDAO clientDAO) {
         this.clientDAO = clientDAO;
@@ -37,6 +37,10 @@ public class ClientServiceImpl implements ClientService {
 
     public void setValidator(Validator validator) {
         this.validator = validator;
+    }
+    
+    public void setMapper(Mapper mapper) {
+        this.mapper = mapper;
     }
     
     @Override
@@ -89,7 +93,7 @@ public class ClientServiceImpl implements ClientService {
     public List<ClientTO> findAllClients() {
         
         List<Client> clients= clientDAO.findAll();
-        List<ClientTO> clientsTO = new ArrayList<ClientTO>();
+        List<ClientTO> clientsTO = new ArrayList<>();
         for(Client clientDO : clients){
             clientsTO.add(mapper.map(clientDO, ClientTO.class));
         }
@@ -103,7 +107,7 @@ public class ClientServiceImpl implements ClientService {
              throw new IllegalArgumentException("name cannot be null");
          
          List<Client> clients= clientDAO.findClientsByName(name);
-         List<ClientTO> clientsTO = new ArrayList<ClientTO>();
+         List<ClientTO> clientsTO = new ArrayList<>();
          for(Client clientDO : clients){
              clientsTO.add(mapper.map(clientDO, ClientTO.class));
          }
