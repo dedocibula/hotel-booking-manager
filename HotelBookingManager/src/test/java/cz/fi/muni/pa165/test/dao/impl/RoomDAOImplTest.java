@@ -21,6 +21,7 @@ import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
 
 /**
  *
@@ -57,16 +58,16 @@ public class RoomDAOImplTest {
         //Create a null Room
         try {
             roomDAO.create(null);
-            fail("No IllegalArgumentException thrown while creating a null Room.");
-        } catch (IllegalArgumentException iae) {
+            fail("No DataAccessException thrown while creating a null Room.");
+        } catch (DataAccessException iae) {
             //Works as intended
         }
 
         //Get a null Room
         try {
             roomDAO.get(null);
-            fail("No IllegalArgumentException thrown while removing a null Room.");
-        } catch (IllegalArgumentException iae) {
+            fail("No DataAccessException thrown while removing a null Room.");
+        } catch (DataAccessException iae) {
             //Works as intended
         }
 
@@ -134,8 +135,8 @@ public class RoomDAOImplTest {
         //Delete a null Room
         try {
             roomDAO.delete(null);
-            fail("No IllegalArgumentException thrown while removing null Room");
-        } catch (IllegalArgumentException iae) {
+            fail("No DataAccessException thrown while removing null Room");
+        } catch (DataAccessException iae) {
             //All works as intended
         }
 

@@ -22,6 +22,7 @@ import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,8 +55,8 @@ public class ReservationDAOImplTest {
         //Create a null Reservation
         try {
             reservationDAO.create(null);
-            fail("No IllegalArgumentException thrown while creating a null Reservation.");
-        } catch (IllegalArgumentException iae) {
+            fail("No DataAccessException thrown while creating a null Reservation.");
+        } catch (DataAccessException iae) {
             //Works as intended
         }
         Contact contact = App.DatabaseSampler.buildContact("13", "blondina@azet.sk",
@@ -150,8 +151,8 @@ public class ReservationDAOImplTest {
         assertThat(reservationDAO.get(0l), is(nullValue()));
         try {
             reservationDAO.get(null);
-            fail("No IllegalArgumentException for null id");
-        } catch (IllegalArgumentException e) {
+            fail("No DataAccessException for null id");
+        } catch (DataAccessException e) {
             //Ok
         }
 
@@ -190,8 +191,8 @@ public class ReservationDAOImplTest {
     public void testUpdateReservation() {
         try {
             reservationDAO.update(null);
-            fail("No IllegalArgumentException for empty input.");
-        } catch (IllegalArgumentException e) {
+            fail("No DataAccessException for empty input.");
+        } catch (DataAccessException e) {
             //OK
         }
         Contact contact = App.DatabaseSampler.buildContact("13", "blondina@azet.sk", 
@@ -269,7 +270,7 @@ public class ReservationDAOImplTest {
     public void testDeleteReservation() {
         try {
             reservationDAO.delete(null);
-            fail("Did not throw IllegalArgumentException on deleting null Reservation");
+            fail("Did not throw DataAccessException on deleting null Reservation");
         } catch (Exception e) {
             //OK
         }

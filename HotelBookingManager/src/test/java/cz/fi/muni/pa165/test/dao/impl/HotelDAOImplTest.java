@@ -13,6 +13,7 @@ import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,8 +61,8 @@ public class HotelDAOImplTest {
         // create with null parameter
         try {
             hotelDAO.create(null);
-            fail("No IllegalArgumentException for empty input.");
-        } catch (IllegalArgumentException e) {
+            fail("No DataAccessException for empty input.");
+        } catch (DataAccessException e) {
             //OK
         }
         
@@ -72,7 +73,7 @@ public class HotelDAOImplTest {
         try {
             hotelDAO.create(hotel);
             fail("Cannot change id for existing hotel.");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             //OK
         }
         
@@ -162,8 +163,8 @@ public class HotelDAOImplTest {
         assertThat(hotelDAO.get(0l), is(nullValue()));
         try {
             hotelDAO.get(null);
-            fail("No IllegalArgumentException for null id");
-        } catch (IllegalArgumentException e) {
+            fail("No DataAccessException for null id");
+        } catch (DataAccessException e) {
             //Ok
         }
 
@@ -191,8 +192,8 @@ public class HotelDAOImplTest {
     public void testUpdateHotel() {
         try {
             hotelDAO.update(null);
-            fail("No IllegalArgumentException for empty input.");
-        } catch (IllegalArgumentException e) {
+            fail("No DataAccessException for empty input.");
+        } catch (DataAccessException e) {
             //OK
         }
         Contact contact1 = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");
@@ -286,7 +287,7 @@ public class HotelDAOImplTest {
     public void testDeleteHotel() {
         try {
             hotelDAO.delete(null);
-            fail("Did not throw IllegalArgumentException on deleting null Hotel");
+            fail("Did not throw DataAccessException on deleting null Hotel");
         } catch (Exception e) {
             //OK
         }

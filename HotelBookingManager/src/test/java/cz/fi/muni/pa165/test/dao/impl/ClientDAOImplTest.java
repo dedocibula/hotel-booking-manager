@@ -12,6 +12,7 @@ import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,8 +59,8 @@ public class ClientDAOImplTest {
         
         try {
             clientDAO.create(client);
-            fail("No IllegalArgumentException thrown for creating entity with set id");
-        } catch (IllegalArgumentException ex) {
+            fail("No DataAccessException thrown for creating entity with set id");
+        } catch (DataAccessException ex) {
             // OK
         }
     }
@@ -68,8 +69,8 @@ public class ClientDAOImplTest {
     public void testCreateWithNull() {
         try {
             clientDAO.create(null);
-            fail("No IllegalArgumentException thrown for null parameter");
-        } catch (IllegalArgumentException ex) {
+            fail("No DataAccessException thrown for null parameter");
+        } catch (DataAccessException ex) {
             // OK
         }
     }
@@ -98,8 +99,8 @@ public class ClientDAOImplTest {
     public void testGetWithNull() {
         try {
             clientDAO.get(null);
-            fail("No IllegalArgumentException thrown for null id");
-        } catch (IllegalArgumentException ex) {
+            fail("No DataAccessException thrown for null id");
+        } catch (DataAccessException ex) {
             // OK
         }
     }
@@ -132,8 +133,8 @@ public class ClientDAOImplTest {
     public void testUpdateWithNull() {
         try {
             clientDAO.update(null);
-            fail("No IllegalArgumentException thrown for null parameter");
-        } catch (IllegalArgumentException ex) {
+            fail("No DataAccessException thrown for null parameter");
+        } catch (DataAccessException ex) {
             // OK
         }
     }
@@ -161,8 +162,8 @@ public class ClientDAOImplTest {
     public void testDeleteWithNull() {
         try {
             clientDAO.delete(null);
-            fail("No IllegalArgumentException thrown for null parameter");
-        } catch (IllegalArgumentException ex) {
+            fail("No DataAccessException thrown for null parameter");
+        } catch (DataAccessException ex) {
             // OK
         }
     }

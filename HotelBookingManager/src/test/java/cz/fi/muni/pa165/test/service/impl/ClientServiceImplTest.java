@@ -41,7 +41,7 @@ public class ClientServiceImplTest {
         mockClientDao = mock(ClientDAO.class);
         Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
         mapper = context.getBean(DozerBeanMapper.class);
-        
+       
         clientService.setClientDAO(mockClientDao);
         clientService.setValidator(validator);
         clientService.setMapper(mapper);
