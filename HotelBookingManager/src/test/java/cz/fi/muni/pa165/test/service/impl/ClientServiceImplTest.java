@@ -27,26 +27,26 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
 public class ClientServiceImplTest {
-    
+
     private ClientDAO mockClientDao;
     private ClientServiceImpl clientService;
     private Mapper mapper;
-    
+
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
-        
+
         clientService = new ClientServiceImpl();
-        
+
         mockClientDao = mock(ClientDAO.class);
         Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
         mapper = context.getBean("mapper", DozerBeanMapper.class);
-       
+
         clientService.setClientDAO(mockClientDao);
         clientService.setValidator(validator);
         clientService.setMapper(mapper);
     }
-    
+
     @After
     public void tearDown() {
         clientService = null;
@@ -58,12 +58,12 @@ public class ClientServiceImplTest {
     @Test
     public void testCreateClient() {
         ClientTO client = sampleClient();
-        
+
         clientService.createClient(client);
-        
+
         verify(mockClientDao).create(mapper.map(client, Client.class));
     }
-    
+
     /**
      * Test of createClient method, of class ClientServiceImpl, with wrong attributes.
      */
@@ -76,7 +76,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // manually setting id
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
         ClientTO client = App.DatabaseSampler.buildClientTO("Andrej","Zamocky", contact);
@@ -87,7 +87,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create client with null contact attribute
         client = App.DatabaseSampler.buildClientTO("Andrej","Zamocky", null);
         try {
@@ -96,7 +96,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create client with null first name attribute
         client = App.DatabaseSampler.buildClientTO(null, "chudak", contact);
         try {
@@ -105,7 +105,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create client with null last name attribute
         client = App.DatabaseSampler.buildClientTO("Jozef", null, contact);
         try {
@@ -114,7 +114,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create client with too first long name
         client = App.DatabaseSampler.buildClientTO("Trolololololololololololololololololololololololololo","Mrazik", contact);
         try {
@@ -123,7 +123,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             System.out.println("");
         }
-        
+
         // create client with too last long name
         client = App.DatabaseSampler.buildClientTO("Marek","Trolololololololololololololololololololololololololo", contact);
         try {
@@ -132,7 +132,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             System.out.println("");
         }
-        
+
         // create client with contact missing phone number
         contact = App.DatabaseSampler.buildContactTO(null, "dude@dude.sk", "address", "city", "country");
         client = App.DatabaseSampler.buildClientTO("Andrej","Zamocky", contact);
@@ -142,7 +142,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create client with contact missing email address
         contact = App.DatabaseSampler.buildContactTO("123", null, "address", "city", "country");
         client = App.DatabaseSampler.buildClientTO("Andrej","Zamocky", contact);
@@ -152,7 +152,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create client with contact missing address
         contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", null, "city", "country");
         client = App.DatabaseSampler.buildClientTO("Andrej","Zamocky", contact);
@@ -162,7 +162,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create client with contact missing city
         contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", null, "country");
         client = App.DatabaseSampler.buildClientTO("Andrej","Zamocky", contact);
@@ -172,7 +172,7 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create client with contact missing country
         contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", null);
         client = App.DatabaseSampler.buildClientTO("Andrej","Zamocky", contact);
@@ -182,11 +182,11 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         verify(mockClientDao, never()).create(any(Client.class));
     }
-    
- 
+
+
     /**
      * Test of findClient method, of class ClientServiceImpl.
      */
@@ -198,16 +198,16 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //Ok
         }
-        
+
         verify(mockClientDao, never()).get(anyLong());
-        
+
         ClientTO client = sampleClient();
-        
+
         when(mockClientDao.get(1L)).thenReturn(mapper.map(client, Client.class));
 
         clientService.findClient(1L);
-        
-        verify(mockClientDao).get(1L);
+
+        verify(mockClientDao, times(2)).get(1L);
     }
 
     /**
@@ -237,18 +237,18 @@ public class ClientServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         verify(mockClientDao, never()).update(any(Client.class));
-        
+
         ClientTO client = sampleClient();
         client.setId(1L);
         when(mockClientDao.get(1L)).thenReturn(mapper.map(client, Client.class));
-        
+
         clientService.updateClient(client);
-        
+
         verify(mockClientDao).update(mapper.map(client, Client.class));
     }
-       
+
 
     /**
      * Test of findAllClients method, of class ClientServiceImpl.
@@ -256,7 +256,7 @@ public class ClientServiceImplTest {
     @Test
     public void testFindAllClients() {
         clientService.findAllClients();
-        
+
         verify(mockClientDao).findAll();
     }
 
@@ -278,14 +278,14 @@ public class ClientServiceImplTest {
         } catch (Exception e) {
             //OK
         }
-        
+
         verify(mockClientDao, never()).findClientsByName(anyString());
-        
+
         clientService.findClientsByName("Jozko");
-        
+
         verify(mockClientDao).findClientsByName("Jozko");
     }
-    
+
     /**
      * Test of deleteHotel method, of class HotelServiceImpl.
      */
@@ -297,26 +297,25 @@ public class ClientServiceImplTest {
         } catch (Exception e) {
             //OK
         }
-        
+
         verify(mockClientDao, never()).delete(any(Client.class));
-        
+
         ContactTO contact1 = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
         ClientTO client1 = App.DatabaseSampler.buildClientTO("Anton","Vysmiaty", contact1);
         client1.setId(1L);
-        
+
         ContactTO contact2 = App.DatabaseSampler.buildContactTO("333", "lol@lol.sk", "dress", "ty", "untry");
         ClientTO client2 = App.DatabaseSampler.buildClientTO("Zoltan","Zeleny", contact2);
         client2.setId(2L);
-        
+
         clientService.deleteClient(client1);
-        
+
         verify(mockClientDao).delete(mapper.map(client1, Client.class));
         verify(mockClientDao, never()).delete(mapper.map(client2, Client.class));
     }
-    
+
     public static ClientTO sampleClient() {
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
         return App.DatabaseSampler.buildClientTO("Andrej","Zamocky", contact);
     }
 }
-   
