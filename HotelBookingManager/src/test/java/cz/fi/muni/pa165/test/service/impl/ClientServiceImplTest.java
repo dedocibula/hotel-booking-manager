@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
+import cz.fi.muni.pa165.hotelbookingmanager.Contact;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.service.impl.ClientServiceImpl;
@@ -40,7 +41,7 @@ public class ClientServiceImplTest {
         
         mockClientDao = mock(ClientDAO.class);
         Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
-        mapper = context.getBean(DozerBeanMapper.class);
+        mapper = context.getBean("mapper", DozerBeanMapper.class);
        
         clientService.setClientDAO(mockClientDao);
         clientService.setValidator(validator);
@@ -200,6 +201,10 @@ public class ClientServiceImplTest {
         }
         
         verify(mockClientDao, never()).get(anyLong());
+        
+        ClientTO client = sampleClient();
+        
+        when(mockClientDao.get(1L)).thenReturn(mapper.map(client, Client.class));
 
         clientService.findClient(1L);
         
