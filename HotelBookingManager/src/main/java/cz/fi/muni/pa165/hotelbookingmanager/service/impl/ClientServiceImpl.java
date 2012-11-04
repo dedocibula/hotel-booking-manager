@@ -24,10 +24,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientDAO clientDAO;
-    
+
     @Autowired
     private Validator validator;
-    
+
     @Autowired
     private Mapper mapper;
 
@@ -38,11 +38,11 @@ public class ClientServiceImpl implements ClientService {
     public void setValidator(Validator validator) {
         this.validator = validator;
     }
-    
+
     public void setMapper(Mapper mapper) {
         this.mapper = mapper;
     }
-    
+
     @Override
     @Transactional
     public void createClient(ClientTO client) {
@@ -51,7 +51,7 @@ public class ClientServiceImpl implements ClientService {
         if (client.getId() != null)
             throw new IllegalArgumentException("client cannot have manually assigned id");
         Client clientDO = mapper.map(client, Client.class);
-        
+
         validateClientAttrributes(clientDO);
         clientDAO.create(clientDO);
     }
@@ -60,9 +60,11 @@ public class ClientServiceImpl implements ClientService {
     public ClientTO findClient(Long id) {
         if (id == null)
             throw new IllegalArgumentException("id cannot be null");
-        ClientTO clientTO = mapper.map(clientDAO.get(id), ClientTO.class);
-        
-        return clientTO;
+        if (clientDAO.get(id) == null) {
+            return null;
+        } else {
+            return mapper.map(clientDAO.get(id), ClientTO.class);
+        }
     }
 
     @Override
@@ -70,14 +72,14 @@ public class ClientServiceImpl implements ClientService {
     public void updateClient(ClientTO client) {
          if (client == null)
             throw new IllegalArgumentException("client cannot be null");
-        if (client.getId() == null || clientDAO.get(client.getId()) == null) 
+        if (client.getId() == null || clientDAO.get(client.getId()) == null)
             throw new IllegalArgumentException("trying to update non-existent client");
         Client clientDO = mapper.map(client, Client.class);
-        
+
         validateClientAttrributes(clientDO);
         clientDAO.update(clientDO);
     }
-    
+
 
     @Override
     @Transactional
@@ -85,19 +87,19 @@ public class ClientServiceImpl implements ClientService {
         if (client == null)
             throw new IllegalArgumentException("client cannot be null");
         Client clientDO = mapper.map(client, Client.class);
-        
+
         clientDAO.delete(clientDO);
     }
 
     @Override
     public List<ClientTO> findAllClients() {
-        
+
         List<Client> clients= clientDAO.findAll();
         List<ClientTO> clientsTO = new ArrayList<>();
         for(Client clientDO : clients){
             clientsTO.add(mapper.map(clientDO, ClientTO.class));
         }
-        
+
         return clientsTO;
     }
 
@@ -105,22 +107,22 @@ public class ClientServiceImpl implements ClientService {
      public List<ClientTO> findClientsByName(String name) {
          if((name == null) || (name.trim().equals("")))
              throw new IllegalArgumentException("name cannot be null");
-         
+
          List<Client> clients= clientDAO.findClientsByName(name);
          List<ClientTO> clientsTO = new ArrayList<>();
          for(Client clientDO : clients){
              clientsTO.add(mapper.map(clientDO, ClientTO.class));
          }
-         
+
         return clientsTO;
     }
-    
+
     private void validateClientAttrributes(Client client) throws IllegalArgumentException {
-        
+
         Set<ConstraintViolation<Client>> validationResults = validator.validate(client);
         if (!validationResults.isEmpty())
             throw new IllegalArgumentException("client parameters are invalid: " + validationResults.iterator().next().getMessage());
     }
-    
+
 
 }

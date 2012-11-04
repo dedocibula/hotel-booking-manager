@@ -82,10 +82,11 @@ public class RoomServiceImpl implements RoomService {
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null.");
         }
-        Room roomDO = roomDAO.get(id);
-        RoomTO roomTO= mapper.map(roomDO, RoomTO.class);
-
-        return roomTO;
+        if (roomDAO.get(id) == null ){
+            return null;
+        } else {
+            return mapper.map(roomDAO.get(id), RoomTO.class);
+        }
     }
 
     @Override
