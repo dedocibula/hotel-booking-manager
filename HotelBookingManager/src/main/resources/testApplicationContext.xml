@@ -7,10 +7,10 @@
     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" xmlns:jdbc="http://www.springframework.org/schema/jdbc">
-    
+
     <!-- Test in memory database -->
     <jdbc:embedded-database id="dataSource" type="DERBY" />
-    
+
     <context:component-scan base-package="cz.fi.muni.pa165.hotelbookingmanager"/>
 
     <tx:annotation-driven/>
@@ -23,13 +23,13 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
-    
+
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
-    
+
     <bean id="mapper" class="org.dozer.DozerBeanMapper">
     <property name="mappingFiles">
         <list>
-            <value>dozerBeanMapping.xml</value>            
+            <value>dozerBeanMapping.xml</value>
         </list>
     </property>
 </bean>

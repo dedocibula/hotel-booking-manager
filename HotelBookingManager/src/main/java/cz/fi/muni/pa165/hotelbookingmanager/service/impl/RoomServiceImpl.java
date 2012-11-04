@@ -30,7 +30,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private Validator validator;
-    
+
     @Autowired
     private Mapper mapper;
 
@@ -44,7 +44,7 @@ public class RoomServiceImpl implements RoomService {
             throw new IllegalArgumentException("ID of room cannot be set manually.");
         }
         Room room = mapper.map(roomTO, Room.class);
-        
+
         validateRoom(room);
         roomDAO.create(room);
     }
@@ -84,18 +84,18 @@ public class RoomServiceImpl implements RoomService {
         }
         Room roomDO = roomDAO.get(id);
         RoomTO roomTO= mapper.map(roomDO, RoomTO.class);
-        
+
         return roomTO;
     }
 
     @Override
     public List<RoomTO> findAllRooms() {
-        
+
         List<Room> rooms= roomDAO.findAllRooms();
         List<RoomTO> roomsTO = new ArrayList<>();
         for(Room roomDO : rooms){
             roomsTO.add(mapper.map(roomDO, RoomTO.class));
-        }        
+        }
         return roomsTO;
     }
 
@@ -108,14 +108,14 @@ public class RoomServiceImpl implements RoomService {
             throw new IllegalArgumentException("Room must be in database.");
         }
         Hotel hotel = mapper.map(hotelTO, Hotel.class);
-        
+
         List<Room> rooms= hotel.getRooms();
         List<RoomTO> roomsTO = new ArrayList<>();
         for(Room roomDO : rooms){
             roomsTO.add(mapper.map(roomDO, RoomTO.class));
-        }        
-        return roomsTO;        
-        
+        }
+        return roomsTO;
+
     }
 
     @Override
@@ -146,8 +146,8 @@ public class RoomServiceImpl implements RoomService {
         List<RoomTO> roomsTO = new ArrayList<>();
         for(Room roomDO : rooms){
             roomsTO.add(mapper.map(roomDO, RoomTO.class));
-        }        
-        return roomsTO; 
+        }
+        return roomsTO;
 
     }
 
