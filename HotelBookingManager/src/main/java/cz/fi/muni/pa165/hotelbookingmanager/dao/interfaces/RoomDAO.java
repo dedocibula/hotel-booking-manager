@@ -16,6 +16,7 @@ public interface RoomDAO {
      * @param room Room to create
      * @throws IllegalArgumentException if room is null or if Hotel parameter of room is null or if ID of room is already set
      * @throws ConstraintViolationException if room has any invalid parameter
+     * @throws DataAccessException in case of error.
      */
     void create (Room room);
 
@@ -25,6 +26,7 @@ public interface RoomDAO {
      * @param id ID of the Room to get
      * @return Room with the entered ID
      * @throws IllegalArgumentException if id is null
+     * @throws DataAccessException in case of error.
      */
     Room get(Long id);
 
@@ -33,6 +35,7 @@ public interface RoomDAO {
      *
      * @param room Room to update
      * @throws IllegalArgumentException if room is null
+     * @throws DataAccessException in case of error.
      */
     void update (Room room);
 
@@ -42,6 +45,7 @@ public interface RoomDAO {
      * @param room Room to delete
      * @throws IllegalArgumentException if room is null
      * @throws ConstraintViolationException if room has any invalid parameter
+     * @throws DataAccessException in case of error.
      */
     void delete (Room room);
 
@@ -51,6 +55,7 @@ public interface RoomDAO {
      * @param from Start of interval
      * @param to End of interval
      * @return List of all vacant rooms
+     * @throws DataAccessException in case of error.
      */
     List<Room> findAllVacantRooms(Date from, Date to);
 
@@ -60,6 +65,7 @@ public interface RoomDAO {
      * @param from the beginning of the date interval
      * @param to the end of the date interval
      * @return true if the room is vacant between the from and to dates, false otherwise
+     * @throws DataAccessException in case of error.
      */
     boolean isVacant(Room room, Date from, Date to);
 
@@ -67,6 +73,7 @@ public interface RoomDAO {
      * Returns list of all rooms in the database.
      *
      * @return List of all Rooms
+     * @throws DataAccessException in case of error.
      */
     List<Room> findAllRooms();
 }
