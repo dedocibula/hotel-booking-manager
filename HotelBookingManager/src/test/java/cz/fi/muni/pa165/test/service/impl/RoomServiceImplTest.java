@@ -37,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoomServiceImplTest {
 
     private RoomDAO roomDAO;
-
     private RoomService roomService = new RoomServiceImpl();
     private Mapper mapper;
 
@@ -59,6 +58,7 @@ public class RoomServiceImplTest {
     public void tearDown() {
         roomService = null;
         mapper = null;
+        roomDAO = null;
     }
 
 
@@ -183,6 +183,6 @@ public class RoomServiceImplTest {
         roomsTO.add(roomTO);
         hotelTO.setRooms(roomsTO);
         List<RoomTO> rooms = roomService.findRoomsByHotel(hotelTO);
-        Mockito.verifyNoMoreInteractions(roomDAO);
+        Mockito.verifyZeroInteractions(roomDAO);
     }
 }

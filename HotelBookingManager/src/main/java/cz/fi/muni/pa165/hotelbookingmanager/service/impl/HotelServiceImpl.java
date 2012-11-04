@@ -31,7 +31,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Autowired
     private Validator validator;
-    
+
     @Autowired
     private Mapper mapper;
 
@@ -70,11 +70,11 @@ public class HotelServiceImpl implements HotelService {
     @Override
     @Transactional
     public void createHotel(HotelTO hotelTO) {
-        Hotel hotel = mapper.map(hotelTO, Hotel.class);
-        if (hotel == null)
+        if (hotelTO == null)
             throw new IllegalArgumentException("hotel cannot be null");
-        if (hotel.getId() != null)
+        if (hotelTO.getId() != null)
             throw new IllegalArgumentException("hotel cannot have manually assigned id");
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);
         if (hotel.getRooms() != null) {
             for (Room room : hotel.getRooms()) {
                 if (room == null || room.getId() != null)
@@ -97,15 +97,18 @@ public class HotelServiceImpl implements HotelService {
     @Override
     @Transactional
     public void updateHotel(HotelTO hotelTO) {
-        Hotel hotel = mapper.map(hotelTO, Hotel.class);
-        if (hotel == null)
+        if (hotelTO == null)
             throw new IllegalArgumentException("hotel cannot be null");
-        if (hotel.getId() == null || hotelDAO.get(hotel.getId()) == null)
+        if (hotelTO.getId() == null || hotelDAO.get(hotelTO.getId()) == null)
             throw new IllegalArgumentException("trying to update non-existent hotel");
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);
         if (hotel.getRooms() != null) {
             for (Room room : hotel.getRooms()) {
+                if (room.getId() == null) {
+                    throw new NullPointerException("FKU");
+                }
                 if (room == null || room.getId() != null || roomDAO.get(room.getId()).getHotel() != hotel)
-                    throw new IllegalArgumentException("room cannot be null or have attached a different hotel");
+                    throw new IllegalArgumentException("room cannot be null or be attached to a different hotel");
                 validateAttachedRoomAttributes(room);
             }
         }

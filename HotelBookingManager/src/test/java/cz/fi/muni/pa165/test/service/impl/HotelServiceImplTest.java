@@ -5,20 +5,30 @@
 package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
+import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.HotelDAO;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
+import cz.fi.muni.pa165.hotelbookingmanager.service.impl.HotelServiceImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
+import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ContactTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.RoomTO;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.validation.Validator;
+import org.dozer.Mapper;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.hasItems;
+import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -28,18 +38,32 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
 public class HotelServiceImplTest {
-    
-    private HotelService hotelService;
-    
+
+    private HotelDAO hotelDAO;
+    private HotelService hotelService = new HotelServiceImpl();
+    private Mapper mapper;
+    private RoomService roomService;
+
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
-        hotelService = context.getBean(HotelService.class);
+
+        Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
+        mapper = context.getBean("mapper", org.dozer.DozerBeanMapper.class);
+        hotelDAO = Mockito.mock(HotelDAO.class);
+
+        roomService = context.getBean(RoomService.class);
+
+        ReflectionTestUtils.setField(hotelService, "hotelDAO", hotelDAO);
+        ReflectionTestUtils.setField(hotelService, "mapper", mapper);
+        ReflectionTestUtils.setField(hotelService, "validator", validator);
     }
-    
+
     @After
     public void tearDown() {
         hotelService = null;
+        mapper = null;
+        hotelDAO = null;
     }
 
     /**
@@ -48,15 +72,11 @@ public class HotelServiceImplTest {
     @Test
     public void testCreateHotelWithoutRooms() {
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
-        HotelTO hotel = App.DatabaseSampler.buildHotelTO("Hilton", contact);
-        hotelService.createHotel(hotel);
-        
-        HotelTO hotel2 = hotelService.findHotel(hotel.getId());
-        assertThat(hotel2, is(not(sameInstance(hotel))));
-        assertThat(hotel2, is(notNullValue()));
-        assertThat(hotel, is(equalTo(hotel2)));
+        HotelTO hotelTO = App.DatabaseSampler.buildHotelTO("Hilton", contact);
+        hotelService.createHotel(hotelTO);
+        Mockito.verify(hotelDAO).create(mapper.map(hotelTO, Hotel.class));
     }
-    
+
     /**
      * Test of createHotel method, of class HotelServiceImpl, with wrong attributes.
      */
@@ -69,7 +89,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // manually setting id
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
         HotelTO hotel = App.DatabaseSampler.buildHotelTO("Hilton", contact);
@@ -80,7 +100,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create hotel with null contact attribute
         hotel = App.DatabaseSampler.buildHotelTO("Hilton", null);
         try {
@@ -89,7 +109,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create hotel with null name attribute
         hotel = App.DatabaseSampler.buildHotelTO(null, contact);
         try {
@@ -98,7 +118,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create hotel with too long name
         hotel = App.DatabaseSampler.buildHotelTO("Trololololololololololololololololololololololo", contact);
         try {
@@ -107,7 +127,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             System.out.println("");
         }
-        
+
         // create hotel with contact missing phone number
         contact = App.DatabaseSampler.buildContactTO(null, "dude@dude.sk", "address", "city", "country");
         hotel = App.DatabaseSampler.buildHotelTO("Hilton", contact);
@@ -117,7 +137,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create hotel with contact missing email address
         contact = App.DatabaseSampler.buildContactTO("123", null, "address", "city", "country");
         hotel = App.DatabaseSampler.buildHotelTO("Hilton", contact);
@@ -127,7 +147,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create hotel with contact missing address
         contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", null, "city", "country");
         hotel = App.DatabaseSampler.buildHotelTO("Hilton", contact);
@@ -137,7 +157,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create hotel with contact missing city
         contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", null, "country");
         hotel = App.DatabaseSampler.buildHotelTO("Hilton", contact);
@@ -147,7 +167,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // create hotel with contact missing country
         contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", null);
         hotel = App.DatabaseSampler.buildHotelTO("Hilton", contact);
@@ -157,36 +177,30 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
+        Mockito.verifyZeroInteractions(hotelDAO);
     }
-    
+
     /**
      * Test of createHotel method, of class HotelServiceImpl, with rooms.
      */
     @Test
     public void testCreateHotelWithRooms() {
-        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");        
+        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
         RoomTO room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         RoomTO room2 = App.DatabaseSampler.buildRoomTO(BigDecimal.TEN, null);
-        HotelTO hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1, room2);
-        hotelService.createHotel(hotel);
-        
-        HotelTO hotel2 = hotelService.findHotel(hotel.getId());
-        assertThat(hotel2, is(not(sameInstance(hotel))));
-        assertThat(hotel2, is(notNullValue()));
-        assertThat(hotel, is(equalTo(hotel2)));
-        assertFalse(hotel2.getRooms().isEmpty());
-        assertThat(hotel2.getRooms(), hasItems(room1, room2));
-        assertThat(hotel2.getRooms().get(0).getHotel(), is(equalTo(hotel)));
-        assertThat(hotel2.getRooms().get(1).getHotel(), is(equalTo(hotel)));
+        HotelTO hotelTO = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1, room2);
+
+        hotelService.createHotel(hotelTO);
+        Mockito.verify(hotelDAO).create(mapper.map(hotelTO, Hotel.class));
     }
-    
+
     /**
      * Test of createHotel method, of class HotelServiceImpl, with rooms having wrong attributes.
      */
     @Test
     public void testCreateHotelWithRoomsWithWrongAttributes() {
-        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");        
-        
+        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
+
         // One of hotel's room is null
         RoomTO room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         RoomTO room2 = null;
@@ -197,7 +211,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // One of hotel's room has assigned id
         room2 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         room2.setId(25l);
@@ -208,7 +222,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // One of hotel's room has null pricePerNight
         room2 = App.DatabaseSampler.buildRoomTO(null, null);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1, room2);
@@ -218,6 +232,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
+        Mockito.verifyZeroInteractions(hotelDAO);
     }
 
     /**
@@ -225,29 +240,23 @@ public class HotelServiceImplTest {
      */
     @Test
     public void testFindHotel() {
-        assertThat(hotelService.findHotel(0l), is(nullValue()));
         try {
             hotelService.findHotel(null);
             fail("No IllegalArgumentException for null id");
         } catch (IllegalArgumentException e) {
             //Ok
         }
+        Mockito.verifyZeroInteractions(hotelDAO);
 
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
         HotelTO hotel = App.DatabaseSampler.buildHotelTO("Hilton", contact);
         hotelService.createHotel(hotel);
-        
+        hotel.setId(1L);
+
+        Mockito.when(hotelDAO.get(hotel.getId())).thenReturn(mapper.map(hotel, Hotel.class));
         HotelTO testHotel1 = hotelService.findHotel(hotel.getId());
-        HotelTO testHotel2 = hotelService.findHotel(hotel.getId());
-        
-        assertThat(testHotel1, is(not(sameInstance(testHotel2))));
-        assertThat(testHotel1, is(equalTo(testHotel2)));
-        assertThat(testHotel1.getName(), is(equalTo(testHotel2.getName())));
-        assertThat(testHotel1.getContact().getAddress(), is(equalTo(testHotel2.getContact().getAddress())));
-        assertThat(testHotel1.getContact().getCity(), is(equalTo(testHotel2.getContact().getCity())));
-        assertThat(testHotel1.getContact().getCountry(), is(equalTo(testHotel2.getContact().getCountry())));
-        assertThat(testHotel1.getContact().getEmail(), is(equalTo(testHotel2.getContact().getEmail())));
-        assertThat(testHotel1.getContact().getPhone(), is(equalTo(testHotel2.getContact().getPhone())));
+        Mockito.verify(hotelDAO).get(hotel.getId());
+
     }
 
     /**
@@ -277,102 +286,36 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
+        Mockito.verifyZeroInteractions(hotelDAO);
         hotelService.createHotel(hotel1);
-        
+
         ContactTO contact2 = App.DatabaseSampler.buildContactTO("333", "lol@lol.sk", "dress", "ty", "untry");
         HotelTO hotel2 = App.DatabaseSampler.buildHotelTO("Crowne", contact2);
         hotelService.createHotel(hotel2);
-        
-        // changing hotel name
-        hotel1.setName("Dude");
-        hotelService.updateHotel(hotel1);
-        HotelTO temp = hotelService.findHotel(hotel1.getId());
-        assertThat("HotelTO name not updated", temp.getName(), is(equalTo("Dude")));
-        assertThat("HotelTO phone number updated", temp.getContact().getPhone(), is(equalTo("123")));
-        assertThat("HotelTO email address updated", temp.getContact().getEmail(), is(equalTo("dude@dude.sk")));
-        assertThat("HotelTO address updated", temp.getContact().getAddress(), is(equalTo("address")));
-        assertThat("HotelTO city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("HotelTO country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing hotel phone number
-        hotel1.getContact().setPhone("555");
-        hotelService.updateHotel(hotel1);
-        temp = hotelService.findHotel(hotel1.getId());
-        assertThat("HotelTO name updated", temp.getName(), is(equalTo("Dude")));
-        assertThat("HotelTO phone not number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("HotelTO email address updated", temp.getContact().getEmail(), is(equalTo("dude@dude.sk")));
-        assertThat("HotelTO address updated", temp.getContact().getAddress(), is(equalTo("address")));
-        assertThat("HotelTO city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("HotelTO country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing hotel email address
-        hotel1.getContact().setEmail("ahoj@dude.sk");
-        hotelService.updateHotel(hotel1);
-        temp = hotelService.findHotel(hotel1.getId());
-        assertThat("HotelTO name updated", temp.getName(), is(equalTo("Dude")));
-        assertThat("HotelTO phone number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("HotelTO email not address updated", temp.getContact().getEmail(), is(equalTo("ahoj@dude.sk")));
-        assertThat("HotelTO address updated", temp.getContact().getAddress(), is(equalTo("address")));
-        assertThat("HotelTO city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("HotelTO country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing hotel address
-        hotel1.getContact().setAddress("cowley");
-        hotelService.updateHotel(hotel1);
-        temp = hotelService.findHotel(hotel1.getId());
-        assertThat("HotelTO name updated", temp.getName(), is(equalTo("Dude")));
-        assertThat("HotelTO phone number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("HotelTO email address updated", temp.getContact().getEmail(), is(equalTo("ahoj@dude.sk")));
-        assertThat("HotelTO address not updated", temp.getContact().getAddress(), is(equalTo("cowley")));
-        assertThat("HotelTO city updated", temp.getContact().getCity(), is(equalTo("city")));
-        assertThat("HotelTO country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing hotel city
-        hotel1.getContact().setCity("london");
-        hotelService.updateHotel(hotel1);
-        temp = hotelService.findHotel(hotel1.getId());
-        assertThat("HotelTO name updated", temp.getName(), is(equalTo("Dude")));
-        assertThat("HotelTO phone number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("HotelTO email address updated", temp.getContact().getEmail(), is(equalTo("ahoj@dude.sk")));
-        assertThat("HotelTO address updated", temp.getContact().getAddress(), is(equalTo("cowley")));
-        assertThat("HotelTO city not updated", temp.getContact().getCity(), is(equalTo("london")));
-        assertThat("HotelTO country updated", temp.getContact().getCountry(), is(equalTo("country")));
-        
-        // changing hotel country
-        hotel1.getContact().setCountry("UK");
-        hotelService.updateHotel(hotel1);
-        temp = hotelService.findHotel(hotel1.getId());
-        assertThat("HotelTO name updated", temp.getName(), is(equalTo("Dude")));
-        assertThat("HotelTO phone number updated", temp.getContact().getPhone(), is(equalTo("555")));
-        assertThat("HotelTO email address updated", temp.getContact().getEmail(), is(equalTo("ahoj@dude.sk")));
-        assertThat("HotelTO address updated", temp.getContact().getAddress(), is(equalTo("cowley")));
-        assertThat("HotelTO city updated", temp.getContact().getCity(), is(equalTo("london")));
-        assertThat("HotelTO country not updated", temp.getContact().getCountry(), is(equalTo("UK")));
-        
-        // checking if hotel2 remained unaffected
-        temp = hotelService.findHotel(hotel2.getId());
-        assertThat("Saved hotel has wrong name", temp.getName(), is(equalTo("Crowne")));
-        assertThat("Saved hotel has wrong phone number", temp.getContact().getPhone(), is(equalTo("333")));
-        assertThat("Saved hotel has wrong email address", temp.getContact().getEmail(), is(equalTo("lol@lol.sk")));
-        assertThat("Saved hotel has wrong address", temp.getContact().getAddress(), is(equalTo("dress")));
-        assertThat("Saved hotel has wrong city", temp.getContact().getCity(), is(equalTo("ty")));
-        assertThat("Saved hotel has wrong country", temp.getContact().getCountry(), is(equalTo("untry")));
+
+        hotel2.setId(1L);
+
+        Mockito.when(hotelDAO.get(hotel2.getId())).thenReturn(mapper.map(hotel2, Hotel.class));
+        hotelService.updateHotel(hotel2);
+        Mockito.verify(hotelDAO).update(mapper.map(hotel2, Hotel.class));
     }
-    
+
     /**
      * Test of updateHotel, of class HotelServiceImpl, with rooms.
      */
     @Test
     public void testUpdateHotelWithRooms() {
-        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");        
-        
+        ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
+
         RoomTO room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         HotelTO hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1);
-        hotelService.createHotel(hotel);
-        
+
+        hotel.setId(1L);
+
+
+
         // One of hotel's room is null
         RoomTO room2 = null;
-        hotel = hotelService.findHotel(hotel.getId());
         hotel.getRooms().add(room2);
         try {
             hotelService.updateHotel(hotel);
@@ -380,11 +323,12 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
+
         // One of hotel's room has null id
         room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1);
-        hotelService.createHotel(hotel);
+        hotel.setId(1L);
         room2 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         hotel.getRooms().add(room2);
         try {
@@ -393,11 +337,11 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // One of hotel's room belongs to another hotel
         room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1);
-        hotelService.createHotel(hotel);
+        hotel.setId(1L);
         room2 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         room2.setId(25l);
         hotel.getRooms().add(room2);
@@ -407,11 +351,11 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
-        
+
         // One of hotel's room has null pricePerNight
         room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1);
-        hotelService.createHotel(hotel);
+        hotel.setId(1L);
         hotel.getRooms().get(0).setPricePerNight(null);
         try {
             hotelService.updateHotel(hotel);
@@ -419,6 +363,7 @@ public class HotelServiceImplTest {
         } catch (IllegalArgumentException e) {
             //OK
         }
+        Mockito.verify(hotelDAO, Mockito.times(4)).get(1L);
     }
 
     /**
@@ -432,21 +377,16 @@ public class HotelServiceImplTest {
         } catch (Exception e) {
             //OK
         }
+        Mockito.verifyZeroInteractions(hotelDAO);
         ContactTO contact1 = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
-        HotelTO hotel1 = App.DatabaseSampler.buildHotelTO("Hilton", contact1);
-        hotelService.createHotel(hotel1);
-        
-        ContactTO contact2 = App.DatabaseSampler.buildContactTO("333", "lol@lol.sk", "dress", "ty", "untry");
-        HotelTO hotel2 = App.DatabaseSampler.buildHotelTO("Crowne", contact2);
-        hotelService.createHotel(hotel2);
-        
-        assertThat(hotelService.findHotel(hotel1.getId()), is(notNullValue()));
-        assertThat(hotelService.findHotel(hotel2.getId()), is(notNullValue()));
-        
-        hotelService.deleteHotel(hotel1);
-        
-        assertThat(hotelService.findHotel(hotel1.getId()), is(nullValue()));
-        assertThat(hotelService.findHotel(hotel2.getId()), is(notNullValue()));
+        HotelTO hotelTO = App.DatabaseSampler.buildHotelTO("Hilton", contact1);
+        hotelService.createHotel(hotelTO);
+        hotelTO.setId(1L);
+
+        Mockito.when(hotelDAO.get(hotelTO.getId())).thenReturn(mapper.map(hotelTO, Hotel.class));
+        hotelService.deleteHotel(hotelTO);
+
+
     }
 
     /**
@@ -454,17 +394,8 @@ public class HotelServiceImplTest {
      */
     @Test
     public void testFindAllHotels() {
-        assertTrue(hotelService.findAllHotels().isEmpty());
-        
-        ContactTO contact1 = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
-        HotelTO hotel1 = App.DatabaseSampler.buildHotelTO("Hilton", contact1);
-        hotelService.createHotel(hotel1);
-        
-        ContactTO contact2 = App.DatabaseSampler.buildContactTO("333", "lol@lol.sk", "dress", "ty", "untry");
-        HotelTO hotel2 = App.DatabaseSampler.buildHotelTO("Crowne", contact2);
-        hotelService.createHotel(hotel2);
-        
-        assertThat(hotelService.findAllHotels(), hasItems(hotel1, hotel2));
+        List<HotelTO> hotels = hotelService.findAllHotels();
+        Mockito.verify(hotelDAO).findAll();
     }
 
     /**
@@ -484,22 +415,10 @@ public class HotelServiceImplTest {
         } catch (Exception e) {
             //OK
         }
-        
-        ContactTO contact1 = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
-        HotelTO hotel1 = App.DatabaseSampler.buildHotelTO("Hilton", contact1);
-        hotelService.createHotel(hotel1);
-        
-        ContactTO contact2 = App.DatabaseSampler.buildContactTO("333", "lol@lol.sk", "dress", "ty", "untry");
-        HotelTO hotel2 = App.DatabaseSampler.buildHotelTO("Crowne", contact2);
-        hotelService.createHotel(hotel2);
-        
-        ContactTO contact3 = App.DatabaseSampler.buildContactTO("321", "lolx@lolx.sk", "dressdress", "tyty", "untry");
-        HotelTO hotel3 = App.DatabaseSampler.buildHotelTO("Crowne", contact3);
-        hotelService.createHotel(hotel3);
-        
-        assertThat(hotelService.findHotelsByName("Hilton"), hasItems(hotel1));
-        assertThat(hotelService.findHotelsByName("Crowne"), hasItems(hotel2, hotel3));
-        assertTrue(hotelService.findHotelsByName("Dude").isEmpty());
+        Mockito.verifyZeroInteractions(hotelDAO);
+
+        List<HotelTO> hotels = hotelService.findHotelsByName("Dude");
+        Mockito.verify(hotelDAO).findHotelsByName("Dude");
     }
 
     /**
@@ -519,22 +438,10 @@ public class HotelServiceImplTest {
         } catch (Exception e) {
             //OK
         }
-        
-        ContactTO contact1 = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
-        HotelTO hotel1 = App.DatabaseSampler.buildHotelTO("Hilton", contact1);
-        hotelService.createHotel(hotel1);
-        
-        ContactTO contact2 = App.DatabaseSampler.buildContactTO("333", "lol@lol.sk", "troll", "ty", "untry");
-        HotelTO hotel2 = App.DatabaseSampler.buildHotelTO("Crowne", contact2);
-        hotelService.createHotel(hotel2);
-        
-        ContactTO contact3 = App.DatabaseSampler.buildContactTO("321", "lolx@lolx.sk", "address", "tyty", "untry");
-        HotelTO hotel3 = App.DatabaseSampler.buildHotelTO("Jewel", contact3);
-        hotelService.createHotel(hotel3);
-        
-        assertThat(hotelService.findHotelsByAddress("troll"), hasItems(hotel2));
-        assertThat(hotelService.findHotelsByAddress("address"), hasItems(hotel1, hotel3));
-        assertTrue(hotelService.findHotelsByAddress("Dude").isEmpty());
+        Mockito.verifyZeroInteractions(hotelDAO);
+
+        List<HotelTO> hotels = hotelService.findHotelsByAddress("Dude");
+        Mockito.verify(hotelDAO).findHotelsByAddress("Dude");
     }
 
     /**
@@ -554,22 +461,10 @@ public class HotelServiceImplTest {
         } catch (Exception e) {
             //OK
         }
-        
-        ContactTO contact1 = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
-        HotelTO hotel1 = App.DatabaseSampler.buildHotelTO("Hilton", contact1);
-        hotelService.createHotel(hotel1);
-        
-        ContactTO contact2 = App.DatabaseSampler.buildContactTO("333", "lol@lol.sk", "dress", "ty", "untry");
-        HotelTO hotel2 = App.DatabaseSampler.buildHotelTO("Crowne", contact2);
-        hotelService.createHotel(hotel2);
-        
-        ContactTO contact3 = App.DatabaseSampler.buildContactTO("321", "lolx@lolx.sk", "dressdress", "city", "untry");
-        HotelTO hotel3 = App.DatabaseSampler.buildHotelTO("Jewel", contact3);
-        hotelService.createHotel(hotel3);
-        
-        assertThat(hotelService.findHotelsByCity("ty"), hasItems(hotel2));
-        assertThat(hotelService.findHotelsByCity("city"), hasItems(hotel1, hotel3));
-        assertTrue(hotelService.findHotelsByCity("Dude").isEmpty());
+        Mockito.verifyZeroInteractions(hotelDAO);
+
+        List<HotelTO> hotels = hotelService.findHotelsByCity("Dude");
+        Mockito.verify(hotelDAO).findHotelsByCity("Dude");
     }
 
     /**
@@ -589,21 +484,9 @@ public class HotelServiceImplTest {
         } catch (Exception e) {
             //OK
         }
-        
-        ContactTO contact1 = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "USA");
-        HotelTO hotel1 = App.DatabaseSampler.buildHotelTO("Hilton", contact1);
-        hotelService.createHotel(hotel1);
-        
-        ContactTO contact2 = App.DatabaseSampler.buildContactTO("333", "lol@lol.sk", "dress", "ty", "UK");
-        HotelTO hotel2 = App.DatabaseSampler.buildHotelTO("Crowne", contact2);
-        hotelService.createHotel(hotel2);
-        
-        ContactTO contact3 = App.DatabaseSampler.buildContactTO("321", "lolx@lolx.sk", "dressdress", "tyty", "USA");
-        HotelTO hotel3 = App.DatabaseSampler.buildHotelTO("Crowne", contact3);
-        hotelService.createHotel(hotel3);
-        
-        assertThat(hotelService.findHotelsByCountry("UK"), hasItems(hotel2));
-        assertThat(hotelService.findHotelsByCountry("USA"), hasItems(hotel1, hotel3));
-        assertTrue(hotelService.findHotelsByCountry("Dude").isEmpty());
+        Mockito.verifyZeroInteractions(hotelDAO);
+
+        List<HotelTO> hotels = hotelService.findHotelsByCountry("Dude");
+        Mockito.verify(hotelDAO).findHotelsByCountry("Dude");
     }
 }
