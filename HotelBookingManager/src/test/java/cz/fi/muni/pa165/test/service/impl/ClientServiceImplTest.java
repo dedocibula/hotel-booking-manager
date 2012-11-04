@@ -1,7 +1,6 @@
 package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
-import cz.fi.muni.pa165.hotelbookingmanager.Contact;
 import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.service.impl.ClientServiceImpl;

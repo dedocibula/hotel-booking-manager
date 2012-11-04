@@ -91,7 +91,8 @@ public class HotelServiceImpl implements HotelService {
     public HotelTO findHotel(Long id) {
         if (id == null)
             throw new IllegalArgumentException("id cannot be null");
-        return mapper.map(hotelDAO.get(id), HotelTO.class);
+        Hotel hotel = hotelDAO.get(id);
+        return hotel != null ? mapper.map(hotel, HotelTO.class) : null;
     }
 
     @Override
@@ -104,9 +105,6 @@ public class HotelServiceImpl implements HotelService {
         Hotel hotel = mapper.map(hotelTO, Hotel.class);
         if (hotel.getRooms() != null) {
             for (Room room : hotel.getRooms()) {
-                if (room.getId() == null) {
-                    throw new NullPointerException("FKU");
-                }
                 if (room == null || room.getId() != null || roomDAO.get(room.getId()).getHotel() != hotel)
                     throw new IllegalArgumentException("room cannot be null or be attached to a different hotel");
                 validateAttachedRoomAttributes(room);

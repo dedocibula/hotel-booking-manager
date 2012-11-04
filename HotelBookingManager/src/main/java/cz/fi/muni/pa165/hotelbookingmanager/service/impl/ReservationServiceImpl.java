@@ -67,6 +67,8 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     @Transactional
     public void createReservation(ReservationTO reservationTO) {
+        if (reservationTO == null)
+            throw new IllegalArgumentException();
         Reservation reservation = mapper.map(reservationTO, Reservation.class);
         validateReservation(reservation);
         if (reservation.getId() != null)
@@ -96,7 +98,8 @@ public class ReservationServiceImpl implements ReservationService{
         if (id == null)
             throw new IllegalArgumentException("ID cannot be null.");
         
-        return mapper.map(reservationDAO.get(id), ReservationTO.class);
+        Reservation reservation = reservationDAO.get(id);
+        return reservation != null ? mapper.map(reservation, ReservationTO.class) : null;
     }
 
     @Override

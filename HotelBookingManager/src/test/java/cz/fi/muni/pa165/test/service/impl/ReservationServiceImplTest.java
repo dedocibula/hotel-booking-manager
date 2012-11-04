@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.test.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanager.App;
@@ -367,7 +363,7 @@ public class ReservationServiceImplTest {
     private ClientTO sampleClient() {
         ClientTO client = newClient("Jozko", "Mrkvicka", sampleContact());
         clientService.createClient(client);
-        return client;
+        return clientService.findClient(1L);
     }
     
     private static ContactTO sampleContact() {
@@ -377,13 +373,13 @@ public class ReservationServiceImplTest {
     private RoomTO sampleRoom() {
         RoomTO room = newRoom(BigDecimal.TEN, sampleHotel());
         roomService.createRoom(room);
-        return room;
+        return roomService.getRoom(1L);
     }
     
     private HotelTO sampleHotel() {
         HotelTO hotel = newHotel("Hilton", sampleContact());
         hotelService.createHotel(hotel);
-        return hotel;
+        return hotelService.findHotel(1L);
     }
     
     private static ReservationTO newReservation(ClientTO client, RoomTO room,
