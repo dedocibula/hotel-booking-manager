@@ -30,11 +30,11 @@
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
     <bean id="mapper" class="org.dozer.DozerBeanMapper">
-    <property name="mappingFiles">
-        <list>
-            <value>dozerBeanMapping.xml</value>
-        </list>
-    </property>
-</bean>
+        <property name="mappingFiles">
+            <list>
+                <value>dozerBeanMapping.xml</value>
+            </list>
+        </property>
+    </bean>
 
 </beans>
