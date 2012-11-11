@@ -18,6 +18,7 @@ import static org.mockito.Mockito.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -42,9 +43,9 @@ public class ClientServiceImplTest {
         Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
         mapper = context.getBean("mapper", DozerBeanMapper.class);
 
-        clientService.setClientDAO(mockClientDao);
-        clientService.setValidator(validator);
-        clientService.setMapper(mapper);
+        ReflectionTestUtils.setField(clientService, "clientDAO", mockClientDao);
+        ReflectionTestUtils.setField(clientService, "validator", validator);
+        ReflectionTestUtils.setField(clientService, "mapper", mapper);
     }
 
     @After

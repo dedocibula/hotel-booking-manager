@@ -7,6 +7,7 @@ import cz.fi.muni.pa165.hotelbookingmanager.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanager.entities.Reservation;
+import cz.fi.muni.pa165.hotelbookingmanager.entities.Room;
 import cz.fi.muni.pa165.hotelbookingmanager.service.impl.ReservationServiceImpl;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -62,12 +64,11 @@ public class ReservationServiceImplTest {
         Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
         mapper = context.getBean(DozerBeanMapper.class);
         
-        reservationService.setReservationDAO(mockReservationDao);
-        reservationService.setClientDAO(clientDao);
-        reservationService.setRoomDAO(roomDao);
-        reservationService.setValidator(validator);
-        reservationService.setMapper(mapper);
-        //MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(reservationService, "reservationDAO", mockReservationDao);
+        ReflectionTestUtils.setField(reservationService, "clientDAO", clientDao);
+        ReflectionTestUtils.setField(reservationService, "roomDAO", roomDao);
+        ReflectionTestUtils.setField(reservationService, "mapper", mapper);
+        ReflectionTestUtils.setField(reservationService, "validator", validator);
     }
     
     @After
@@ -196,18 +197,26 @@ public class ReservationServiceImplTest {
             // OK
         }
         
-        // TODO Test not vacant room
-//        Room nonVacantRoom = newRoom(BigDecimal.TEN, sampleHotel());
-//        roomService.createRoom(nonVacantRoom);
-//        reservation = newReservation(sampleClient(), nonVacantRoom, 
-//                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
-//        reservationService.createReservation(reservation);
-//        try {
-//            reservationService.createReservation(reservation);
-//            fail("Cannot create reservation on room that is not vacant.");
-//        } catch (IllegalArgumentException ex) {
-//            // OK
-//        }
+        // Test not vacant room
+        RoomTO nonVacantRoom = newRoom(BigDecimal.TEN, sampleHotel());
+        nonVacantRoom.setId(1L);
+        
+        RoomDAO mockRoomDao = mock(RoomDAO.class);
+        ReflectionTestUtils.setField(reservationService, "roomDAO", mockRoomDao);
+        when(mockRoomDao.isVacant(any(Room.class), any(Date.class), any(Date.class))).thenReturn(false);
+        when(mockRoomDao.get(1L)).thenReturn(mapper.map(nonVacantRoom, Room.class));
+        
+        reservation = newReservation(sampleClient(), nonVacantRoom, 
+                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
+        try {
+            reservationService.createReservation(reservation);
+            fail("Cannot create reservation on room that is not vacant.");
+        } catch (IllegalArgumentException ex) {
+            // OK
+        }
+        ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
+        RoomDAO roomDao = context.getBean(RoomDAO.class);
+        ReflectionTestUtils.setField(reservationService, "roomDAO", roomDao);
         
         // Test price less than zero
         reservation = newReservation(sampleClient(), sampleRoom(), 
@@ -363,7 +372,7 @@ public class ReservationServiceImplTest {
     private ClientTO sampleClient() {
         ClientTO client = newClient("Jozko", "Mrkvicka", sampleContact());
         clientService.createClient(client);
-        return clientService.findClient(1L);
+        return client;
     }
     
     private static ContactTO sampleContact() {
@@ -373,13 +382,13 @@ public class ReservationServiceImplTest {
     private RoomTO sampleRoom() {
         RoomTO room = newRoom(BigDecimal.TEN, sampleHotel());
         roomService.createRoom(room);
-        return roomService.getRoom(1L);
+        return room;
     }
     
     private HotelTO sampleHotel() {
         HotelTO hotel = newHotel("Hilton", sampleContact());
         hotelService.createHotel(hotel);
-        return hotelService.findHotel(1L);
+        return hotel;
     }
     
     private static ReservationTO newReservation(ClientTO client, RoomTO room,

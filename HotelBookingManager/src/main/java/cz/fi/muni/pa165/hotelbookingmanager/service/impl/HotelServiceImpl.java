@@ -35,38 +35,6 @@ public class HotelServiceImpl implements HotelService {
     @Autowired
     private Mapper mapper;
 
-    public HotelDAO getHotelDAO() {
-        return hotelDAO;
-    }
-
-    public void setHotelDAO(HotelDAO hotelDAO) {
-        this.hotelDAO = hotelDAO;
-    }
-
-    public Mapper getMapper() {
-        return mapper;
-    }
-
-    public void setMapper(Mapper mapper) {
-        this.mapper = mapper;
-    }
-
-    public RoomDAO getRoomDAO() {
-        return roomDAO;
-    }
-
-    public void setRoomDAO(RoomDAO roomDAO) {
-        this.roomDAO = roomDAO;
-    }
-
-    public Validator getValidator() {
-        return validator;
-    }
-
-    public void setValidator(Validator validator) {
-        this.validator = validator;
-    }
-
     @Override
     @Transactional
     public void createHotel(HotelTO hotelTO) {
@@ -85,6 +53,8 @@ public class HotelServiceImpl implements HotelService {
         }
         validateHotelAttributes(hotel);
         hotelDAO.create(hotel);
+        
+        hotelTO.setId(hotel.getId());
     }
 
     @Override

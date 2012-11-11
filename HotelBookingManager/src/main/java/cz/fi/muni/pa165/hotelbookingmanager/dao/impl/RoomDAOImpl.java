@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,8 +53,8 @@ public class RoomDAOImpl implements RoomDAO{
     @Override
     public List<Room> findAllVacantRooms(Date from, Date to) {
         Query query = em.createQuery("SELECT r FROM Room r WHERE r NOT IN (SELECT p.room FROM Reservation p WHERE (p.fromDate >= :from AND p.fromDate <= :to) OR (p.toDate >= :from AND p.toDate <= :to) OR (p.fromDate <= :from AND p.toDate >= :to))");
-        query.setParameter("from", from);
-        query.setParameter("to", to);
+        query.setParameter("from", from, TemporalType.DATE);
+        query.setParameter("to", to, TemporalType.DATE);
         return (List<Room>)query.getResultList();
     }
 

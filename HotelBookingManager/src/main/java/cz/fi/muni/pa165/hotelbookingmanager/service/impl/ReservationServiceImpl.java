@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Marian Rusnak
  */
 @Service
-public class ReservationServiceImpl implements ReservationService{
+public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private ReservationDAO reservationDAO;
@@ -43,26 +43,6 @@ public class ReservationServiceImpl implements ReservationService{
     
     @Autowired
     private Mapper mapper;
-
-    public void setReservationDAO(ReservationDAO reservationDAO) {
-        this.reservationDAO = reservationDAO;
-    }
-
-    public void setClientDAO(ClientDAO clientDAO) {
-        this.clientDAO = clientDAO;
-    }
-
-    public void setRoomDAO(RoomDAO roomDAO) {
-        this.roomDAO = roomDAO;
-    }
-
-    public void setValidator(Validator validator) {
-        this.validator = validator;
-    }
-
-    public void setMapper(Mapper mapper) {
-        this.mapper = mapper;
-    }
     
     @Override
     @Transactional
@@ -75,6 +55,8 @@ public class ReservationServiceImpl implements ReservationService{
             throw new IllegalArgumentException("Reservation cannot have manually assigned id");
         
         reservationDAO.create(reservation);
+        
+        reservationTO.setId(reservation.getId());
     }
 
     @Override
@@ -210,7 +192,7 @@ public class ReservationServiceImpl implements ReservationService{
         Room room = roomDAO.get(roomId);
         if (room == null)
             throw new IllegalArgumentException("Room must exists.");
-        //if (!roomDAO.isVacant(room, reservation.getFromDate(), reservation.getToDate()))
-        //    throw new IllegalArgumentException("Room must be vacant.");
+        if (!roomDAO.isVacant(room, reservation.getFromDate(), reservation.getToDate()))
+            throw new IllegalArgumentException("Room must be vacant.");
     }
 }

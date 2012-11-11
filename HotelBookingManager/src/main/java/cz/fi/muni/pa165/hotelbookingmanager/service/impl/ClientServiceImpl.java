@@ -31,18 +31,6 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private Mapper mapper;
 
-    public void setClientDAO(ClientDAO clientDAO) {
-        this.clientDAO = clientDAO;
-    }
-
-    public void setValidator(Validator validator) {
-        this.validator = validator;
-    }
-
-    public void setMapper(Mapper mapper) {
-        this.mapper = mapper;
-    }
-
     @Override
     @Transactional
     public void createClient(ClientTO client) {
@@ -54,6 +42,8 @@ public class ClientServiceImpl implements ClientService {
 
         validateClientAttrributes(clientDO);
         clientDAO.create(clientDO);
+        
+        client.setId(clientDO.getId());
     }
 
     @Override

@@ -47,6 +47,8 @@ public class RoomServiceImpl implements RoomService {
 
         validateRoom(room);
         roomDAO.create(room);
+        
+        roomTO.setId(room.getId());
     }
 
     @Override
