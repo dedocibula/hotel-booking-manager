@@ -24,7 +24,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public HotelTO findHotel(Long id) {
         for (HotelTO hotel : findAllHotels()) {
-            if (hotel.getId() == id)
+            if (hotel.getId().equals(id))                
                 return hotel;
         }
         return null;

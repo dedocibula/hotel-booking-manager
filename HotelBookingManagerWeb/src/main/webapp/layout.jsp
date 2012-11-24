@@ -16,7 +16,7 @@
         <title><c:out value="${title}" /></title>
         <meta name="keywords" content="Hotel, Room, Reservation, Client, Java, Tomcat, Spring, Hibernate, CSS, XHTML" />
         <meta name="description" content="Booking Manager - website allowing to create reservations all around the globe" />
-        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css" />        
         <s:layout-component name="head"/>
     </head>
     <body>
@@ -36,7 +36,7 @@
                     <ul>
                         <li><s:link href="/index.jsp" class="${(pageInfo == 'index.jsp') ? 'current' : ''}">Home</s:link></li>
                         <li><s:link href="/client.jsp" class="${(pageInfo == 'client.jsp') ? 'current' : ''}">Client</s:link></li>
-                        <li><s:link href="/hotel.jsp" class="${(pageInfo == 'hotel.jsp') ? 'current' : ''}">Hotel</s:link></li>
+                        <li><s:link href="/showHotel.jsp" class="${(pageInfo == 'showHotel.jsp') ? 'current' : ''}">Hotel</s:link></li>
                         <li><s:link href="/reservation.jsp" class="${(pageInfo == 'reservation.jsp') ? 'current' : ''}">Reservation</s:link></li>
                         <li><s:link href="/test.jsp" class="${(pageInfo == 'test.jsp') ? 'current' : ''}">Test</s:link></li>
                         <li><s:link href="/index.jsp" class="last ${(pageInfo == 'contact.jsp') ? 'current' : ''}">Contact</s:link></li>

@@ -41,7 +41,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomTO getRoom(Long id) {
         for (RoomTO room : findAllRooms()) {
-            if (room.getId() == id)
+            if (room.getId().equals(id))
                 return room;
         }
         return null;

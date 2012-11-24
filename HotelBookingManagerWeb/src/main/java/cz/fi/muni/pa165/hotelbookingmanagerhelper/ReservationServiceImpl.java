@@ -39,7 +39,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationTO getReservation(Long id) {
         for (ReservationTO reservation : findAllReservations()) {
-            if (reservation.getId() == id)
+            if (reservation.getId().equals(id))
                 return reservation;
         }
         return null;

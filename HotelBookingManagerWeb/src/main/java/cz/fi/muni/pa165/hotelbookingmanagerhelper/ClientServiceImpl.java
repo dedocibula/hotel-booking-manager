@@ -24,7 +24,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientTO findClient(Long id) {
         for (ClientTO client : findAllClients()) {
-            if (client.getId() == id)
+            if (client.getId().equals(id))
                 return client;
         }
         return null;
