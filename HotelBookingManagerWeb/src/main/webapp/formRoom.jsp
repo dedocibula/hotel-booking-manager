@@ -13,6 +13,6 @@
     </tr>
     <tr>
         <th><s:label for="b2" name="room.pricePerNight"/></th>
-        <td><s:text id="b2" name="hotel.pricePerNight"/></td>
+        <td><s:text id="b2" name="room.pricePerNight"/></td>
     </tr>    
 </table>

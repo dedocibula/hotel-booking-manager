@@ -57,16 +57,10 @@ public class RoomsActionBean implements ActionBean {
     })
     */
     private RoomTO room;
-    private HotelTO hotel;    
-    private List<RoomTO> hotelRooms;
-     
-    public HotelTO getHotel() {
-        return hotel;
-    }
+    private static HotelTO hotel;
 
-    public void setHotel(HotelTO hotel) {
-        this.hotel = hotel;
-    }
+    
+        
     public RoomTO getRoom() {
         return room;
     }
@@ -76,12 +70,9 @@ public class RoomsActionBean implements ActionBean {
     }
     
     public List<RoomTO> getHotelRooms() {
-        return hotelRooms;
+        return roomManager.findRoomsByHotel(hotel);
     }
-
-    public void setHotelRooms(List<RoomTO> hotelRooms) {
-        this.hotelRooms = hotelRooms;
-    }
+   
     
     public Resolution add() {
         room.setHotel(hotel);
@@ -114,15 +105,16 @@ public class RoomsActionBean implements ActionBean {
     public void loadHotelRooms() {
         String ids = context.getRequest().getParameter("hotel");
         if (ids == null) return;
-         hotel = hotelManager.findHotel(Long.parseLong(ids));
-         hotelRooms = roomManager.findRoomsByHotel(hotel);
+         hotel = hotelManager.findHotel(Long.parseLong(ids));        
     }
     
     public Resolution hotelRooms() {
         return new ForwardResolution("/showRoom.jsp");
     }
     
-    
+    public Resolution backToHotels() {
+        return new ForwardResolution("/showHotel.jsp");
+    }  
 
     
 }

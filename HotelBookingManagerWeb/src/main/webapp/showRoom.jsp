@@ -15,9 +15,9 @@
         Všechny izby hotela:
         <table>
             <tr>
-                <th>id</th>
-                <th>price per night</th>
-                <th>hotel</th>                
+                <th>id </th>
+                <th>price </th>
+                <th>hotel </th>                
             </tr>
             <c:forEach items="${actionBean.hotelRooms}" var="room">
                 <tr>
@@ -29,8 +29,9 @@
     
                 </tr>
             </c:forEach> 
+                        
         </table>
-           
+        <s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="backToHotels">spet na spravu hotelov</s:link>
         <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean">
             <fieldset><legend>Nová izba</legend>
                 <%@include file="formRoom.jsp"%>
