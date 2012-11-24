@@ -4,8 +4,8 @@ import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ReservationTO;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.RoomTO;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,10 +18,10 @@ public class DatabaseSimulator {
     private static Long reservationId = 0l;
     private static Long roomId = 0l;
     
-    public static Set<HotelTO> hotels = new HashSet<>();
-    public static Set<ClientTO> clients = new HashSet<>();
-    public static Set<ReservationTO> reservations = new HashSet<>();
-    public static Set<RoomTO> rooms = new HashSet<>();
+    public static List<HotelTO> hotels = new ArrayList<>();
+    public static List<ClientTO> clients = new ArrayList<>();
+    public static List<ReservationTO> reservations = new ArrayList<>();
+    public static List<RoomTO> rooms = new ArrayList<>();
     
     public static Long getHotelId() {
         return ++hotelId;
