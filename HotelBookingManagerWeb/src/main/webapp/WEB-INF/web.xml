@@ -5,14 +5,14 @@
          version="3.0">
 
     <!-- Spring -->
-<!--    <listener>
+    <!--<listener>
         <description>aktivace Springu při startu aplikace</description>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <context-param>
         <description>umístění konfiguračního souboru pro Spring</description>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/spring-context.xml</param-value>
+        <param-value>classpath*:applicationContext.xml</param-value>
     </context-param>-->
 
     <!-- JSTL -->
