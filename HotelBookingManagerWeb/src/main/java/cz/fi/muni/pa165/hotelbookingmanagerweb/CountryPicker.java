@@ -20,7 +20,6 @@ public class CountryPicker {
         countries = new TreeSet<>();
         for (String countryISO : Locale.getISOCountries()) {
             String displayCountry = new Locale("en", countryISO).getDisplayCountry();
-            System.err.println(displayCountry);
             if (!"".equals(displayCountry) && displayCountry.length() <= 20)
                 countries.add(displayCountry);
         }

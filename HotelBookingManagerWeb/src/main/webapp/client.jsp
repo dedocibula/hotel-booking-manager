@@ -14,7 +14,7 @@
                 <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean">
                     <%@include file="formClient.jsp"%>
                     <div class="cleaner_h20">&nbsp;</div>
-                    <s:submit name="addClient"></s:submit>
+                    <s:submit name="add"></s:submit>
                 </s:form>
 
                 <div class="cleaner">&nbsp;</div>

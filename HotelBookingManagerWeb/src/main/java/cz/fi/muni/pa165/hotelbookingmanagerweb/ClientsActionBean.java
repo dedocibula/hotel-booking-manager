@@ -63,7 +63,7 @@ public class ClientsActionBean implements ActionBean {
         return new ForwardResolution("/client.jsp");
     }
 
-    public Resolution addClient() {
+    public Resolution add() {
         clientService.createClient(client);
         return new RedirectResolution(this.getClass(), "all");
     }
