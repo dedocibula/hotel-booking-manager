@@ -1,61 +1,60 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
- 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <s:layout-render name="/layout.jsp" title="Booking Manager - Client" pageInfo="client.jsp">
     <s:layout-component name="left_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" var="actionBean"/>
-        
+
             <div class="content_left_section">
-            	<div class="content_title_01">New Client</div>
-                
+                <div class="content_title_01"><fmt:message key="newClient"/><br/></div>
+
                 <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean">
                     <%@include file="formClient.jsp"%>
                     <div class="cleaner_h20">&nbsp;</div>
-                    <s:submit name="add">Add Client</s:submit>
+                    <s:submit name="addClient"></s:submit>
                 </s:form>
-                
+
                 <div class="cleaner">&nbsp;</div>
             </div> <!-- end of booking -->
-            
+
             <div class="cleaner_h30">&nbsp;</div>
             <div class="cleaner_horizontal_divider_01">&nbsp;</div>
             <div class="cleaner_h30">&nbsp;</div>
-           
+
     </s:layout-component>
-    
+
     <s:layout-component name="right_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" var="actionBean"/>
-        
+
             <div class="content_right_section">
-                    <div class="content_title_01">Client Management</div>
+                    <div class="content_title_01"><fmt:message key="clientManagement"/></div>
                     <img src="${pageContext.request.contextPath}/images/templatemo_image_04.jpg" alt="image" />
-                    <p>On this webpage all client management is being done.</p>
-                    <p>It serves either for regular clients as well as new clients willing to book a room in a hotel.</p>
-                    <p>Clients can view their account, alter or delete it or create new.</p>
-                    <p>Below is a list of all the clients that have used this website so far...</p>
+                    <fmt:message key="clientManagementDescription"/>
                 </div>
-            
+
                 <div class="cleaner_h40">&nbsp;</div>
-            
-            
+
+
                 <div class="content_right_section">
-                    <div class="content_title_02">All Clients</div>
+                    <div class="content_title_02"><fmt:message key="allClients"/></div>
                     <c:choose>
                         <c:when test="${empty actionBean.clients}">
-                            <p class="emptyDb">No Clients so far :(</p>
+                            <p class="emptyDb"><fmt:message key="noClients"/></p>
                         </c:when>
                         <c:otherwise>
                             <table>
                                 <tr>
-                                    <th>id</th>
-                                    <th>first name</th>
-                                    <th>last name</th>
-                                    <th>phone</th>
-                                    <th>email</th>
-                                    <th>address</th>
-                                    <th>city</th>
-                                    <th>country</th>
+                                    <th><fmt:message key="id"/></th>
+                                    <th><fmt:message key="client.firstName"/></th>
+                                    <th><fmt:message key="client.lastName"/></th>
+                                    <th><fmt:message key="client.phone"/></th>
+                                    <th><fmt:message key="client.email"/></th>
+                                    <th><fmt:message key="client.address"/></th>
+                                    <th><fmt:message key="client.city"/></th>
+                                    <th><fmt:message key="client.country"/></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -69,11 +68,11 @@
                                         <td><c:out value="${client.contact.address}"/></td>
                                         <td><c:out value="${client.contact.city}"/></td>
                                         <td><c:out value="${client.contact.country}"/> </td>
-                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" event="edit"><s:param name="client.id" value="${client.id}"/>Edit</s:link> </td>
-                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" event="delete"><s:param name="client.id" value="${client.id}"/>Delete</s:link> </td>
+                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" event="edit"><s:param name="client.id" value="${client.id}"/><fmt:message key="edit"/></s:link> </td>
+                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" event="delete"><s:param name="client.id" value="${client.id}"/><fmt:message key="delete"/></s:link> </td>
 
                                     </tr>
-                                </c:forEach> 
+                                </c:forEach>
                             </table>
                         </c:otherwise>
                     </c:choose>

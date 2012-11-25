@@ -18,7 +18,7 @@ import net.sourceforge.stripes.validation.ValidateNestedProperties;
 public class ClientsActionBean implements ActionBean {
 
     private ActionBeanContext context;
-    
+
     private ClientService clientService = new ClientServiceImpl();
     private CountryPicker countryPicker = new CountryPicker();
     
@@ -39,12 +39,12 @@ public class ClientsActionBean implements ActionBean {
     public void setClient(ClientTO client) {
         this.client = client;
     }
-    
+
     @Override
     public void setContext(ActionBeanContext context) {
         this.context = context;
     }
-    
+
     public List<ClientTO> getClients() {
         return clientService.findAllClients();
     }
@@ -57,35 +57,35 @@ public class ClientsActionBean implements ActionBean {
     public ActionBeanContext getContext() {
         return context;
     }
-    
+
     @DefaultHandler
     public Resolution all() {
         return new ForwardResolution("/client.jsp");
     }
-    
-    public Resolution add() {
+
+    public Resolution addClient() {
         clientService.createClient(client);
         return new RedirectResolution(this.getClass(), "all");
     }
-    
+
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadHotelFromDatabase() {
         String ids = context.getRequest().getParameter("client.id");
         if (ids == null) return;
-        client = clientService.findClient(Long.parseLong(ids));        
+        client = clientService.findClient(Long.parseLong(ids));
     }
-    
+
     public Resolution edit() {
         return new ForwardResolution("/editClient.jsp");
     }
- 
+
     public Resolution save() {
         clientService.updateClient(client);
         return new RedirectResolution(this.getClass(), "all");
     }
-    
+
     public Resolution delete() {
-        clientService.deleteClient(client);                       
+        clientService.deleteClient(client);
         return new RedirectResolution(this.getClass(), "all");
     }
 }
