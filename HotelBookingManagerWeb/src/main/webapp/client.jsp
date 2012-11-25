@@ -29,7 +29,7 @@
         
             <div class="content_right_section">
                     <div class="content_title_01">Client Management</div>
-                    <img src="images/templatemo_image_04.jpg" alt="image" />
+                    <img src="${pageContext.request.contextPath}/images/templatemo_image_04.jpg" alt="image" />
                     <p>On this webpage all client management is being done.</p>
                     <p>It serves either for regular clients as well as new clients willing to book a room in a hotel.</p>
                     <p>Clients can view their account, alter or delete it or create new.</p>

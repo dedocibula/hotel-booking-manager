@@ -61,7 +61,7 @@
                     <div class="cleaner_h30">&nbsp;</div>
                     </div>
 
-                    <a href="http://www.templatemo.com" target="_parent"><img src="images/templatemo_special_offer.jpg" alt="special offer" /></a>
+                    <a href="http://www.templatemo.com" target="_parent"><img src="${pageContext.request.contextPath}/images/templatemo_special_offer.jpg" alt="special offer" /></a>
                     <div class="cleaner_h30">&nbsp;</div>
                 </div> <!-- end of content left -->
                 
