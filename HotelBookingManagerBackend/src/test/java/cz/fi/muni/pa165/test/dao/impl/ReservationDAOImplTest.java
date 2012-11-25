@@ -315,6 +315,9 @@ public class ReservationDAOImplTest {
      */
     @Test
     public void testFindAllReservations() {
+        for (Reservation reservation : reservationDAO.findAllReservations()) {
+            reservationDAO.delete(reservation);
+        }
         assertTrue(reservationDAO.findAllReservations().isEmpty());
         
         Contact contact = App.DatabaseSampler.buildContact("13", "blondina@azet.sk", 

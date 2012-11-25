@@ -10,10 +10,10 @@
     
     <!-- Production database -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="username" value="Client"/>
+        <property name="username" value="pa165"/>
         <property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver"/>
-        <property name="password" value="Client"/>
-        <property name="url" value="jdbc:derby://localhost:1527/HotelBookingManagerDB"/>
+        <property name="password" value="pa165"/>
+        <property name="url" value="jdbc:derby://localhost:1527/pa165"/>
     </bean>
     
     <context:component-scan base-package="cz.fi.muni.pa165.hotelbookingmanager"/>

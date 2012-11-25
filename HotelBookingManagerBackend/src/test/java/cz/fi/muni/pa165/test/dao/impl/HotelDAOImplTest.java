@@ -313,6 +313,9 @@ public class HotelDAOImplTest {
      */
     @Test
     public void testFindAllHotels() {
+        for (Hotel hotel : hotelDAO.findAll()) {
+            hotelDAO.delete(hotel);
+        }
         assertTrue(hotelDAO.findAll().isEmpty());
         
         Contact contact1 = App.DatabaseSampler.buildContact("123", "dude@dude.sk", "address", "city", "country");

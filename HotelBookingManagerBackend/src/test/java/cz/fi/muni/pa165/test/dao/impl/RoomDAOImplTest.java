@@ -167,9 +167,6 @@ public class RoomDAOImplTest {
 
    @Test
    public void testFindAllVacantRooms() {
-       for (Room room : roomDAO.findAllRooms()) {
-           roomDAO.delete(room);
-       }
        //assertTrue("There are still Rooms in the database after deletion.", roomDAO.findAllVacantRooms().isEmpty());
 
        Contact contact = App.DatabaseSampler.buildContact("12345", "something@random.wtf", "streetz", "town", "land");

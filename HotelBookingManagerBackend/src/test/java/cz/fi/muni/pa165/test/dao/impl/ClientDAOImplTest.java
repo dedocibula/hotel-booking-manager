@@ -170,6 +170,9 @@ public class ClientDAOImplTest {
 
     @Test
     public void testFindAll() {
+        for (Client client : clientDAO.findAll()) {
+            clientDAO.delete(client);
+        }
         assertTrue(clientDAO.findAll().isEmpty());
         
         Contact contact1 = newContact("123", "mail1@mail.com", "address", "city", "country");
