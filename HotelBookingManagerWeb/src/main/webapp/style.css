@@ -33,22 +33,15 @@ img {
 	border: none;
 }
 
-input[type="submit"] {
-        float: left;
-	clear: both;
-        background: url(images/templatemo_button_01.jpg) no-repeat;
-        border: 0;
-        color: #000000;
-	font-size: 14px;
-	font-weight: bold;
-        width: 150px;
-	padding: 5px 0 5px 0;
-	text-align: center;
-        cursor: pointer;
+tr th {
+        font-size: 14px;
+        padding: 0 5px 5px 5px;
+        text-transform: capitalize;
 }
 
-input[type="submit"]:active {
-        color: #FFF;
+tr td {
+        font-size: 14px;
+        text-align: center;
 }
 
 input.error { 
@@ -254,6 +247,42 @@ input.error {
 	background: url(images/templatemo_horizontal_divider_02.jpg) bottom repeat-x;	
 }
 
+#content_left input[type="submit"] {
+        float: left;
+	clear: both;
+        background: url(images/templatemo_button_01.jpg) no-repeat;
+        border: 0;
+        color: #000000;
+	font-size: 14px;
+	font-weight: bold;
+        width: 150px;
+	padding: 5px 0 5px 0;
+	text-align: center;
+        cursor: pointer;
+}
+
+#content_left input[type="submit"]:active {
+        color: #FFF;
+}
+
+#content_right input[type="submit"] {
+        float: left;
+	clear: both;
+        background: url(images/templatemo_button_02.jpg) no-repeat;
+        border: 0;
+        color: #000000;
+	font-size: 14px;
+	font-weight: bold;
+        width: 100px;
+	padding: 5px 0 5px 0;
+	text-align: center;
+        cursor: pointer;
+}
+
+#content_right input[type="submit"]:active {
+        color: #FFF;
+}
+
 #templatemo_content #content_right{
 	float: right;
 	width: 565px;
@@ -326,9 +355,6 @@ input.error {
 	height: 16px;
 	padding: 2px;
 }
-#content_right .content_right_section {
-	margin: 0 30px 0 0;
-}
 
 #content_right form {
 	margin: 0px;
@@ -357,6 +383,11 @@ input.error {
 	background: url(images/templatemo_horizontal_divider.jpg) bottom repeat-x;
 }
 */
+
+#content_right .content_right_section {
+	margin: 0 30px 0 0;
+}
+
 .content_right_section img {
 	float: left;
 	border: 5px solid #2f2c29;
