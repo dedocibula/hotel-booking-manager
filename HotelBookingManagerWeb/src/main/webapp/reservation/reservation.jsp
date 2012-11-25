@@ -3,18 +3,19 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 
-<s:layout-render name="/layout.jsp" title="Booking Manager - reservations" pageInfo="reservation.jsp">
+<f:message var="pageTitle" key="reservation.pageTitle"/>
+<s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="reservation.jsp">
 	<s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" var="actionBean"/>
 	<s:layout-component name="left_content">
 
 		<div class="content_left_section">
-			<div class="content_title_01">Select date interval</div>
+			<div class="content_title_01"><f:message key="selectDateInterval"/></div>
 
 			<s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean">
 				<%@include file="/../dateChoose.jsp" %>
 				<div>
 					<div>
-						<s:label for="hotel">Hotel:</s:label>
+                                            <s:label for="hotel" name="hotel"/>
 					</div>
 					<div>
 						<s:select id="hotel" name="hotel.id">
@@ -23,7 +24,7 @@
 					</div>
 				</div>
 				<div class="cleaner_h20">&nbsp;</div>
-				<s:submit name="all">Submit</s:submit>
+				<s:submit name="all"><f:message key="submit"/></s:submit>
 			</s:form>
 
 			<div class="cleaner">&nbsp;</div>
@@ -38,32 +39,32 @@
     <s:layout-component name="right_content">
 
 		<div class="content_right_section">
-			<div class="content_title_01">Reservation Management</div>
+			<div class="content_title_01"><f:message key="reservationManagement"/></div>
 			<img src="${pageContext.request.contextPath}/images/templatemo_image_04.jpg" alt="image" />
-			<p>On this webpage all reservation management is being done.</p>
+			<p><f:message key="reservationManagementDescription"/></p>
 		</div>
 
 		<div class="cleaner_h40">&nbsp;</div>
 
 
 		<div class="content_right_section">
-			<div class="content_title_02">Reservations</div>
-			
-			<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="create">Create new</s:link>
-			
+			<div class="content_title_02"><f:message key="reservations"/></div>
+
+			<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="create"><f:message key="newReservation"/></s:link>
+
 			<c:choose>
 				<c:when test="${empty actionBean.reservations}">
-					<p class="emptyDb">No reservations match search criteria.</p>
+					<p class="emptyDb"><f:message key="noReservations"/></p>
 				</c:when>
 				<c:otherwise>
 					<table>
 						<thead>
 							<tr>
-								<th>Client</th>
-								<th>Room</th>
-								<th>From</th>
-								<th>To</th>
-								<th>Actions</th>
+								<th><f:message key="client"/></th>
+								<th><f:message key="room"/></th>
+								<th><f:message key="dateFrom"/></th>
+								<th><f:message key="dateTo"/></th>
+								<th><f:message key="actions"/></th>
 							</tr>
 						</thead>
 						<c:forEach items="${actionBean.reservations}" var="reservation">

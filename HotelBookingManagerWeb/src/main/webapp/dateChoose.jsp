@@ -3,7 +3,7 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <div>
 	<div>
-		<s:label for="dateFrom">From:</s:label>
+                <s:label for="dateFrom" name="dateFrom"/>
 	</div>
 	<div>
 		<s:select id="dateFrom" name="dateInterval.dateFrom">
@@ -23,7 +23,7 @@
 </div>
 <div>
 	<div>
-		<s:label for="dateTo">To:</s:label>
+                <s:label for="dateTo" name="dateTo"/>
 	</div>
 	<div>
 		<s:select id="dateTo" name="dateInterval.dateTo">
