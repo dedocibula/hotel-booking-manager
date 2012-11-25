@@ -5,41 +5,24 @@
 <s:layout-render name="/layout.jsp" title="Booking Manager - reservations" pageInfo="reservation.jsp">
     <s:layout-component name="content">
 		<s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" var="actionBean"/>
-        <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" action="choseDate">
+        <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean">
+			<%@include file="dateChoose.jsp" %>
 			<div>
-				<s:select id="dateFrom" name="dateFrom">
-					<c:forEach var="i" begin="1" end="31">
-						<option value="${i}">${i}</option>
-					</c:forEach>
-				</s:select>
-				<s:select id="monthFrom" name="monthFrom">
-					<c:forEach var="i" begin="0" end="11">
-						<option value="${i}">${i}</option>
-					</c:forEach>
-				</s:select>
-				<s:select id="yearFrom" name="yearFrom">
-					<c:forEach var="i" begin="2000" end="2020">
-						<option value="${i}">${i}</option>
-					</c:forEach>
+				<s:submit name="chooseDate">Submit</s:submit>
+			</div>
+
+		</s:form>
+
+		<s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean">
+			<div>
+				<s:select id="hotel" name="hotel">
+					<s:options-collection collection="${actionBean.hotels}" />
 				</s:select>
 			</div>
 			<div>
-				<s:select id="dateTo" name="dateTo">
-					<c:forEach var="i" begin="1" end="31">
-						<option value="${i}">${i}</option>
-					</c:forEach>
-				</s:select>
-				<s:select id="monthTo" name="monthTo">
-					<c:forEach var="i" begin="0" end="11">
-						<option value="${i}">${i}</option>
-					</c:forEach>
-				</s:select>
-				<s:select id="yearTo" name="yearTo">
-					<c:forEach var="i" begin="2000" end="2020">
-						<option value="${i}">${i}</option>
-					</c:forEach>
-				</s:select>
+				<s:submit name="chooseHotel">Submit</s:submit>
 			</div>
+
 			<%--<s:select id="monthFrom" name="monthFrom">
 				<c:forEach items="${actionBean.months}" var="month">
 					<option value="${month}">${month}</option>
@@ -48,5 +31,24 @@
 			</s:select>--%>
 
 		</s:form>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Client</th>
+					<th>Room</th>
+					<th>From</th>
+					<th>To</th>
+				</tr>
+			</thead>
+			<c:forEach items="${reservations}" var="reservation">
+				<tr>
+					<td>${reservation.client.firstName} ${reservation.client.lastName}</td>
+					<td>${reservation.room}</td>
+					<td>${reservation.dateFrom}</td>
+					<td>${reservation.dateTo}</td>
+				</tr>
+			</c:forEach>
+		</table>
     </s:layout-component>
 </s:layout-render>
