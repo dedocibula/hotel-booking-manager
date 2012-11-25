@@ -26,6 +26,8 @@
 </div>
 <div class="form_row">
         <th><label for="b7">Country:</label></th>
-        <td><s:text id="b7" name="client.contact.country"/></td>
+        <td><s:select name="client.contact.country">
+                <s:options-collection collection="${actionBean.countries}" style="width:20px;" />
+            </s:select></td>
 </div>      
 </table>

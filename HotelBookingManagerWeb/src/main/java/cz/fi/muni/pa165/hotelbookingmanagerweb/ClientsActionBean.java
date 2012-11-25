@@ -4,6 +4,7 @@ import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
 import cz.fi.muni.pa165.hotelbookingmanagerhelper.ClientServiceImpl;
 import java.util.List;
+import java.util.Set;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.Validate;
@@ -19,6 +20,7 @@ public class ClientsActionBean implements ActionBean {
     private ActionBeanContext context;
     
     private ClientService clientService = new ClientServiceImpl();
+    private CountryPicker countryPicker = new CountryPicker();
     
     @ValidateNestedProperties(value = {
             @Validate(on = {"add", "save"}, field = "firstName", required = true, minlength = 2, maxlength = 50),
@@ -26,8 +28,7 @@ public class ClientsActionBean implements ActionBean {
             @Validate(on = {"add", "save"}, field = "contact.phone", required = true, mask = "\\d*", maxlength = 30),
             @Validate(on = {"add", "save"}, field = "contact.email", required = true, mask = "[\\w\\-\\.\\+]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-z]+", minlength = 6, maxlength = 50),
             @Validate(on = {"add", "save"}, field = "contact.address", required = true, maxlength = 30),
-            @Validate(on = {"add", "save"}, field = "contact.city", required = true, minlength = 2, maxlength = 50),
-            @Validate(on = {"add", "save"}, field = "contact.country", required = true, minlength = 2, maxlength = 50),
+            @Validate(on = {"add", "save"}, field = "contact.city", required = true, minlength = 2, maxlength = 50)
     })
     private ClientTO client;
 
@@ -46,6 +47,10 @@ public class ClientsActionBean implements ActionBean {
     
     public List<ClientTO> getClients() {
         return clientService.findAllClients();
+    }
+    
+    public Set<String> getCountries() {
+        return countryPicker.getCountriesName();
     }
 
     @Override
