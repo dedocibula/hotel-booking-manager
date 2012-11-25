@@ -69,8 +69,9 @@
                                              </tr>
                                 </c:forEach>
                             </table>
-                        </c:otherwise>
+                        </c:otherwise>                            
                     </c:choose>
+              <s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="backToHotels"><fmt:message key="backToHotels"/></s:link>              
             </div>
     </s:layout-component>
 </s:layout-render>

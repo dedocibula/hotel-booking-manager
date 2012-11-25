@@ -16,6 +16,7 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -29,6 +30,7 @@ public class HotelsActionBean implements ActionBean {
 
     //@SpringBean
     protected HotelService hotelManager = new HotelServiceImpl();
+    private CountryPicker countryPicker = new CountryPicker();
 
     @DefaultHandler
     public Resolution hotelAll() {
@@ -37,6 +39,10 @@ public class HotelsActionBean implements ActionBean {
 
     public List<HotelTO> getHotels() {
         return hotelManager.findAllHotels();
+    }
+    
+    public Set<String> getCountries() {
+        return countryPicker.getCountriesName();
     }
 
     @Override
