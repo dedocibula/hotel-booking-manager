@@ -39,7 +39,7 @@
                         <li><s:link href="/hotel/showHotel.jsp" class="${(pageInfo == 'showHotel.jsp') ? 'current' : ''}"><fmt:message key="hotel"/></s:link></li>
                         <li><s:link href="/reservations/" class="${(pageInfo == 'reservation.jsp') ? 'current' : ''}"><fmt:message key="reservation"/></s:link></li>
                         <!--<li><s:link href="/test.jsp" class="${(pageInfo == 'test.jsp') ? 'current' : ''}">Test</s:link></li>-->
-                        <li><s:link href="/index.jsp" class="last ${(pageInfo == 'contact.jsp') ? 'current' : ''}"><fmt:message key="contact"/></s:link></li>
+                        <li><s:link href="/contact_about.jsp" class="last ${(pageInfo == 'contact_about.jsp') ? 'current' : ''}"><fmt:message key="contact"/></s:link></li>
                     </ul>
                 </div>
             </div> <!-- end of banner -->
