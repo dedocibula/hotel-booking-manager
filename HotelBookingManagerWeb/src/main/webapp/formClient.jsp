@@ -1,4 +1,6 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <s:errors/>
 <div class="form_row">
         <th><s:label for="b1" name="client.firstName"/></th>

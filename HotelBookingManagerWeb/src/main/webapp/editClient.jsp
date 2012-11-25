@@ -9,7 +9,8 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<s:layout-render name="/layout.jsp" title="Booking Manager - Client" pageInfo="client.jsp">
+<fmt:message var="pageTitle" key="client.pageTitle"/>
+<s:layout-render name="/layout.jsp" title=${pageTitle} pageInfo="client.jsp">
     <s:layout-component name="right_content">
        <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" var="actionBean"/>
 
@@ -39,7 +40,7 @@
                 </div>
 
                 <div class="content_right_2column_box">
-                    <s:submit name="all">Cancel</s:submit>
+                    <s:submit name="clientAll"/>
                     <div class="cleaner_h10">&nbsp;</div>
                 </div>
             </s:form>

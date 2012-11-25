@@ -21,7 +21,7 @@ public class ClientsActionBean implements ActionBean {
 
     private ClientService clientService = new ClientServiceImpl();
     private CountryPicker countryPicker = new CountryPicker();
-    
+
     @ValidateNestedProperties(value = {
             @Validate(on = {"add", "save"}, field = "firstName", required = true, minlength = 2, maxlength = 50),
             @Validate(on = {"add", "save"}, field = "lastName", required = true, minlength = 2, maxlength = 50),
@@ -48,7 +48,7 @@ public class ClientsActionBean implements ActionBean {
     public List<ClientTO> getClients() {
         return clientService.findAllClients();
     }
-    
+
     public Set<String> getCountries() {
         return countryPicker.getCountriesName();
     }
@@ -59,7 +59,7 @@ public class ClientsActionBean implements ActionBean {
     }
 
     @DefaultHandler
-    public Resolution all() {
+    public Resolution clientAll() {
         return new ForwardResolution("/client.jsp");
     }
 

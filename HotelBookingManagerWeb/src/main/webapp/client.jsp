@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<s:layout-render name="/layout.jsp" title="Booking Manager - Client" pageInfo="client.jsp">
+<fmt:message var="pageTitle" key="client.pageTitle"/>
+<s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="client.jsp">
     <s:layout-component name="left_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" var="actionBean"/>
 
