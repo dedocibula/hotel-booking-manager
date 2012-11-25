@@ -60,7 +60,7 @@ public class ClientsActionBean implements ActionBean {
 
     @DefaultHandler
     public Resolution clientAll() {
-        return new ForwardResolution("/client.jsp");
+        return new ForwardResolution("/client/client.jsp");
     }
 
     public Resolution add() {
@@ -76,7 +76,7 @@ public class ClientsActionBean implements ActionBean {
     }
 
     public Resolution edit() {
-        return new ForwardResolution("/editClient.jsp");
+        return new ForwardResolution("/client/editClient.jsp");
     }
 
     public Resolution save() {

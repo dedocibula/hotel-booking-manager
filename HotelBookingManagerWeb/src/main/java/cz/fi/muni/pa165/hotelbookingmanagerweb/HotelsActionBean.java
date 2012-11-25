@@ -28,13 +28,12 @@ public class HotelsActionBean implements ActionBean {
 
     private ActionBeanContext context;
 
-    //@SpringBean
     protected HotelService hotelManager = new HotelServiceImpl();
     private CountryPicker countryPicker = new CountryPicker();
 
     @DefaultHandler
     public Resolution hotelAll() {
-        return new ForwardResolution("/showHotel.jsp");
+        return new ForwardResolution("/hotel/showHotel.jsp");
     }
 
     public List<HotelTO> getHotels() {
@@ -54,16 +53,15 @@ public class HotelsActionBean implements ActionBean {
     public ActionBeanContext getContext() {
         return context;
     }
-  /*
-    @ValidateNestedProperties(value = {
-            @Validate(on = {"add", "save"}, field = "id", required = true),
-            @Validate(on = {"add", "save"}, field = "email", required = true),
-            @Validate(on = {"add", "save"}, field = "address", required = true),
-            @Validate(on = {"add", "save"}, field = "city", required = true),
-            @Validate(on = {"add", "save"}, field = "country", required = true)
-
+  
+    @ValidateNestedProperties(value = {           
+            @Validate(on = {"add", "save"}, field = "name", required = true, minlength = 2, maxlength = 50),
+            @Validate(on = {"add", "save"}, field = "contact.phone", required = true, mask = "\\d*", maxlength = 30),
+            @Validate(on = {"add", "save"}, field = "contact.email", required = true, mask = "[\\w\\-\\.\\+]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-z]+", minlength = 6, maxlength = 50),
+            @Validate(on = {"add", "save"}, field = "contact.address", required = true, maxlength = 30),
+            @Validate(on = {"add", "save"}, field = "contact.city", required = true, minlength = 2, maxlength = 50)
     })
-    */
+    
     private HotelTO hotel;
 
     public Resolution add() {
@@ -92,7 +90,7 @@ public class HotelsActionBean implements ActionBean {
     }
 
     public Resolution edit() {
-        return new ForwardResolution("/editHotel.jsp");
+        return new ForwardResolution("/hotel/editHotel.jsp");
     }
 
     public Resolution save() {

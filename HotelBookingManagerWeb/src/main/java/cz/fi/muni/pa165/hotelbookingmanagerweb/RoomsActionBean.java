@@ -35,7 +35,7 @@ public class RoomsActionBean implements ActionBean {
 
     @DefaultHandler
     public Resolution roomAll() {
-        return new ForwardResolution("/showRoom.jsp");
+        return new ForwardResolution("/room/showRoom.jsp");
     }
 
     public List<RoomTO> getRooms() {
@@ -93,7 +93,7 @@ public class RoomsActionBean implements ActionBean {
     }
 
     public Resolution edit() {
-        return new ForwardResolution("/editRoom.jsp");
+        return new ForwardResolution("/room/editRoom.jsp");
     }
 
     public Resolution save() {
@@ -109,11 +109,11 @@ public class RoomsActionBean implements ActionBean {
     }
 
     public Resolution hotelRooms() {
-        return new ForwardResolution("/showRoom.jsp");
+        return new ForwardResolution("/room/showRoom.jsp");
     }
 
     public Resolution backToHotels() {
-        return new ForwardResolution("/showHotel.jsp");
+        return new ForwardResolution("/hotel/showHotel.jsp");
     }
 
 

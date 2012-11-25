@@ -14,8 +14,8 @@
        <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" var="actionBean"/>
 
             <div class="content_right_section">
-                <div class="content_title_02"><fmt:message key="roomAttributes"/></div>
-                <p><fmt:message key="roomAttributesDescription"/></p>
+                <div class="content_title_02"><fmt:message key="changeRoom"/></div>
+                <p><fmt:message key="changeRoomDescription"/></p>
 
                 <div class="cleaner">&nbsp;</div>
             </div>
