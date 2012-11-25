@@ -45,8 +45,34 @@
             </div> <!-- end of banner -->
 
             <div id="templatemo_content">
-                <s:layout-component name="content"/> 
-            </div>
+                
+                <div id="content_left">
+                    
+                    <s:layout-component name="left_content" />
+
+                    <div class="content_left_section">
+                    <div class="content_title_02">Latest News</div>
+
+                        <div class="news_title">Database unavailable</div>
+                            <p>We might have found possible bug in Java. It seems like application context injection in web.xml might not work because of bad mapping in persistence. We will try to resolve this issue this week.</p>
+                        <div class="cleaner_h30">&nbsp;</div>
+
+                    <div class="cleaner_horizontal_divider_01">&nbsp;</div>
+                    <div class="cleaner_h30">&nbsp;</div>
+                    </div>
+
+                    <a href="http://www.templatemo.com" target="_parent"><img src="images/templatemo_special_offer.jpg" alt="special offer" /></a>
+                    <div class="cleaner_h30">&nbsp;</div>
+                </div> <!-- end of content left -->
+                
+                <div id="content_right">
+                    
+                    <s:layout-component name="right_content"/> 
+                
+                </div> <!-- end of content right -->
+            
+                <div class="cleaner">&nbsp;</div>
+            </div> <!-- end of content -->
 
             <div id="templatemo_footer">
             Copyright © 2024 <a href="#"><strong>PA165 Best Group</strong></a> | Designed by Andrej Galád

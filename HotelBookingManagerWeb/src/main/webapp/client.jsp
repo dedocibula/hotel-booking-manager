@@ -1,12 +1,11 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
  
 <s:layout-render name="/layout.jsp" title="Booking Manager - Client" pageInfo="client.jsp">
-    <s:layout-component name="content">
+    <s:layout-component name="left_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" var="actionBean"/>
-        <div id="content_left">
+        
             <div class="content_left_section">
             	<div class="content_title_01">New Client</div>
                 
@@ -22,25 +21,13 @@
             <div class="cleaner_h30">&nbsp;</div>
             <div class="cleaner_horizontal_divider_01">&nbsp;</div>
             <div class="cleaner_h30">&nbsp;</div>
-             
-            <div class="content_left_section">
-            <div class="content_title_02">Latest News</div>
-                
-                <div class="news_title">Database unavailable</div>
-                    <p>We might have found possible bug in Java. It seems like application context injection in web.xml might not work because of bad mapping in persistence. We will try to resolve this issue this week.</p>
-                <div class="cleaner_h30">&nbsp;</div>
-
-            <div class="cleaner_horizontal_divider_01">&nbsp;</div>
-            <div class="cleaner_h30">&nbsp;</div>
-            </div>
-            
-            <a href="http://www.templatemo.com" target="_parent"><img src="images/templatemo_special_offer.jpg" alt="special offer" /></a>
-            <div class="cleaner_h30">&nbsp;</div>
-        </div> <!-- end of content left -->
+           
+    </s:layout-component>
+    
+    <s:layout-component name="right_content">
+        <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" var="actionBean"/>
         
-        <div id="content_right">
-        
-        	<div class="content_right_section">
+            <div class="content_right_section">
                     <div class="content_title_01">Client Management</div>
                     <img src="images/templatemo_image_04.jpg" alt="image" />
                     <p>On this webpage all client management is being done.</p>
@@ -90,7 +77,6 @@
                             </table>
                         </c:otherwise>
                     </c:choose>
-        </div> <!-- end of content right -->
-           
+            </div>
     </s:layout-component>
 </s:layout-render>
