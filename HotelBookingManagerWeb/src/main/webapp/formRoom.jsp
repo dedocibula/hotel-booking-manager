@@ -6,13 +6,16 @@
 
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <s:errors/>
-<table>
-    <tr>
-     <%--   <th><s:label for="b1" name="room.name"/></th>
-         <td><s:text id="b1" name="room.name"/></td> --%>
-    </tr>
-    <tr>
-        <th><s:label for="b2" name="room.pricePerNight"/></th>
-        <td><s:text id="b2" name="room.pricePerNight"/></td>
-    </tr>    
+ <%-- 
+<div class="form_row">
+        <th><label for="b2">Name:</label></th>
+        <td><s:text id="b2" name="room.name"/></td>
+</div>
+ --%>
+<div class="form_row">
+        <th><label for="b3">Price:</label></th>
+        <td><s:text id="b3" name="room.pricePerNight"/></td>
+</div>
+
 </table>
+

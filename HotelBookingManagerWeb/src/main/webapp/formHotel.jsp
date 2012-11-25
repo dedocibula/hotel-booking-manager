@@ -6,33 +6,28 @@
 
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <s:errors/>
-<table>
-    <tr>
-        <th><s:label for="b1" name="hotel.name"/></th>
-        <td><s:text id="b1" name="hotel.name"/></td>
-    </tr>
-    <tr>
-        <th><s:label for="b2" name="hotel.contact.phone"/></th>
-        <td><s:text id="b2" name="hotel.contact.phone"/></td>
-    </tr>
-    <tr>
-        <th><s:label for="b3" name="hotel.contact.email"/></th>
-        <td><s:text id="b3" name="hotel.contact.email"/></td>
-    </tr>
-    <tr>
-        <th><s:label for="b4" name="hotel.contact.address"/></th>
-        <td><s:text id="b4" name="hotel.contact.address"/></td>
-    </tr>
-    <tr>
-        <th><s:label for="b5" name="hotel.contact.city"/></th>
-        <td><s:text id="b5" name="hotel.contact.city"/></td>
-    </tr>
-    <tr>
-        <th><s:label for="b6" name="hotel.contact.country"/></th>
-        <td><s:text id="b6" name="hotel.contact.country"/></td>
-    </tr>       
-<%--<tr>
-        <th><s:label for="b7" name="hotel.rooms"/></th>
-        <td><s:text id="b7" name="hotel.rooms"/></td>
-    </tr>     --%>
+<div class="form_row">
+        <th><label for="b2">Name:</label></th>
+        <td><s:text id="b2" name="hotel.name"/></td>
+</div>
+<div class="form_row">
+        <th><label for="b3">Phone:</label></th>
+        <td><s:text id="b3" name="hotel.contact.phone"/></td>
+</div>
+<div class="form_row">
+        <th><label for="b4">Email:</label></th>
+        <td><s:text id="b4" name="hotel.contact.email"/></td>
+</div>
+<div class="form_row">
+        <th><label for="b5">Address:</label></th>
+        <td><s:text id="b5" name="hotel.contact.address"/></td>
+</div>
+<div class="form_row">
+        <th><label for="b6">City:</label></th>
+        <td><s:text id="b6" name="hotel.contact.city"/></td>
+</div>
+<div class="form_row">
+        <th><label for="b7">Country:</label></th>
+        <td><s:text id="b7" name="hotel.contact.country"/></td>
+</div>      
 </table>
