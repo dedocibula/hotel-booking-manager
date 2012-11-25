@@ -34,23 +34,23 @@ img {
 }
 
 tr th {
-        font-size: 14px;
-        padding: 0 5px 5px 5px;
-        text-transform: capitalize;
+	font-size: 14px;
+	padding: 0 5px 5px 5px;
+	text-transform: capitalize;
 }
 
 tr td {
-        font-size: 14px;
-        text-align: center;
+	font-size: 14px;
+	text-align: center;
 }
 
 input.error { 
-        background: #FA8072; 
+	background: #FA8072; 
 }
 
 .emptyDb {
-        font: 15px bold;
-        font-style: italic;
+	font: 15px bold;
+	font-style: italic;
 }
 
 .cleaner_w10 {
@@ -153,7 +153,7 @@ input.error {
 }
 
 #website_title #salgon {
-        margin-top: 1em; 
+	margin-top: 1em; 
 	clear: both;
 	font-size: 16px;
 	color:#FFF;
@@ -172,8 +172,8 @@ input.error {
 #templatemo_banner #templatemo_menu{
 	width: 580px;
 	height: 45px;
-        margin: auto;
-        border: solid transparent;
+	margin: auto;
+	border: solid transparent;
 	/* background: url(images/templatemo_menu_bg.png) no-repeat; */
 }
 
@@ -248,39 +248,38 @@ input.error {
 }
 
 #content_left input[type="submit"] {
-        float: left;
 	clear: both;
-        background: url(images/templatemo_button_01.jpg) no-repeat;
-        border: 0;
-        color: #000000;
+	background: url(images/templatemo_button_01.jpg) no-repeat;
+	border: 0;
+	color: #000000;
 	font-size: 14px;
 	font-weight: bold;
-        width: 150px;
+	width: 150px;
 	padding: 5px 0 5px 0;
 	text-align: center;
-        cursor: pointer;
+	cursor: pointer;
 }
 
 #content_left input[type="submit"]:active {
-        color: #FFF;
+	color: #FFF;
 }
 
 #content_right input[type="submit"] {
-        float: left;
+	float: left;
 	clear: both;
-        background: url(images/templatemo_button_02.jpg) no-repeat;
-        border: 0;
-        color: #000000;
+	background: url(images/templatemo_button_02.jpg) no-repeat;
+	border: 0;
+	color: #000000;
 	font-size: 14px;
 	font-weight: bold;
-        width: 100px;
+	width: 100px;
 	padding: 5px 0 5px 0;
 	text-align: center;
-        cursor: pointer;
+	cursor: pointer;
 }
 
 #content_right input[type="submit"]:active {
-        color: #FFF;
+	color: #FFF;
 }
 
 #templatemo_content #content_right{
