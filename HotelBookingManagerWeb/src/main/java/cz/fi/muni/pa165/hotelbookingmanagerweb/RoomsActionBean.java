@@ -51,11 +51,10 @@ public class RoomsActionBean implements ActionBean {
     public ActionBeanContext getContext() {
         return context;
     }
-    /*
+    
     @ValidateNestedProperties(value = {
             @Validate(on = {"add", "save"}, field = "pricePerNight", required = true, minvalue = 1)
     })
-    */
     private RoomTO room;
     private static HotelTO hotel;
 
@@ -73,9 +72,9 @@ public class RoomsActionBean implements ActionBean {
         return roomManager.findRoomsByHotel(hotel);
     }
 
-
     public Resolution add() {
-        room.setHotel(hotel);
+        if (room != null)
+            room.setHotel(hotel);
         roomManager.createRoom(room);
         return new RedirectResolution(this.getClass(), "all");
     }

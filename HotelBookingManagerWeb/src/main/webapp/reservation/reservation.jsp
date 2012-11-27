@@ -45,12 +45,17 @@
 		</div>
 
 		<div class="cleaner_h40">&nbsp;</div>
+                
+                <div class="content_right_section">
+			<div class="content_title_02"><f:message key="reservations"/></div>
+                        <div class="rc_btn_02"><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="create">Create</s:link></div>
+		</div>
+
+		<div class="cleaner_h40">&nbsp;</div>
 
 
 		<div class="content_right_section">
 			<div class="content_title_02"><f:message key="reservations"/></div>
-
-			<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="create"><f:message key="newReservation"/></s:link>
 
 			<c:choose>
 				<c:when test="${empty actionBean.reservations}">

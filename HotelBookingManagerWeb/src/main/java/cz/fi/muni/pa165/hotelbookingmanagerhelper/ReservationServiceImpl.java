@@ -64,9 +64,9 @@ public class ReservationServiceImpl implements ReservationService {
     public List<ReservationTO> findReservationsByDate(Date from, Date to) {
         List<ReservationTO> temp = new ArrayList<>();
         for (ReservationTO reservationTO : findAllReservations()) {
-            if ((reservationTO.getFromDate().before(from) ||
+            if ((reservationTO.getFromDate().after(from) ||
                 reservationTO.getFromDate().equals(from)) && 
-                (reservationTO.getToDate().after(to) ||
+                (reservationTO.getToDate().before(to) ||
                 reservationTO.getToDate().equals(to)))
                 temp.add(reservationTO);
         }
@@ -77,9 +77,9 @@ public class ReservationServiceImpl implements ReservationService {
     public List<ReservationTO> findReservationsByDate(Date from, Date to, HotelTO hotelTO) {
         List<ReservationTO> temp = new ArrayList<>();
         for (ReservationTO reservationTO : findAllReservations()) {
-            if ((reservationTO.getFromDate().before(from) ||
+            if ((reservationTO.getFromDate().after(from) ||
                 reservationTO.getFromDate().equals(from)) && 
-                (reservationTO.getToDate().after(to) ||
+                (reservationTO.getToDate().before(to) ||
                 reservationTO.getToDate().equals(to)) &&
                 reservationTO.getRoom().getHotel().equals(hotelTO))
                 temp.add(reservationTO);

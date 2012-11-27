@@ -110,6 +110,10 @@ input.error {
 	text-decoration: none;
 }
 
+.rc_btn_01 a:active {
+        color: #FFF;
+}
+
 .rc_btn_02 a{
 	float: left;
 	clear: both;
@@ -122,6 +126,10 @@ input.error {
 	font-size: 14px;
 	font-weight: bold;
 	text-decoration: none;
+}
+
+.rc_btn_02 a:active {
+        color: #FFF;
 }
 
 #templatemo_container{
