@@ -13,41 +13,42 @@
 		<div class="content_right_section">
 			<div class="content_title_01"><fmt:message key="reservationManagement"/></div>
 			<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="all">Back to reservation list</s:link>
-                        <div class="cleaner_h20">&nbsp;</div>
+				<div class="cleaner_h20">&nbsp;</div>
 			<s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean">
-                            <div class="content_right_section">
-                                <p>Select a room and your account to create a reservation.</p>
-                                <s:hidden name="from" />
-                                <s:hidden name="to" />
-				<div>
-					<s:label for="client"><fmt:message key="client"/>:</s:label>
+				<s:errors/>                            
+				<div class="content_right_section">
+					<p>Select a room and your account to create a reservation.</p>
+					<s:hidden name="from" />
+					<s:hidden name="to" />
+					<div>
+						<s:label for="client"><fmt:message key="client"/>:</s:label>
+						</div>
+						<div>
+						<s:select id="client" name="client.id" size="10" style="width:200px;">
+							<s:options-collection collection="${actionBean.clients}" value="id" />
+						</s:select>
+					</div>
+
+					<div>
+						<s:label for="room"><fmt:message key="room"/>:</s:label>
+						</div>
+						<div>
+						<s:select id="room" name="room.id" size="10" style="width:200px;">
+							<s:options-collection collection="${actionBean.rooms}" value="id" />
+						</s:select>
+					</div>
+					<div class="cleaner_h40">&nbsp;</div>
 				</div>
-				<div>
-                                        <s:select id="client" name="client.id" size="10" style="width:200px;">
-						<s:options-collection collection="${actionBean.clients}" value="id" />
-					</s:select>
+				<div class="content_right_2column_box">
+					<s:submit name="add">Save</s:submit>
+						<div class="cleaner_h10">&nbsp;</div>
+					</div>
+					<div class="content_right_2column_box">
+					<s:submit name="create">Go Back</s:submit>
+						<div class="cleaner_h10">&nbsp;</div>
+					</div>
 				</div>
-                                
-                                <div>
-					<s:label for="room"><fmt:message key="room"/>:</s:label>
-				</div>
-				<div>
-                                        <s:select id="room" name="room.id" size="10" style="width:200px;">
-						<s:options-collection collection="${actionBean.rooms}" value="id" />
-					</s:select>
-				</div>
-                                <div class="cleaner_h40">&nbsp;</div>
-                            </div>
-                            <div class="content_right_2column_box">
-				<s:submit name="add">Save</s:submit>
-                                <div class="cleaner_h10">&nbsp;</div>
-                            </div>
-                            <div class="content_right_2column_box">
-				<s:submit name="create">Go Back</s:submit>
-                                <div class="cleaner_h10">&nbsp;</div>
-                            </div>
-                                	</div>
-			</s:form>
+		</s:form>
 
     </s:layout-component>
 </s:layout-render>
