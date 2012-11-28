@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mappings xmlns="http://dozer.sourceforge.net"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://dozer.sourceforge.net
+
+http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    
+    <mapping>
+        <class-a>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Contact</class-a>
+        <class-b>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO</class-b>
+        <field>
+            <a>phone</a>
+            <b>phone</b>
+        </field>
+        <field>
+            <a>email</a>
+            <b>email</b>
+        </field>
+        <field>
+            <a>address</a>
+            <b>address</b>
+        </field>
+        <field>
+            <a>city</a>
+            <b>city</b>
+        </field>
+         <field>
+            <a>country</a>
+            <b>country</b>
+        </field>
+   </mapping>
+    
+    <mapping>
+        <class-a>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client</class-a>
+        <class-b>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO</class-b>
+        <field>
+            <a>id</a>
+            <b>id</b>
+        </field>
+        <field>
+            <a>firstName</a>
+            <b>firstName</b>
+        </field>
+        <field>
+            <a>lastName</a>
+            <b>lastName</b>
+        </field>
+        <field>
+            <a>contact</a>
+            <b>contact</b>
+            <b-hint>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO</b-hint>
+        </field>
+    </mapping>
+
+ 
+    <mapping>
+        <class-a>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Room</class-a>
+        <class-b>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO</class-b>
+        <field>
+            <a>id</a>
+            <b>id</b>
+        </field>
+        <field>
+            <a>pricePerNight</a>
+            <b>pricePerNight</b>
+        </field>
+        <field>
+            <a>hotel</a>
+            <b>hotel</b>
+            <b-hint>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO</b-hint>
+        </field>
+    </mapping>
+    
+    <mapping>
+        <class-a>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel</class-a>
+        <class-b>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO</class-b>
+        <field>
+            <a>id</a>
+            <b>id</b>
+        </field>
+        <field>
+            <a>name</a>
+            <b>name</b>
+        </field>
+        <field>
+            <a>contact</a>
+            <b>contact</b>
+            <b-hint>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO</b-hint>
+        </field>
+        <field>
+            <a>rooms</a>
+            <b>rooms</b>
+            <b-hint>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO</b-hint>
+        </field>
+    </mapping>
+    
+    <mapping>
+        <class-a>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Reservation</class-a>
+        <class-b>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ReservationTO</class-b>
+        <field>
+            <a>id</a>
+            <b>id</b>
+        </field>
+        <field>
+            <a>client</a>
+            <b>client</b>
+            <b-hint>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO</b-hint>
+        </field>
+        <field>
+            <a>room</a>
+            <b>room</b>
+            <b-hint>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO</b-hint>
+        </field>
+        <field>
+            <a>fromDate</a>
+            <b>fromDate</b>            
+        </field>
+        <field>
+            <a>toDate</a>
+            <b>toDate</b>            
+        </field>
+        <field>
+            <a>price</a>
+            <b>price</b>
+        </field>
+    </mapping>
+
+ 
+
+</mappings>
