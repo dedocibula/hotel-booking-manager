@@ -65,6 +65,7 @@ public class ReservationsActionBean implements ActionBean {
 	private Object[] months;
 	private List<ReservationTO> reservations;
 	private DateInterval dateInterval;
+        
 	private Date from;
 	private Date to;
 	

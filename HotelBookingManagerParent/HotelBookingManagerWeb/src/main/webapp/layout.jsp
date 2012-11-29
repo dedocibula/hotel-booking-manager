@@ -91,6 +91,47 @@
                 </div>
                 </div> <!-- end of footer -->
         </div> <!-- end of container -->
+        
+        <script type="text/javascript" src="${pageContext.request.contextPath}/jquery-1.8.2.js"></script>
+        
+        <script>
+            (function() {
+                var $tbody = $('tbody');
+                var $left_content = $('div#content_left');
+                
+                if ($('div.validation_error')[0]) {
+                    $left_content.show();
+                } else {
+                    $left_content.css({
+                        left: "-200px"
+                    });
+                    
+                    $left_content.animate({
+                        opacity: 'show',
+                        left: '+=200'
+                    }, 1000);
+                }
+                
+                $tbody.on('mouseleave', function() {
+                    $('tr.info').hide();
+                });
+                
+                $tbody.on('mouseover', 'tr.main', function() {
+                   $(this).next()
+                          .siblings('tr.info')
+                          .hide(200)
+                          .end()
+                          .show(200);
+                });
+                
+                $('a.delete').on('click', function(e) {
+                    var answer = confirm('Are you sure that you want to remove this item?');
+                    if (!answer) {
+                        e.preventDefault();
+                    }
+                })
+            })();
+        </script>
     </body>
 </html>
 </s:layout-definition>

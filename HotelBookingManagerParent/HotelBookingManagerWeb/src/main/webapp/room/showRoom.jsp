@@ -45,33 +45,34 @@
 
                 <div class="content_right_section">
                     <div class="content_title_02"><fmt:message key="allRooms"/></div>
+                    <s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="backToHotels"><fmt:message key="backToHotels"/></s:link>              
+                    <div class="cleaner_h20"></div>
                     <c:choose>
                         <c:when test="${empty actionBean.hotelRooms}">
                             <p class="emptyDb"><fmt:message key="noRooms"/></p>
                         </c:when>
                         <c:otherwise>
-                            <table>
-                                <tr>
+                            <table id="table">
+                                <thead>
                                     <th><fmt:message key="id"/></th>
                                     <th><fmt:message key="room.pricePerNight"/></th>
                                     <th><fmt:message key="room.hotel"/></th>
 
                                     <th></th>
                                     <th></th>
-                                </tr>
+                                </thead>
                                 <c:forEach items="${actionBean.hotelRooms}" var="room">
                                     <tr>
                                         <td>${room.id}</td>
                                              <td><c:out value="${room.pricePerNight}"/></td>
                                              <td><c:out value="${room.hotel.name}"/></td>
-                                             <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="edit"><s:param name="room.id" value="${room.id}"/><fmt:message key="edit"/></s:link> </td>
-                                             <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="delete"><s:param name="room.id" value="${room.id}"/><fmt:message key="delete"/></s:link> </td>
+                                             <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="edit"><s:param name="room.id" value="${room.id}"/><img src="${pageContext.request.contextPath}/images/edit_icon.png" alt="edit" /></s:link> </td>
+                                             <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="delete" class="delete"><s:param name="room.id" value="${room.id}"/><img src="${pageContext.request.contextPath}/images/remove_icon.png" alt="delete" /></s:link> </td>
                                              </tr>
                                 </c:forEach>
                             </table>
                         </c:otherwise>                            
-                    </c:choose>
-              <s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="backToHotels"><fmt:message key="backToHotels"/></s:link>              
+                    </c:choose>              
             </div>
     </s:layout-component>
 </s:layout-render>

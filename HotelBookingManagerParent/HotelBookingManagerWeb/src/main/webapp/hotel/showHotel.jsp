@@ -50,32 +50,29 @@
                             <p class="emptyDb"><fmt:message key="noHotels"/></p>
                         </c:when>
                         <c:otherwise>
-                            <table>
-                                <tr>
+                            <table id="table">
+                                <thead>
                                     <th><fmt:message key="id"/></th>
                                     <th><fmt:message key="hotel.name"/></th>
                                     <th><fmt:message key="hotel.phone"/></th>
                                     <th><fmt:message key="hotel.email"/></th>
-                                    <th><fmt:message key="hotel.address"/></th>
-                                    <th><fmt:message key="hotel.city"/></th>
-                                    <th><fmt:message key="hotel.country"/></th>
                                     <th><fmt:message key="hotel.rooms"/></th>
                                     <th></th>
                                     <th></th>
-                                </tr>
+                                </thead>
                                 <c:forEach items="${actionBean.hotels}" var="hotel">
-                                    <tr>
+                                    <tr class="main">
                                         <td>${hotel.id}</td>
                                         <td><c:out value="${hotel.name}"/></td>
                                         <td><c:out value="${hotel.contact.phone}"/></td>
                                         <td><c:out value="${hotel.contact.email}"/></td>
-                                        <td><c:out value="${hotel.contact.address}"/></td>
-                                        <td><c:out value="${hotel.contact.city}"/></td>
-                                        <td><c:out value="${hotel.contact.country}"/> </td>
                                         <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean" event="rooms"><s:param name="hotel.id" value="${hotel.id}"/><fmt:message key="hotel.rooms"/></s:link> </td>
-                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean" event="edit"><s:param name="hotel.id" value="${hotel.id}"/><fmt:message key="edit"/></s:link> </td>
-                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean" event="delete"><s:param name="hotel.id" value="${hotel.id}"/><fmt:message key="delete"/></s:link> </td>
+                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean" event="edit"><s:param name="hotel.id" value="${hotel.id}"/><img src="${pageContext.request.contextPath}/images/edit_icon.png" alt="edit" /></s:link> </td>
+                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean" event="delete" class="delete"><s:param name="hotel.id" value="${hotel.id}"/><img src="${pageContext.request.contextPath}/images/remove_icon.png" alt="delete" /></s:link> </td>
 
+                                    </tr>
+                                    <tr class="info">
+                                        <%@include file="hotelInfo.jsp" %>
                                     </tr>
                                 </c:forEach>
                             </table>

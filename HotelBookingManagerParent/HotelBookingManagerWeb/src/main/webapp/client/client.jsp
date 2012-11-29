@@ -45,32 +45,29 @@
                             <p class="emptyDb"><fmt:message key="noClients"/></p>
                         </c:when>
                         <c:otherwise>
-                            <table>
-                                <tr>
+                            <table id="table">
+                                <thead>
                                     <th><fmt:message key="id"/></th>
                                     <th><fmt:message key="client.firstName"/></th>
                                     <th><fmt:message key="client.lastName"/></th>
                                     <th><fmt:message key="client.phone"/></th>
                                     <th><fmt:message key="client.email"/></th>
-                                    <th><fmt:message key="client.address"/></th>
-                                    <th><fmt:message key="client.city"/></th>
-                                    <th><fmt:message key="client.country"/></th>
                                     <th></th>
                                     <th></th>
-                                </tr>
+                                </thead>
                                 <c:forEach items="${actionBean.clients}" var="client">
-                                    <tr>
+                                    <tr class="main">
                                         <td>${client.id}</td>
                                         <td><c:out value="${client.firstName}"/></td>
                                         <td><c:out value="${client.lastName}"/></td>
                                         <td><c:out value="${client.contact.phone}"/></td>
                                         <td><c:out value="${client.contact.email}"/></td>
-                                        <td><c:out value="${client.contact.address}"/></td>
-                                        <td><c:out value="${client.contact.city}"/></td>
-                                        <td><c:out value="${client.contact.country}"/> </td>
-                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" event="edit"><s:param name="client.id" value="${client.id}"/><fmt:message key="edit"/></s:link> </td>
-                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" event="delete"><s:param name="client.id" value="${client.id}"/><fmt:message key="delete"/></s:link> </td>
+                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" event="edit"><s:param name="client.id" value="${client.id}"/><img src="${pageContext.request.contextPath}/images/edit_icon.png" alt="edit" /></s:link> </td>
+                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" event="delete" class="delete"><s:param name="client.id" value="${client.id}"/><img src="${pageContext.request.contextPath}/images/remove_icon.png" alt="delete" /></s:link> </td>
 
+                                    </tr>
+                                    <tr class="info">
+                                        <%@include file="clientInfo.jsp" %>
                                     </tr>
                                 </c:forEach>
                             </table>

@@ -77,15 +77,15 @@ public class RoomsActionBean implements ActionBean {
         if (room != null)
             room.setHotel(hotel);
         roomManager.createRoom(room);
-        return new RedirectResolution(this.getClass(), "all");
+        return new RedirectResolution(this.getClass(), "hotelRooms").addParameter("hotel", hotel.getId());
     }
 
     public Resolution delete() {
         roomManager.deleteRoom(room);
-        return new RedirectResolution(this.getClass(), "all");
+        return new RedirectResolution(this.getClass(), "hotelRooms").addParameter("hotel", hotel.getId());
     }
 
-    @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
+    @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save", "delete"})
     public void loadRoomFromDatabase() {
         String ids = context.getRequest().getParameter("room.id");
         if (ids == null) return;
@@ -98,7 +98,7 @@ public class RoomsActionBean implements ActionBean {
 
     public Resolution save() {
         roomManager.updateRoom(room);
-        return new RedirectResolution(this.getClass(), "all");
+        return new RedirectResolution(this.getClass(), "hotelRooms").addParameter("hotel", hotel.getId());
     }
 
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"hotelRooms"})

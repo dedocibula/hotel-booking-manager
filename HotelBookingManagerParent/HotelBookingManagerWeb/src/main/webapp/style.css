@@ -33,19 +33,81 @@ img {
 	border: none;
 }
 
-tr th {
-	font-size: 14px;
-	padding: 0 5px 5px 5px;
-	text-transform: capitalize;
+#table {
+	border: 1px solid #e3e3e3;
+	background-color: #f2f2f2;
+        width: 100%;
+	border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
 }
 
-tr td {
-	font-size: 14px;
+#table .info {
+        display: none;
+        background: #ffffff;
+}
+
+#table td, #table th {
+	padding: 5px;
+	color: #333;
+}
+#table thead {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	padding: .2em 0 .2em .5em;
+	text-align: left;
+	color: #4B4B4B;
+	background-color: red;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#e3e3e3), color-stop(.6,#B3B3B3));
+	background-image: -moz-linear-gradient(top, #D6D6D6, #B0B0B0, #B3B3B3 90%);
+	border-bottom: solid 1px #999;
+}
+#table th {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 15px;
+	line-height: 20px;
+	font-style: normal;
+	font-weight: bold;
 	text-align: center;
+	text-shadow: white 1px 1px 1px;
+}
+#table td {
+	line-height: 20px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	border-bottom: 1px solid #fff;
+	border-top: 1px solid #fff;
+        cursor: pointer;
+        text-align: center;
+}
+
+#table td img {
+        margin: 0 -10 0 0;
+        border: none;
+}
+#table td:hover {
+	background-color: #fff;
 }
 
 input.error { 
 	background: #FA8072; 
+}
+
+.description {
+        text-align: center;
+}
+
+.description .description_div {
+        display: inline-block;
+        padding: 8px;
+}
+
+.description .description_div .description_span {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	text-shadow: white 1px 1px 1px;
+        padding-right: 8px;
 }
 
 .emptyDb {
@@ -234,6 +296,8 @@ input.error {
 #templatemo_content #content_left{
 	float: left;
 	width: 345px;
+        display: none;
+        position: relative;
 	margin: 0px;
 	padding:  30px 0 0 0;
 	background: #2f2c29 url(images/templatemo_left_column_top.jpg) top repeat-x;
