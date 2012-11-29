@@ -1,17 +1,18 @@
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
 
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ReservationService;
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ReservationTO;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.RoomTO;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.ClientServiceImpl;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.HotelServiceImpl;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.ReservationServiceImpl;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.RoomServiceImpl;
+
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ClientService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ReservationService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RoomService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ReservationTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.ClientServiceImpl;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.HotelServiceImpl;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.ReservationServiceImpl;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.RoomServiceImpl;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -27,6 +28,7 @@ import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.controller.LifecycleStage;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 
@@ -39,10 +41,14 @@ public class ReservationsActionBean implements ActionBean {
 
 	private ActionBeanContext context;
 	// service
-	private ReservationService reservationService = new ReservationServiceImpl();
-	private HotelService hotelService = new HotelServiceImpl();
-	private ClientService clientService = new ClientServiceImpl();
-	private RoomService roomService = new RoomServiceImpl();
+        @SpringBean
+	private ReservationService reservationService;
+        @SpringBean
+	private HotelService hotelService;
+        @SpringBean
+	private ClientService clientService;
+        @SpringBean
+	private RoomService roomService;
 	// DTO
 	@ValidateNestedProperties(value = {
 		@Validate(on = {"add"}, field = "client", required = true),

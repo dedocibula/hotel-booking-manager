@@ -3,20 +3,17 @@
  * and open the template in the editor.
  */
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.RoomTO;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.HotelServiceImpl;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.RoomServiceImpl;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.HotelServiceImpl;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
-import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 
 import java.util.List;
 import java.util.Set;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 
 /**
  *
@@ -28,7 +25,9 @@ public class HotelsActionBean implements ActionBean {
 
     private ActionBeanContext context;
 
-    protected HotelService hotelManager = new HotelServiceImpl();
+    @SpringBean
+    protected HotelService hotelManager;   
+    
     private CountryPicker countryPicker = new CountryPicker();
 
     @DefaultHandler

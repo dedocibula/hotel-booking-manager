@@ -27,7 +27,7 @@
 							<s:options-collection collection="${actionBean.hotels}" value="id" />
 						</s:select>
 					</div>
-					<div class="cleaner_h40">&nbsp;</div>
+					<div class="cleaner_h20">&nbsp;</div>
 				</div>
 				<div class="content_right_section">
 					<div class="cleaner_h20">&nbsp;</div>

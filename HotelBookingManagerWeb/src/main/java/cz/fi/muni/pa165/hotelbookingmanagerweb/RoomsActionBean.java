@@ -4,21 +4,20 @@
  */
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
 
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.HotelService;
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.RoomService;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.HotelTO;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.RoomTO;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.HotelServiceImpl;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.RoomServiceImpl;
 
-import java.util.ArrayList;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RoomService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.HotelServiceImpl;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.RoomServiceImpl;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
-import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 
 import java.util.List;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 
 /**
  *
@@ -29,9 +28,10 @@ public class RoomsActionBean implements ActionBean {
 
     private ActionBeanContext context;
 
-    //@SpringBean
-    protected RoomService roomManager = new RoomServiceImpl();
-    protected HotelService hotelManager = new HotelServiceImpl();
+    @SpringBean
+    protected RoomService roomManager;
+    @SpringBean
+    protected HotelService hotelManager;
 
     @DefaultHandler
     public Resolution roomAll() {
@@ -70,6 +70,7 @@ public class RoomsActionBean implements ActionBean {
 
     public List<RoomTO> getHotelRooms() {
         return roomManager.findRoomsByHotel(hotel);
+        
     }
 
     public Resolution add() {

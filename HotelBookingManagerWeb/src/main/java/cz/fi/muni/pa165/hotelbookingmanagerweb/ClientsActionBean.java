@@ -1,12 +1,14 @@
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
 
-import cz.fi.muni.pa165.hotelbookingmanager.service.interfaces.ClientService;
-import cz.fi.muni.pa165.hotelbookingmanager.transferobjects.ClientTO;
-import cz.fi.muni.pa165.hotelbookingmanagerhelper.ClientServiceImpl;
+
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ClientService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.ClientServiceImpl;
 import java.util.List;
 import java.util.Set;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 
@@ -18,8 +20,9 @@ import net.sourceforge.stripes.validation.ValidateNestedProperties;
 public class ClientsActionBean implements ActionBean {
 
     private ActionBeanContext context;
-
-    private ClientService clientService = new ClientServiceImpl();
+    
+    @SpringBean
+    private ClientService clientService;    
     private CountryPicker countryPicker = new CountryPicker();
 
     @ValidateNestedProperties(value = {

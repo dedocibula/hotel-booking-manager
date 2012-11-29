@@ -2,18 +2,19 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
+         version="3.0"
+         metadata-complete="true">
 
-    <!-- Spring -->
-    <!--<listener>
+     <!-- Spring -->
+    <listener>
         <description>aktivace Springu při startu aplikace</description>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    </listener>   
     <context-param>
         <description>umístění konfiguračního souboru pro Spring</description>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:applicationContext.xml</param-value>
-    </context-param>-->
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
 
     <!-- JSTL -->
     <context-param>
