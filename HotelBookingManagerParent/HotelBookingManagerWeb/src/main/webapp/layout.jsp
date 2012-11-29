@@ -53,6 +53,15 @@
                     <div class="content_left_section">
                     <div class="content_title_02">Latest News</div>
 
+                        <div class="news_title">[Update] Database</div>
+                            <p>
+                            We have succesfully managed to link service and presentation layer. Now we are operating
+                            on top of functional database. There are still minor glitches that we need to repair like
+                            insufficient localization or service error handling but we are possitive that this time
+                            we will finish on schedule.
+                            </p>
+                        <div class="cleaner_h30">&nbsp;</div>
+                        
                         <div class="news_title">[Bloopers] After a few hours of head-wrecking...</div>
                             <p>
                             "On this webpage all hotel management is being done.
