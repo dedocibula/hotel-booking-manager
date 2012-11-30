@@ -49,7 +49,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     public void createReservation(ReservationTO reservationTO) {
         if (reservationTO == null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Reservation cannot be null");
         Reservation reservation = mapper.map(reservationTO, Reservation.class);
         validateReservation(reservation);
         if (reservation.getId() != null)
@@ -63,9 +63,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public void deleteReservation(ReservationTO reservationTO) {
+		if (reservationTO.getId() == null)
+            throw new IllegalArgumentException("Reservation must have id already set.");
         Reservation reservation = mapper.map(reservationTO, Reservation.class);
-        validateReservationIncludingId(reservation);
         reservationDAO.delete(reservation);
+		reservationTO = null;
     }
 
     @Override

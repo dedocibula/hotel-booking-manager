@@ -12,6 +12,7 @@
 			<div class="content_title_01"><f:message key="selectDateInterval"/></div>
 
 			<s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean">
+				<s:errors />
 				<%@include file="/../components/dateChoose.jsp" %>
 				<div>
 					<div>
@@ -19,6 +20,7 @@
 					</div>
 					<div>
 						<s:select id="hotel" name="hotel.id">
+							<option value="-1">- <f:message key="any"/> -</option>
 							<s:options-collection collection="${actionBean.hotels}" value="id" label="name" />
 						</s:select>
 					</div>
@@ -48,7 +50,7 @@
 
 		<div class="content_right_section">
 			<div class="content_title_02">New Reservation</div>
-                        <p>Please click the button to add new reservation.</p>
+			<p>Please click the button to add new reservation.</p>
 			<div class="rc_btn_02"><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="create">Create</s:link></div>
 			</div>
 
@@ -65,11 +67,11 @@
 				<c:otherwise>
 					<table id="table">
 						<thead>
-								<th><f:message key="client"/></th>
-								<th><f:message key="room"/></th>
-								<th><f:message key="dateFrom"/></th>
-								<th><f:message key="dateTo"/></th>
-                                                                <th></th>
+						<th><f:message key="client"/></th>
+						<th><f:message key="room"/></th>
+						<th><f:message key="dateFrom"/></th>
+						<th><f:message key="dateTo"/></th>
+						<th></th>
 						</thead>
 						<c:forEach items="${actionBean.reservations}" var="reservation">
 							<tr>
@@ -77,12 +79,12 @@
 								<td>${reservation.room.hotel.name} - ${reservation.room.pricePerNight}</td>
 								<td><f:formatDate type="date" dateStyle="LONG" value="${reservation.fromDate}" /></td>
 								<td><f:formatDate type="date" dateStyle="LONG" value="${reservation.toDate}" /></td>
-									<%--<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="edit">
-										<s:param name="reservation.id" value="${reservation.id}"/>
-										Edit
-									</s:link> --%>
-                                        <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="delete" class="delete"><s:param name="reservation.id" value="${reservation.id}"/><img src="${pageContext.request.contextPath}/images/remove_icon.png" alt="delete" /></s:link> </td>
-							</tr>
+								<%--<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="edit">
+									<s:param name="reservation.id" value="${reservation.id}"/>
+									Edit
+								</s:link> --%>
+								<td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="delete" class="delete"><s:param name="reservation.id" value="${reservation.id}"/><img src="${pageContext.request.contextPath}/images/remove_icon.png" alt="delete" /></s:link> </td>
+								</tr>
 						</c:forEach>
 					</table>
 				</c:otherwise>

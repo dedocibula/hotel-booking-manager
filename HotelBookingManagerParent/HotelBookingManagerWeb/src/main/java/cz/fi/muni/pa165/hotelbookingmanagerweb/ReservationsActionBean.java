@@ -1,6 +1,5 @@
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
 
-
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ReservationService;
@@ -19,6 +18,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
@@ -29,8 +30,13 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
+import net.sourceforge.stripes.validation.LocalizableError;
+import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
+import net.sourceforge.stripes.validation.ValidationError;
+import net.sourceforge.stripes.validation.ValidationErrors;
+import net.sourceforge.stripes.validation.ValidationMethod;
 
 /**
  *
@@ -40,36 +46,85 @@ import net.sourceforge.stripes.validation.ValidateNestedProperties;
 public class ReservationsActionBean implements ActionBean {
 
 	private ActionBeanContext context;
+	
 	// service
-        @SpringBean
+	@SpringBean
 	private ReservationService reservationService;
-        @SpringBean
+	@SpringBean
 	private HotelService hotelService;
-        @SpringBean
+	@SpringBean
 	private ClientService clientService;
-        @SpringBean
+	@SpringBean
 	private RoomService roomService;
+	
 	// DTO
-	@ValidateNestedProperties(value = {
-		@Validate(on = {"add"}, field = "client", required = true),
-		@Validate(on = {"add"}, field = "room", required = true)
-	})
 	private ReservationTO reservation;
+	@ValidateNestedProperties(value = {
+		@Validate(on = "add", field = "id", required = true)
+	})
 	private ClientTO client;
+	@ValidateNestedProperties(value = {
+		@Validate(on = "add", field = "id", required = true)
+	})
 	private RoomTO room;
 	@ValidateNestedProperties(value = {
-		@Validate(on = {"createContinue"}, field = "id", required = true)
+		@Validate(on = {"createContinue", "add"}, field = "id", required = true)
 	})
 	private HotelTO hotel;
-	// hepler fields
-	private Object[] months;
-	private List<ReservationTO> reservations;
-	private DateInterval dateInterval;
-        
-	private Date from;
-	private Date to;
 	
-	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	// hepler fields
+	private String months;
+	private List<ReservationTO> reservations;
+	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+	@Validate(on = {"createContinue", "add"}, required = true)
+	private String from;
+	@Validate(on = {"createContinue", "add"}, required = true)
+	private String to;
+	private Date dateFrom;
+	private Date dateTo;
+
+	@ValidationMethod(on = {"createContinue", "add"})
+	public void validateFutureDates(ValidationErrors errors) {
+		dateFrom = getDateFrom();
+		dateTo = getDateTo();
+		if (dateFrom == null || dateTo == null) {
+			return;
+		}
+		if (dateFrom.before(new Date())) {
+			errors.add("dateFrom", new LocalizableError("validation.date.future"));
+		}
+		if (dateTo.before(new Date())) {
+			errors.add("dateTo", new LocalizableError("validation.date.future"));
+		}
+	}
+
+	@ValidationMethod()
+	public void validateDates(ValidationErrors errors) {
+		dateFrom = getDateFrom();
+		dateTo = getDateTo();
+		if (dateFrom == null || dateTo == null) {
+			return;
+		}
+		if (dateFrom.after(dateTo)) {
+			errors.add("dates", new LocalizableError("validation.date.after"));
+		}
+	}
+
+	public String getFrom() {
+		return from;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+
+	public String getTo() {
+		return to;
+	}
+
+	public void setTo(String to) {
+		this.to = to;
+	}
 
 	public HotelTO getHotel() {
 		return hotel;
@@ -91,28 +146,20 @@ public class ReservationsActionBean implements ActionBean {
 		return roomService.findVacantRooms(getDateFrom(), getDateTo(), hotel);
 	}
 
-	public Object[] getMonths() {
+	public String getMonths() {
 		return months;
 	}
 
-	public void setMonths(Object[] months) {
+	public void setMonths(String months) {
 		this.months = months;
 	}
-
+	
 	public List<ReservationTO> getReservations() {
 		return reservations;
 	}
 
 	public void setReservations(List<ReservationTO> reservations) {
 		this.reservations = reservations;
-	}
-
-	public DateInterval getDateInterval() {
-		return dateInterval;
-	}
-
-	public void setDateInterval(DateInterval dateInterval) {
-		this.dateInterval = dateInterval;
 	}
 
 	public ReservationTO getReservation() {
@@ -150,25 +197,25 @@ public class ReservationsActionBean implements ActionBean {
 	}
 
 	@Before(stages = LifecycleStage.ResolutionExecution)
-	public void populateDropDownLists() {
+	public void populateMonths() {
 		String[] monthNames = (new DateFormatSymbols()).getMonths();
-		Object[] months = new Object[12];
-		for (int i = 0; i < 12; i++) {
-			Month month = new Month();
-			month.setIndex(i);
-			month.setName(monthNames[i]);
-			months[i] = month;
+		StringBuilder months = new StringBuilder("[ ");
+		for (int i = 0; i < 11; i++) {
+			months.append('\'').append(monthNames[i]).append("', ");
 		}
-		this.months = months;
+		months.append('\'').append(monthNames[11]).append("' ]");
+		this.months = months.toString();
 	}
-
+	
 	@DefaultHandler
 	public Resolution all() {
-		if (dateInterval != null) {
-
+		if (from != null && !from.equals("") && to != null && !to.equals("")) {
 			String hotelID = context.getRequest().getParameter("hotel.id");
+			HotelTO hotel = null;
 			if (hotelID != null) {
-				HotelTO hotel = hotelService.findHotel(Long.parseLong(hotelID));
+				hotel = hotelService.findHotel(Long.parseLong(hotelID));
+			}
+			if (hotel != null) {
 				reservations = reservationService.findReservationsByDate(getDateFrom(), getDateTo(), hotel);
 			} else {
 				reservations = reservationService.findReservationsByDate(getDateFrom(), getDateTo());
@@ -181,25 +228,37 @@ public class ReservationsActionBean implements ActionBean {
 	}
 
 	private Date getDateFrom() {
-		if (dateInterval != null) {
-			Date from = new Date();
-			from.setDate(dateInterval.getDateFrom());
-			from.setMonth(dateInterval.getMonthFrom());
-			from.setYear(dateInterval.getYearFrom() - 1900);
-			return from;
+		if (dateFrom != null) {
+			return dateFrom;
 		}
-		return this.from;
+		try {
+			from = context.getRequest().getParameter("from");
+			if (from == null) {
+				return null;
+			}
+			dateFrom = dateFormat.parse(from);
+			return dateFrom;
+		} catch (ParseException ex) {
+			Logger.getLogger(ReservationsActionBean.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
 	}
 
 	private Date getDateTo() {
-		if (dateInterval != null) {
-			Date to = new Date();
-			to.setDate(dateInterval.getDateTo());
-			to.setMonth(dateInterval.getMonthTo());
-			to.setYear(dateInterval.getYearTo() - 1900);
-			return to;
+		if (dateTo != null) {
+			return dateTo;
 		}
-		return this.to;
+		try {
+			to = context.getRequest().getParameter("to");
+			if (to == null) {
+				return null;
+			}
+			dateTo = dateFormat.parse(to);
+			return dateTo;
+		} catch (ParseException ex) {
+			Logger.getLogger(ReservationsActionBean.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
 	}
 
 	public Resolution chooseDate() {
@@ -210,7 +269,7 @@ public class ReservationsActionBean implements ActionBean {
 		return new ForwardResolution("/reservation/createStepOne.jsp");
 	}
 
-	@Before(stages = LifecycleStage.BindingAndValidation, on = {"createContinue"})
+	@Before(stages = LifecycleStage.BindingAndValidation, on = {"createContinue", "add"})
 	public void loadHotelFromDatabase() {
 		String hotelID = context.getRequest().getParameter("hotel.id");
 		if (hotelID == null) {
@@ -220,38 +279,35 @@ public class ReservationsActionBean implements ActionBean {
 	}
 
 	public Resolution createContinue() {
-		return new ForwardResolution("/reservation/createStepTwo.jsp")
-				.addParameter("from", dateFormat.format(getDateFrom()))
-				.addParameter("to", dateFormat.format(getDateTo()));
+		return new ForwardResolution("/reservation/createStepTwo.jsp");
 	}
 
 	@Before(stages = LifecycleStage.BindingAndValidation, on = {"add"})
-	public void loadClientAndRoomFromDatabase() throws ParseException {
+	public void loadClientAndRoomFromDatabase() {
 		String clientID = context.getRequest().getParameter("client.id");
 		String roomID = context.getRequest().getParameter("room.id");
-		String from = context.getRequest().getParameter("from");
-		String to = context.getRequest().getParameter("to");
-		if (clientID == null || roomID == null || from == null || to == null) {
+		dateFrom = getDateFrom();
+		dateTo = getDateTo();
+		if (clientID == null || roomID == null || dateFrom == null || dateTo == null) {
 			return;
 		}
 		client = clientService.findClient(Long.parseLong(clientID));
 		room = roomService.getRoom(Long.parseLong(roomID));
-		this.from = dateFormat.parse(from);
-		this.to = dateFormat.parse(to);
-	}
 
-	public Resolution add() throws ParseException {
 		reservation = new ReservationTO();
-		reservation.setFromDate(from);
-		reservation.setToDate(to);
+		reservation.setFromDate(dateFrom);
+		reservation.setToDate(dateTo);
 		reservation.setClient(client);
 		reservation.setRoom(room);
-		reservationService.createReservation(reservation);
+		reservation.setPrice(room.getPricePerNight());
+	}
 
+	public Resolution add() {
+		reservationService.createReservation(reservation);
 		return new RedirectResolution(this.getClass(), "all");
 	}
 
-	@Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
+	@Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save", "delete"})
 	public void loadReservationFromDatabase() {
 		String ids = context.getRequest().getParameter("reservation.id");
 		if (ids == null) {
@@ -260,9 +316,9 @@ public class ReservationsActionBean implements ActionBean {
 		reservation = reservationService.getReservation(Long.parseLong(ids));
 	}
 
-	public Resolution edit() {
-		return new ForwardResolution("/reservation/edit.jsp");
-	}
+//	public Resolution edit() {
+//		return new ForwardResolution("/reservation/edit.jsp");
+//	}
 
 	public Resolution save() {
 		reservationService.updateReservation(reservation);

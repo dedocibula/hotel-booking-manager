@@ -23,7 +23,7 @@
 						<s:label for="hotel"><fmt:message key="hotel"/>:</s:label>
 						</div>
 						<div>
-						<s:select id="hotel" name="hotel.id" size="10" style="width:230px; border-radius:5px;">
+						<s:select id="hotel" name="hotel.id" size="10" style="width:400px; border-radius:5px;">
 							<s:options-collection collection="${actionBean.hotels}" value="id" />
 						</s:select>
 					</div>

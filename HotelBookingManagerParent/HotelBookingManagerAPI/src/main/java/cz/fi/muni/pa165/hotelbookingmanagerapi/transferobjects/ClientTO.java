@@ -70,6 +70,6 @@ public class ClientTO {
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", contact=" + contact + '}';
+        return firstName + " " + lastName + ", email: " + contact.getEmail();
     }
 }

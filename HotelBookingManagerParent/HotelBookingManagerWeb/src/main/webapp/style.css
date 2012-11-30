@@ -33,6 +33,11 @@ img {
 	border: none;
 }
 
+.date-picker {
+	background: white url("images/calendar.png") no-repeat right center;
+	cursor: pointer;
+}
+
 #table {
 	border: 1px solid #e3e3e3;
 	background-color: #f2f2f2;
@@ -89,7 +94,7 @@ img {
 }
 
 input.error { 
-	background: #FA8072; 
+	background-color: #FA8072; 
 }
 
 .description {
@@ -408,6 +413,7 @@ input.error {
 
 .content_left_section form select {
 	margin-right: 10px;	
+	width: 154px;
 }
 
 .content_left_section form label {

@@ -73,6 +73,6 @@ public class HotelTO {
 
     @Override
     public String toString() {
-        return "Hotel{" + "id=" + id + ", name=" + name + ", contact=" + contact + '}';
+        return name + ", contact=" + contact;
     }
 }
