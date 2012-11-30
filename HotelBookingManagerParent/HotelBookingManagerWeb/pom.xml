@@ -155,11 +155,18 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.0</version>
-                <configuration>
-                    <path>/pa165</path>
-                    <port>8080</port>
-                    <url>http://127.0.0.1:8080/pa165</url>
-                </configuration>
+                <executions>
+                    <execution>
+                    <id>start-tomcat</id>
+                    <phase>compile</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+                        <path>/pa165</path>
+                    </configuration>
+                    </execution>
+                </executions>
             </plugin>           
         </plugins>
     </build>
