@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RoomDAO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Room;
 import java.util.Date;
 import java.util.List;
@@ -44,10 +45,13 @@ public class RoomDAOImpl implements RoomDAO{
     }
 
     @Override
-    @Transactional
-    public void delete(Room room) {
-        em.remove(em.merge(room));
-        em.merge(room.getHotel());
+    @Transactional    
+    public void delete(Room room) {         
+        em.merge(room);
+        Hotel hotel = em.find(Hotel.class, room.getHotel().getId());
+        hotel.getRooms().remove(room);
+        em.merge(hotel);
+        em.remove(em.merge(room)); 
     }
 
     @Override

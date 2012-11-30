@@ -89,8 +89,16 @@ public class HotelServiceImpl implements HotelService {
     @Transactional
     public void deleteHotel(HotelTO hotelTO) {
         if (hotelTO == null)
-            throw new IllegalArgumentException("hotel cannot be null");
-        hotelDAO.delete(mapper.map(hotelTO, Hotel.class));
+            throw new IllegalArgumentException("hotel cannot be null");        
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);     
+       //not working, it dont remove rooms from database??        
+        if (hotel.getRooms() != null) {
+            for(Room room : hotel.getRooms()){
+                roomDAO.delete(room);                
+            }
+            hotel.getRooms().removeAll(hotel.getRooms());
+        }        
+        hotelDAO.delete(hotel);
     }
 
     @Override
