@@ -3,7 +3,6 @@ package cz.fi.muni.pa165.hotelbookingmanagerweb;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.ClientServiceImpl;
 import java.util.List;
 import java.util.Set;
 import net.sourceforge.stripes.action.*;
@@ -11,6 +10,7 @@ import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
+import org.springframework.dao.DataAccessException;
 
 /**
  *
@@ -88,7 +88,11 @@ public class ClientsActionBean implements ActionBean {
     }
 
     public Resolution delete() {
-        clientService.deleteClient(client);
-        return new RedirectResolution(this.getClass(), "all");
+        try {
+            clientService.deleteClient(client);
+            return new RedirectResolution(this.getClass(), "all");
+        } catch (DataAccessException e) {
+            return new RedirectResolution("/client/errorClient.jsp");
+        }
     }
 }

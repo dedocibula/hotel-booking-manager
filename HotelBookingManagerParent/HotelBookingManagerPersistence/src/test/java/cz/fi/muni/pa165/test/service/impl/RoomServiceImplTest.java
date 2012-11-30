@@ -5,6 +5,7 @@ import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RoomService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomType;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RoomDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Room;
@@ -72,7 +73,7 @@ public class RoomServiceImplTest {
         HotelTO hotel = App.DatabaseSampler.buildHotelTO("mynewhotel", contact);
         hotel.setId(1L);
 
-        RoomTO room = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, hotel);
+        RoomTO room = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, hotel);
 
         roomService.createRoom(room);
         Mockito.verify(roomDAO, Mockito.times(1)).create(mapper.map(room, Room.class));
@@ -116,7 +117,7 @@ public class RoomServiceImplTest {
 
         hotel.setId(1L);
 
-        RoomTO room = App.DatabaseSampler.buildRoomTO(BigDecimal.valueOf(333.00), hotel);
+        RoomTO room = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.valueOf(333.00), hotel);
 
         room.setId(1L);
 
@@ -143,7 +144,7 @@ public class RoomServiceImplTest {
         HotelTO hotel = App.DatabaseSampler.buildHotelTO("MyHotel", contact);
         hotel.setId(1L);
 
-        RoomTO room = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, hotel);
+        RoomTO room = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, hotel);
 
         room.setId(1L);
 
@@ -179,7 +180,7 @@ public class RoomServiceImplTest {
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "some@email.asdf", "address", "city", "country");
         HotelTO hotelTO = App.DatabaseSampler.buildHotelTO("mynewhotel", contact);
         hotelTO.setId(1L);
-        RoomTO roomTO = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, hotelTO);
+        RoomTO roomTO = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, hotelTO);
         List<RoomTO> roomsTO = new ArrayList<>();
         roomsTO.add(roomTO);
         hotelTO.setRooms(roomsTO);

@@ -1,10 +1,6 @@
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence;
 
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ReservationTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.*;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Contact;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel;
@@ -54,10 +50,10 @@ public class App
             Hotel hotel1 = buildHotel("Hilton", contact4);
             Hotel hotel2 = buildHotel("Crowne", contact5);
 
-            Room room1 = buildRoom(BigDecimal.valueOf(150), hotel1);
-            Room room2 = buildRoom(BigDecimal.valueOf(200), hotel1);
-            Room room3 = buildRoom(BigDecimal.valueOf(100), hotel2);
-            Room room4 = buildRoom(BigDecimal.valueOf(80), hotel2);
+            Room room1 = buildRoom(RoomType.Family, BigDecimal.valueOf(150), hotel1);
+            Room room2 = buildRoom(RoomType.Royal, BigDecimal.valueOf(200), hotel1);
+            Room room3 = buildRoom(RoomType.Quad, BigDecimal.valueOf(100), hotel2);
+            Room room4 = buildRoom(RoomType.Single, BigDecimal.valueOf(80), hotel2);
 
             Reservation reservation1 = buildReservation(client1, room2, new Date(115, 1, 1), new Date(115, 2, 4), BigDecimal.valueOf(5000));
             Reservation reservation2 = buildReservation(client3, room3, new Date(115, 4, 5), new Date(115, 5, 20), BigDecimal.valueOf(4200));
@@ -113,10 +109,11 @@ public class App
             return hotel;
         }
 
-        public static Room buildRoom(BigDecimal pricePerNight, Hotel hotel) {
+        public static Room buildRoom(RoomType roomType, BigDecimal pricePerNight, Hotel hotel) {
             Room room = new Room();
             room.setPricePerNight(pricePerNight);
             room.setHotel(hotel);
+            room.setRoomType(roomType);
             if (hotel != null)
             {
                 if (hotel.getRooms() == null)
@@ -173,10 +170,11 @@ public class App
             return hotelTO;
         }
 
-        public static RoomTO buildRoomTO(BigDecimal pricePerNight, HotelTO hotel) {
+        public static RoomTO buildRoomTO(RoomType roomType, BigDecimal pricePerNight, HotelTO hotel) {
             RoomTO roomTO = new RoomTO();
             roomTO.setPricePerNight(pricePerNight);
             roomTO.setHotel(hotel);
+            roomTO.setRoomType(roomType);
             if (hotel != null)
             {
                 if (hotel.getRooms() == null)

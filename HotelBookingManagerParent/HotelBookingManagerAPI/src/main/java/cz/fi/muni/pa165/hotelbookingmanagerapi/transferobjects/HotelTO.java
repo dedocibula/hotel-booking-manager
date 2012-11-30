@@ -73,6 +73,6 @@ public class HotelTO {
 
     @Override
     public String toString() {
-        return name + ", contact=" + contact;
+        return name + ", " + contact.getAddress() + ", " + contact.getCity() + ", " + contact.getCountry();
     }
 }

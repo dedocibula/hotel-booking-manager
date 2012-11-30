@@ -18,6 +18,7 @@ import net.sourceforge.stripes.validation.ValidateNestedProperties;
 
 import java.util.List;
 import net.sourceforge.stripes.integration.spring.SpringBean;
+import org.springframework.dao.DataAccessException;
 
 /**
  *
@@ -81,8 +82,12 @@ public class RoomsActionBean implements ActionBean {
     }
 
     public Resolution delete() {
-        roomManager.deleteRoom(room);
-        return new RedirectResolution(this.getClass(), "hotelRooms").addParameter("hotel", hotel.getId());
+        try {
+            roomManager.deleteRoom(room);
+            return new RedirectResolution(this.getClass(), "hotelRooms").addParameter("hotel", hotel.getId());
+        } catch (DataAccessException e) {
+            return new RedirectResolution("/room/errorRoom.jsp");
+        }
     }
 
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save", "delete"})

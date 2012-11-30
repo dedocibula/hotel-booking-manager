@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.test.dao.impl;
 
 
 
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomType;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ReservationDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
@@ -64,7 +65,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));
 
@@ -91,7 +92,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));
 
@@ -161,7 +162,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));
 
@@ -200,7 +201,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));
 
@@ -208,11 +209,11 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, 
                 new Date(2016, 5, 20), new Date(2016, 7, 21), BigDecimal.valueOf(410));
 
-        Room room3 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(32), hotel2);
+        Room room3 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(32), hotel2);
         
         em.getTransaction().begin();
         em.persist(hotel);
@@ -279,7 +280,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));    
                 
@@ -287,7 +288,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, 
                 new Date(2016, 5, 20), new Date(2016, 7, 21), BigDecimal.valueOf(410));  
         
@@ -325,7 +326,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));    
                 
@@ -333,7 +334,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, 
                 new Date(2014, 5, 20), new Date(2014, 7, 21), BigDecimal.valueOf(410));  
         
@@ -357,7 +358,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));    
                 
@@ -365,7 +366,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, 
                 new Date(2014, 5, 20), new Date(2014, 7, 21), BigDecimal.valueOf(410));  
         
@@ -392,7 +393,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));    
                 
@@ -400,7 +401,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, 
                 new Date(2014, 5, 20), new Date(2014, 7, 21), BigDecimal.valueOf(410));  
         
@@ -427,7 +428,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));    
                 
@@ -435,7 +436,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, 
                 new Date(2014, 5, 20), new Date(2014, 7, 21), BigDecimal.valueOf(410));  
         
@@ -465,7 +466,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);
         Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);
         Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room, 
                 new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));    
                 
@@ -473,7 +474,7 @@ public class ReservationDAOImplTest {
                 "address", "city", "country");
         Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);
         Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(69), hotel2);
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);
         Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2, 
                 new Date(2014, 5, 20), new Date(2014, 7, 21), BigDecimal.valueOf(410));  
         

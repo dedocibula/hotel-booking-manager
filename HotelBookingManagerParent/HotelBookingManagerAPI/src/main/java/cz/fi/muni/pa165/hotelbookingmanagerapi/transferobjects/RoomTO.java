@@ -15,6 +15,8 @@ public class RoomTO {
     private BigDecimal pricePerNight;
     
     private HotelTO hotel;
+    
+    private RoomType roomType;
 
     public Long getId() {
         return id;
@@ -40,6 +42,14 @@ public class RoomTO {
         this.hotel = hotel;
     }
 
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -62,6 +72,6 @@ public class RoomTO {
 
     @Override
     public String toString() {
-        return "Room{" + "id=" + id + ", pricePerNight=" + pricePerNight + ", hotel=" + hotel + '}';
+        return roomType + " room, " + pricePerNight + " per night";
     }
 }

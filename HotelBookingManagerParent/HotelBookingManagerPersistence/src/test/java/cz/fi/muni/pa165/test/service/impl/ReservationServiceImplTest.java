@@ -4,11 +4,7 @@ package cz.fi.muni.pa165.test.service.impl;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RoomService;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ReservationTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.*;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ReservationDAO;
@@ -191,7 +187,7 @@ public class ReservationServiceImplTest {
         }
         
         // Test room without id
-        RoomTO room = newRoom(BigDecimal.TEN, sampleHotel());
+        RoomTO room = newRoom(RoomType.Single, BigDecimal.TEN, sampleHotel());
         reservation = newReservation(sampleClient(), room, 
                 new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.ZERO);
         try {
@@ -202,7 +198,7 @@ public class ReservationServiceImplTest {
         }
         
         // Test not vacant room
-        RoomTO nonVacantRoom = newRoom(BigDecimal.TEN, sampleHotel());
+        RoomTO nonVacantRoom = newRoom(RoomType.Single, BigDecimal.TEN, sampleHotel());
         nonVacantRoom.setId(1L);
         
         RoomDAO mockRoomDao = mock(RoomDAO.class);
@@ -384,7 +380,7 @@ public class ReservationServiceImplTest {
     }
     
     private RoomTO sampleRoom() {
-        RoomTO room = newRoom(BigDecimal.TEN, sampleHotel());
+        RoomTO room = newRoom(RoomType.Single, BigDecimal.TEN, sampleHotel());
         roomService.createRoom(room);
         return room;
     }
@@ -409,8 +405,8 @@ public class ReservationServiceImplTest {
         return App.DatabaseSampler.buildContactTO(phone, email, address, city, country);
     }
     
-    private static RoomTO newRoom(BigDecimal pricePerNight, HotelTO hotel) {
-        return App.DatabaseSampler.buildRoomTO(pricePerNight, hotel);
+    private static RoomTO newRoom(RoomType roomType, BigDecimal pricePerNight, HotelTO hotel) {
+        return App.DatabaseSampler.buildRoomTO(roomType, pricePerNight, hotel);
     }
     
     private static HotelTO newHotel(String name, ContactTO contact) {

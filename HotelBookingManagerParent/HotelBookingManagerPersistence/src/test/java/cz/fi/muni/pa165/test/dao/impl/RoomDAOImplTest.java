@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.test.dao.impl;
 
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomType;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.HotelDAO;
@@ -71,7 +72,7 @@ public class RoomDAOImplTest {
             //Works as intended
         }
 
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(777.00), new Hotel());
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Double, BigDecimal.valueOf(777.00), new Hotel());
         room.setHotel(null);
         //Create a Room with null Hotel
         try {
@@ -104,7 +105,7 @@ public class RoomDAOImplTest {
 
         hotelDAO.create(hotel);
 
-        Room room = App.DatabaseSampler.buildRoom(BigDecimal.valueOf(333.00), hotel);
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Royal, BigDecimal.valueOf(333.00), hotel);
 
 
         roomDAO.create(room);
@@ -145,10 +146,10 @@ public class RoomDAOImplTest {
 
         hotelDAO.create(hotel);
 
-        Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
+        Room room1 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.ONE, hotel);
 
         roomDAO.create(room1);
-        Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.ONE, hotel);
         roomDAO.create(room2);
 
         assertThat(roomDAO.get(room1.getId()), is(not(nullValue())));
@@ -174,10 +175,10 @@ public class RoomDAOImplTest {
 
        hotelDAO.create(hotel);
 
-       Room room1 = App.DatabaseSampler.buildRoom(BigDecimal.ONE, hotel);
+       Room room1 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.ONE, hotel);
        roomDAO.create(room1);
 
-       Room room2 = App.DatabaseSampler.buildRoom(BigDecimal.TEN, hotel);
+       Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.TEN, hotel);
        roomDAO.create(room2);
 
        Client client = App.DatabaseSampler.buildClient("first", "last", contact);

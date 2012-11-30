@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities;
 
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -29,6 +30,11 @@ public class Room implements Serializable {
     @JoinColumn(nullable = false)
     @Valid
     private Hotel hotel;
+    
+    @NotNull
+    @Column(nullable=false, columnDefinition="VARCHAR(6)")
+    @Enumerated(EnumType.STRING)
+    private RoomType roomType;
 
     public Long getId() {
         return id;
@@ -54,6 +60,14 @@ public class Room implements Serializable {
         this.hotel = hotel;
     }
 
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -76,6 +90,6 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
-        return "Room{" + "id=" + id + ", pricePerNight=" + pricePerNight + ", hotel=" + hotel + '}';
+        return "Room{" + "id=" + id + ", pricePerNight=" + pricePerNight + ", hotel=" + hotel + ", roomType=" + roomType + '}';
     }
 }

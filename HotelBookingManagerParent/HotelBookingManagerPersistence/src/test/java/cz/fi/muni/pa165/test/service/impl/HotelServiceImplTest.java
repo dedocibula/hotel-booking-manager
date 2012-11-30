@@ -5,6 +5,7 @@ import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RoomService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomType;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.HotelDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel;
@@ -179,8 +180,8 @@ public class HotelServiceImplTest {
     @Test
     public void testCreateHotelWithRooms() {
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
-        RoomTO room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
-        RoomTO room2 = App.DatabaseSampler.buildRoomTO(BigDecimal.TEN, null);
+        RoomTO room1 = App.DatabaseSampler.buildRoomTO(RoomType.Family, BigDecimal.ONE, null);
+        RoomTO room2 = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.TEN, null);
         HotelTO hotelTO = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1, room2);
 
         hotelService.createHotel(hotelTO);
@@ -195,7 +196,7 @@ public class HotelServiceImplTest {
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
 
         // One of hotel's room is null
-        RoomTO room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
+        RoomTO room1 = App.DatabaseSampler.buildRoomTO(RoomType.Double, BigDecimal.ONE, null);
         RoomTO room2 = null;
         HotelTO hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1, room2);
         try {
@@ -206,7 +207,7 @@ public class HotelServiceImplTest {
         }
 
         // One of hotel's room has assigned id
-        room2 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
+        room2 = App.DatabaseSampler.buildRoomTO(RoomType.Royal, BigDecimal.ONE, null);
         room2.setId(25l);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1, room2);
         try {
@@ -217,7 +218,7 @@ public class HotelServiceImplTest {
         }
 
         // One of hotel's room has null pricePerNight
-        room2 = App.DatabaseSampler.buildRoomTO(null, null);
+        room2 = App.DatabaseSampler.buildRoomTO(RoomType.Single, null, null);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1, room2);
         try {
             hotelService.createHotel(hotel);
@@ -300,7 +301,7 @@ public class HotelServiceImplTest {
     public void testUpdateHotelWithRooms() {
         ContactTO contact = App.DatabaseSampler.buildContactTO("123", "dude@dude.sk", "address", "city", "country");
 
-        RoomTO room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
+        RoomTO room1 = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, null);
         HotelTO hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1);
 
         hotel.setId(1L);
@@ -319,10 +320,10 @@ public class HotelServiceImplTest {
 
 
         // One of hotel's room has null id
-        room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
+        room1 = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1);
         hotel.setId(1L);
-        room2 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
+        room2 = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, null);
         hotel.getRooms().add(room2);
         try {
             hotelService.updateHotel(hotel);
@@ -332,10 +333,10 @@ public class HotelServiceImplTest {
         }
 
         // One of hotel's room belongs to another hotel
-        room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
+        room1 = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1);
         hotel.setId(1L);
-        room2 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
+        room2 = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, null);
         room2.setId(25l);
         hotel.getRooms().add(room2);
         try {
@@ -346,7 +347,7 @@ public class HotelServiceImplTest {
         }
 
         // One of hotel's room has null pricePerNight
-        room1 = App.DatabaseSampler.buildRoomTO(BigDecimal.ONE, null);
+        room1 = App.DatabaseSampler.buildRoomTO(RoomType.Single, BigDecimal.ONE, null);
         hotel = App.DatabaseSampler.buildHotelTOWithRooms("Hilton", contact, room1);
         hotel.setId(1L);
         hotel.getRooms().get(0).setPricePerNight(null);

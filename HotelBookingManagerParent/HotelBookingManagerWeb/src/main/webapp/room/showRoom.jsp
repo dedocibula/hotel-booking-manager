@@ -55,6 +55,7 @@
                             <table id="table">
                                 <thead>
                                     <th><fmt:message key="id"/></th>
+                                    <th><fmt:message key="room.roomType"/></th>
                                     <th><fmt:message key="room.pricePerNight"/></th>
                                     <th><fmt:message key="room.hotel"/></th>
 
@@ -64,6 +65,7 @@
                                 <c:forEach items="${actionBean.hotelRooms}" var="room">
                                     <tr>
                                         <td>${room.id}</td>
+                                        <td><c:out value="${room.roomType}"/></td>
                                              <td><c:out value="${room.pricePerNight}"/></td>
                                              <td><c:out value="${room.hotel.name}"/></td>
                                              <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="edit"><s:param name="room.id" value="${room.id}"/><img src="${pageContext.request.contextPath}/images/edit_icon.png" alt="edit" /></s:link> </td>

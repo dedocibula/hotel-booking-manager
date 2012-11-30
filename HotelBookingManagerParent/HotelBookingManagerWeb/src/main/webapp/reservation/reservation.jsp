@@ -76,7 +76,7 @@
 						<c:forEach items="${actionBean.reservations}" var="reservation">
 							<tr>
 								<td>${reservation.client.firstName} ${reservation.client.lastName}</td>
-								<td>${reservation.room.hotel.name} - ${reservation.room.pricePerNight}</td>
+								<td>${reservation.room.roomType} - ${reservation.room.hotel.name}</td>
 								<td><f:formatDate type="date" dateStyle="LONG" value="${reservation.fromDate}" /></td>
 								<td><f:formatDate type="date" dateStyle="LONG" value="${reservation.toDate}" /></td>
 								<%--<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="edit">
