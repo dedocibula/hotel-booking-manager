@@ -25,18 +25,21 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
 public class ClientDAOImplTest {
-    
+
     private ClientDAO clientDAO;
 
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("testApplicationContext.xml");
         clientDAO = context.getBean(ClientDAO.class);
-        
+
     }
-    
+
     @After
     public void tearDown() {
+        for (Client client : clientDAO.findAll()) {
+            clientDAO.delete(client);
+        }
         clientDAO = null;
     }
 
@@ -45,19 +48,19 @@ public class ClientDAOImplTest {
         Contact contact = newContact("123", "mail@mail.com", "address", "city", "country");
         Client client = newClient("Jozko", "Mrkvicka", contact);
         clientDAO.create(client);
-        
+
         Client client2 = clientDAO.get(client.getId());
         assertThat(client2, is(not(sameInstance(client))));
         assertThat(client2, is(notNullValue()));
         assertThat(client, is(equalTo(client2)));
     }
-    
+
     @Test
     public void testCreateWithNotNullId() {
         Contact contact = newContact("123", "mail@mail.com", "address", "city", "country");
         Client client = newClient("Jozko", "Mrkvicka", contact);
         client.setId(5l);
-        
+
         try {
             clientDAO.create(client);
             fail("No DataAccessException thrown for creating entity with set id");
@@ -65,7 +68,7 @@ public class ClientDAOImplTest {
             // OK
         }
     }
-    
+
     @Test
     public void testCreateWithNull() {
         try {
@@ -81,10 +84,10 @@ public class ClientDAOImplTest {
         Contact contact = newContact("123", "mail@mail.com", "address", "city", "country");
         Client client = newClient("Jozko", "Mrkvicka", contact);
         clientDAO.create(client);
-        
+
         Client client1 = clientDAO.get(client.getId());
         Client client2 = clientDAO.get(client.getId());
-        
+
         assertThat(client1, is(not(sameInstance(client2))));
         assertThat(client1, is(equalTo(client2)));
         assertThat(client1.getFirstName(), is(equalTo(client2.getFirstName())));
@@ -95,7 +98,7 @@ public class ClientDAOImplTest {
         assertThat(client1.getContact().getEmail(), is(equalTo(client2.getContact().getEmail())));
         assertThat(client1.getContact().getPhone(), is(equalTo(client2.getContact().getPhone())));
     }
-    
+
     @Test
     public void testGetWithNull() {
         try {
@@ -110,17 +113,17 @@ public class ClientDAOImplTest {
     public void testUpdate() {
         Contact contact = newContact("123", "mail@mail.com", "address", "city", "country");
         Client client1 = newClient("FirstName", "LastName", contact);
-        
+
         clientDAO.create(client1);
-        
+
         client1.setFirstName("Jozko");
         client1.setLastName("Mrkvicka");
         client1.getContact().setAddress("changed address");
-        
+
         clientDAO.update(client1);
-        
+
         Client client2 = clientDAO.get(client1.getId());
-        
+
         assertThat(client2.getFirstName(), is(equalTo("Jozko")));
         assertThat(client2.getLastName(), is(equalTo("Mrkvicka")));
         assertThat(client2.getContact().getAddress(), is(equalTo("changed address")));
@@ -129,7 +132,7 @@ public class ClientDAOImplTest {
         assertThat(client1.getContact().getEmail(), is(equalTo(client2.getContact().getEmail())));
         assertThat(client1.getContact().getPhone(), is(equalTo(client2.getContact().getPhone())));
     }
-    
+
     @Test
     public void testUpdateWithNull() {
         try {
@@ -145,20 +148,20 @@ public class ClientDAOImplTest {
         Contact contact1 = newContact("123", "mail1@mail.com", "address", "city", "country");
         Client client1 = newClient("Jozko", "Mrkvicka", contact1);
         clientDAO.create(client1);
-        
+
         Contact contact2 = newContact("456", "mail2@mail.com", "address", "city", "country");
         Client client2 = newClient("Peter", "Novak", contact2);
         clientDAO.create(client2);
-        
+
         assertThat(clientDAO.get(client1.getId()), is(notNullValue()));
         assertThat(clientDAO.get(client2.getId()), is(notNullValue()));
-        
+
         clientDAO.delete(client1);
-        
+
         assertThat(clientDAO.get(client1.getId()), is(nullValue()));
         assertThat(clientDAO.get(client2.getId()), is(notNullValue()));
     }
-    
+
     @Test
     public void testDeleteWithNull() {
         try {
@@ -175,23 +178,23 @@ public class ClientDAOImplTest {
             clientDAO.delete(client);
         }
         assertTrue(clientDAO.findAll().isEmpty());
-        
+
         Contact contact1 = newContact("123", "mail1@mail.com", "address", "city", "country");
         Client client1 = newClient("Jozko", "Mrkvicka", contact1);
         clientDAO.create(client1);
-        
+
         Contact contact2 = newContact("456", "mail2@mail.com", "address", "city", "country");
         Client client2 = newClient("Peter", "Novak", contact2);
         clientDAO.create(client2);
-        
+
         assertThat(clientDAO.findAll(), hasItems(client1, client2));
     }
-    
+
     private static Client newClient(String firstName, String lastName, Contact contact) {
         return App.DatabaseSampler.buildClient(firstName, lastName, contact);
     }
-    
-    private static Contact newContact(String phone, String email, 
+
+    private static Contact newContact(String phone, String email,
                 String address, String city, String country) {
         return App.DatabaseSampler.buildContact(phone, email, address, city, country);
     }

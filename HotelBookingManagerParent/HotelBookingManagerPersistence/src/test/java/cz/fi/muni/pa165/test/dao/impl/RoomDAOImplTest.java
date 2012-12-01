@@ -47,6 +47,18 @@ public class RoomDAOImplTest {
 
     @After
     public void tearDown() {
+        for (Reservation reservation : reservationDAO.findAllReservations()) {
+            reservationDAO.delete(reservation);
+        }
+        for (Hotel hotel : hotelDAO.findAll()) {
+            hotelDAO.delete(hotel);
+        }
+        for (Room room : roomDAO.findAllRooms()) {
+            roomDAO.delete(room);
+        }
+        for (Client client : clientDAO.findAll()) {
+            clientDAO.delete(client);
+        }
         roomDAO = null;
         hotelDAO = null;
         clientDAO = null;
