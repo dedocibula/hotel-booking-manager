@@ -12,12 +12,12 @@
 
 		<div class="content_right_section">
 			<div class="content_title_01"><fmt:message key="reservationManagement"/></div>
-			<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="all">Back to reservation list</s:link>
+			<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="all"><fmt:message key="backToReservation"/></s:link>
 				<div class="cleaner_h20">&nbsp;</div>
 			<s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean">
 				<s:errors/>
 				<div class="content_right_section">
-					<p>Please select a hotel you want to book room in as well as dates when would you like to make your reservation.</p>
+                                        <p><fmt:message key="createReservationStepOneDescription"/></p>
 					<%@include file="/../components/dateChoose.jsp" %>
 					<div>
 						<s:label for="hotel"><fmt:message key="hotel"/>:</s:label>
@@ -31,7 +31,7 @@
 				</div>
 				<div class="content_right_section">
 					<div class="cleaner_h20">&nbsp;</div>
-					<s:submit name="createContinue">Continue</s:submit>
+					<s:submit name="createContinue"><fmt:message key="continue"/></s:submit>
 						<div class="cleaner_h40">&nbsp;</div>
 					</div>
 			</s:form>

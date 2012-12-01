@@ -12,13 +12,13 @@
 
 		<div class="content_right_section">
 			<div class="content_title_01"><fmt:message key="reservationManagement"/></div>
-			<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="all">Back to reservation list</s:link>
+			<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="all"><fmt:message key="backToReservation"/></s:link>
 				<div class="cleaner_h20">&nbsp;</div>
 			</div>
 		<s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean">
-			<s:errors/>                            
+			<s:errors/>
 			<div class="content_right_section">
-				<p>Select a room and your account to create a reservation.</p>
+                                <p><fmt:message key="createReservationStepTwoDescription"/></p>
 				<s:hidden name="from" />
 				<s:hidden name="to" />
 				<s:hidden name="hotel.id" />
