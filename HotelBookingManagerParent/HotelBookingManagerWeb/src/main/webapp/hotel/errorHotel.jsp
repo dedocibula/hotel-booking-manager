@@ -5,24 +5,19 @@
 
 <fmt:message var="pageTitle" key="hotel.pageTitle"/>
 <s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="showHotel.jsp">
-    <s:layout-component name="left_content">
-        <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean" var="actionBean"/>
-
-            <div class="content_left_section">
-            </div> <!-- end of booking -->
-
-            <div class="cleaner_h30">&nbsp;</div>
-            <div class="cleaner_horizontal_divider_01">&nbsp;</div>
-            <div class="cleaner_h30">&nbsp;</div>
-
-    </s:layout-component>
-
     <s:layout-component name="right_content">
-        <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean" var="actionBean"/>
-
             <div class="content_right_section">
-                <p><fmt:message key="hotelDeleteError"/></p>
-                <s:link href="/hotel/showHotel.jsp" class="${(pageInfo == 'showHotel.jsp') ? 'current' : ''}"><fmt:message key="backToHotels"/></s:link>
-            </div>
+
+                    <div class="content_title_01"><fmt:message key="errorMessageHeader1"/></div>
+
+                    <p><fmt:message key="errorMessageDescription"/></p>
+
+                    <div class="cleaner_h10">&nbsp;</div>
+
+                    <div class="content_title_03"><fmt:message key="errorMessageHeader2"/></div>
+                    <fmt:message key="hotelDeleteError"/>
+            </div>                   
+            <div class="cleaner_h20">&nbsp;</div>
+            <div class="rc_btn_01"><s:link href="/hotel/showHotel.jsp"><fmt:message key="backToHotels"/></s:link></div>
     </s:layout-component>
 </s:layout-render>

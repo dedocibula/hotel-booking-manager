@@ -1,13 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects;
 
 /**
  *
- * @author Inky Ashizuki
+ * @author Andrej Galád
  */
 public enum RoomType {
-    Family, Royal, Quad, Single, Double
+    Single,
+    Double,
+    Triple,
+    Quad,
+    Family,
+    Royal
 }
