@@ -28,6 +28,7 @@
                     <div class="content_title_03"><fmt:message key="attributes"/> ${actionBean.hotel.name}:</div>
 
                         <s:hidden name="hotel.id"/>
+                        <s:hidden name="hotel.rooms"/>
                         <%@include file="formHotel.jsp"%>
                         <div class="cleaner_h20">&nbsp;</div>
 
