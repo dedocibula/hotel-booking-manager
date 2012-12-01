@@ -54,7 +54,7 @@ public class HotelServiceImpl implements HotelService {
         }
         validateHotelAttributes(hotel);
         hotelDAO.create(hotel);
-        
+
         hotelTO.setId(hotel.getId());
     }
 
@@ -89,15 +89,15 @@ public class HotelServiceImpl implements HotelService {
     @Transactional
     public void deleteHotel(HotelTO hotelTO) {
         if (hotelTO == null)
-            throw new IllegalArgumentException("hotel cannot be null");        
-        Hotel hotel = mapper.map(hotelTO, Hotel.class);     
-       //not working, it dont remove rooms from database??        
-        if (hotel.getRooms() != null) {
+            throw new IllegalArgumentException("hotel cannot be null");
+        Hotel hotel = mapper.map(hotelTO, Hotel.class);
+       //not working, it dont remove rooms from database??
+        /*if (hotel.getRooms() != null) {
             for(Room room : hotel.getRooms()){
-                roomDAO.delete(room);                
+                roomDAO.delete(room);
             }
             hotel.getRooms().removeAll(hotel.getRooms());
-        }        
+        }        */
         hotelDAO.delete(hotel);
     }
 
