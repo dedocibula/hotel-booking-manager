@@ -41,7 +41,7 @@
 					<div class="cleaner_h10">&nbsp;</div>
 				</div>
 				<div class="content_right_2column_box">
-				<s:submit name="create">Go Back</s:submit>
+                                <s:submit name="create"><fmt:message key="goBack"/></s:submit>
 					<div class="cleaner_h10">&nbsp;</div>
 				</div>
 		</s:form>
