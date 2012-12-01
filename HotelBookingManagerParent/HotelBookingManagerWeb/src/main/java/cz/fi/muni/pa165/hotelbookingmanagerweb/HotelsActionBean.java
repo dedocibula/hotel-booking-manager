@@ -14,6 +14,7 @@ import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import java.util.List;
 import java.util.Set;
 import net.sourceforge.stripes.integration.spring.SpringBean;
+import org.springframework.dao.DataAccessException;
 
 /**
  *
@@ -26,8 +27,8 @@ public class HotelsActionBean implements ActionBean {
     private ActionBeanContext context;
 
     @SpringBean
-    protected HotelService hotelManager;   
-    
+    protected HotelService hotelManager;
+
     private CountryPicker countryPicker = new CountryPicker();
 
     @DefaultHandler
@@ -38,7 +39,7 @@ public class HotelsActionBean implements ActionBean {
     public List<HotelTO> getHotels() {
         return hotelManager.findAllHotels();
     }
-    
+
     public Set<String> getCountries() {
         return countryPicker.getCountriesName();
     }
@@ -52,15 +53,15 @@ public class HotelsActionBean implements ActionBean {
     public ActionBeanContext getContext() {
         return context;
     }
-  
-    @ValidateNestedProperties(value = {           
+
+    @ValidateNestedProperties(value = {
             @Validate(on = {"add", "save"}, field = "name", required = true, minlength = 2, maxlength = 50),
             @Validate(on = {"add", "save"}, field = "contact.phone", required = true, mask = "\\d*", maxlength = 30),
             @Validate(on = {"add", "save"}, field = "contact.email", required = true, mask = "[\\w\\-\\.\\+]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-z]+", minlength = 6, maxlength = 50),
             @Validate(on = {"add", "save"}, field = "contact.address", required = true, maxlength = 30),
             @Validate(on = {"add", "save"}, field = "contact.city", required = true, minlength = 2, maxlength = 50)
     })
-    
+
     private HotelTO hotel;
 
     public Resolution add() {
@@ -77,8 +78,12 @@ public class HotelsActionBean implements ActionBean {
     }
 
     public Resolution delete() {
-        hotelManager.deleteHotel(hotel);
-        return new RedirectResolution(this.getClass(), "all");
+        try {
+            hotelManager.deleteHotel(hotel);
+            return new RedirectResolution(this.getClass(), "all");
+        } catch (DataAccessException e) {
+            return new RedirectResolution("/hotel/errorHotel.jsp");
+        }
     }
 
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save","rooms"})
