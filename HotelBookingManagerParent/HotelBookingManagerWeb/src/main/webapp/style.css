@@ -48,7 +48,6 @@ img {
 }
 
 #table .info {
-        display: none;
         background: #ffffff;
 }
 
@@ -97,16 +96,20 @@ input.error {
 	background-color: #FA8072; 
 }
 
+.wrapper {
+		display: none;
+}
+
 .description {
         text-align: center;
 }
 
-.description .description_div {
+.description_div {
         display: inline-block;
         padding: 8px;
 }
 
-.description .description_div .description_span {
+.description_div .description_span {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	font-style: normal;

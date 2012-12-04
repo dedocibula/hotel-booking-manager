@@ -109,6 +109,8 @@
         <script type="text/javascript">
             (function() {
                 var $tbody = $('tbody');
+                $tbody.children('tr.info').children().wrapInner('<div class="wrapper">');
+                var $wrapper = $('div.wrapper');
                 var $left_content = $('div#content_left');
                 
                 if ($('div.validation_error')[0]) {
@@ -125,15 +127,15 @@
                 }
                 
                 $tbody.on('mouseleave', function() {
-                    $('tr.info').hide();
+                    $wrapper.slideUp();
                 });
                 
                 $tbody.on('mouseover', 'tr.main', function() {
-                   $(this).next()
-                          .siblings('tr.info')
-                          .hide(200)
+                   $(this).next().find('div.wrapper')
+                          .siblings('div.wrapper')
+                          .slideUp(200)
                           .end()
-                          .show(200);
+                          .slideDown(200);
                 });
                 
                 $('a.delete').on('click', function(e) {
