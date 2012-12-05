@@ -22,9 +22,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
-        {
+    public static void main( String[] args ) {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         JpaTransactionManager jtm = context.getBean(JpaTransactionManager.class);
         EntityManagerFactory emf = jtm.getEntityManagerFactory();
@@ -32,7 +30,7 @@ public class App
         DatabaseSampler.feedDatabase(em);
         System.out.println( "Database is working!" );
     }
-    }
+    
     public static class DatabaseSampler {
 
         public static void feedDatabase(EntityManager em) {

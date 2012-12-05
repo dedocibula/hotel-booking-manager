@@ -49,8 +49,8 @@
 		<div class="cleaner_h40">&nbsp;</div>
 
 		<div class="content_right_section">
-			<div class="content_title_02"><fmt:message key="newReservation"/></div>
-                        <p><fmt:message key="addReservationButtonDescription"/></p>
+			<div class="content_title_02"><f:message key="newReservation"/></div>
+                        <p><f:message key="addReservationButtonDescription"/></p>
 			<div class="rc_btn_02"><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="create"><f:message key="create"/></s:link></div>
 			</div>
 

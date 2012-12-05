@@ -37,11 +37,11 @@
 				<div class="cleaner_h40">&nbsp;</div>
 			</div>
 			<div class="content_right_2column_box">
-				<s:submit name="add">Save</s:submit>
+				<s:submit name="add" />
 					<div class="cleaner_h10">&nbsp;</div>
 				</div>
 				<div class="content_right_2column_box">
-                                <s:submit name="create"><fmt:message key="goBack"/></s:submit>
+                                    <s:submit name="goBack" />
 					<div class="cleaner_h10">&nbsp;</div>
 				</div>
 		</s:form>

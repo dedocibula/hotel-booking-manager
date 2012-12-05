@@ -281,6 +281,10 @@ public class ReservationsActionBean implements ActionBean {
 	public Resolution createContinue() {
 		return new ForwardResolution("/reservation/createStepTwo.jsp");
 	}
+        
+        public Resolution goBack() {
+                return create();
+        }
 
 	@Before(stages = LifecycleStage.BindingAndValidation, on = {"add"})
 	public void loadClientAndRoomFromDatabase() {

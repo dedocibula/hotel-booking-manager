@@ -18,10 +18,10 @@
         <meta name="description" content="Booking Manager - website allowing to create reservations all around the globe" />
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css" />
 		
-		<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/jquery-ui.css" />
 		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/jquery-1.8.2.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/jquery-ui.js"></script>
         <s:layout-component name="head"/>
     </head>
     <body>
