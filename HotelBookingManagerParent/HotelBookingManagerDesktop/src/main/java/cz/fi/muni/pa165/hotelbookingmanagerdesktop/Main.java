@@ -5,6 +5,7 @@
 package cz.fi.muni.pa165.hotelbookingmanagerdesktop;
 
 import java.awt.Frame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -90,6 +91,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         deleteClientButton.setText("Delete client");
+        deleteClientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteClientButtonActionPerformed(evt);
+            }
+        });
 
         editClientButton.setText("Edit client");
 
@@ -222,6 +228,13 @@ public class Main extends javax.swing.JFrame {
     private void newClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newClientButtonActionPerformed
         new ClientDialogue().setVisible(true);
     }//GEN-LAST:event_newClientButtonActionPerformed
+
+    private void deleteClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteClientButtonActionPerformed
+        int reply = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this client?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+          //TODO - Delete request to server AND update main frame
+        }
+    }//GEN-LAST:event_deleteClientButtonActionPerformed
 
     /**
      * @param args the command line arguments
