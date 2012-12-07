@@ -4,17 +4,18 @@
  */
 package cz.fi.muni.pa165.hotelbookingmanagerdesktop;
 
+import java.awt.Frame;
+
 /**
  *
  * @author Inky Ashizuki
  */
-public class Main extends javax.swing.JDialog {
+public class Main extends javax.swing.JFrame {
 
     /**
      * Creates new form Main
      */
     public Main(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
         initComponents();
     }
 
@@ -82,6 +83,11 @@ public class Main extends javax.swing.JDialog {
         clientTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         newClientButton.setText("New client");
+        newClientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newClientButtonActionPerformed(evt);
+            }
+        });
 
         deleteClientButton.setText("Delete client");
 
@@ -212,6 +218,10 @@ public class Main extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void newClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newClientButtonActionPerformed
+        new ClientDialogue().setVisible(true);
+    }//GEN-LAST:event_newClientButtonActionPerformed
 
     /**
      * @param args the command line arguments
