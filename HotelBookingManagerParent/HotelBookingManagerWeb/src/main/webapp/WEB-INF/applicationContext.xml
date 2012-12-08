@@ -26,7 +26,7 @@
         <property name="url" value="jdbc:derby://localhost:1527/pa165"/>
     </bean>
     
-    <context:component-scan base-package="cz.fi.muni.pa165.hotelbookingmanagerweb"/>
+    <context:component-scan base-package="cz.fi.muni.pa165.hotelbookingmanagerweb, cz.fi.muni.pa165.hotelbookingmanagerrest"/>
 
     <tx:annotation-driven/> 
     

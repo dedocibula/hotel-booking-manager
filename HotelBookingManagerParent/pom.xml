@@ -10,6 +10,7 @@
         <module>HotelBookingManagerAPI</module>
         <module>HotelBookingManagerPersistence</module>
         <module>HotelBookingManagerWeb</module>
+        <module>HotelBookingManagerConsoleClient</module>
     </modules>
     <properties>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
