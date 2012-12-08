@@ -159,6 +159,11 @@ public class Main extends javax.swing.JFrame {
         hotelLabelDescription.setText("List of hotels");
 
         newHotelButton.setText("New hotel");
+        newHotelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newHotelButtonActionPerformed(evt);
+            }
+        });
 
         deleteHotelButton.setText("Delete hotel");
 
@@ -235,6 +240,10 @@ public class Main extends javax.swing.JFrame {
           //TODO - Delete request to server AND update main frame
         }
     }//GEN-LAST:event_deleteClientButtonActionPerformed
+
+    private void newHotelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newHotelButtonActionPerformed
+        new HotelDialog(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_newHotelButtonActionPerformed
 
     /**
      * @param args the command line arguments
