@@ -44,7 +44,7 @@ public class ClientRESTManager {
 	 * @return client with given id.
 	 * @throws IllegalArgumentException if id is null.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws Class UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
+	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
 	public ClientTO findClient(Long id) {
 		if (id == null) {
@@ -63,7 +63,7 @@ public class ClientRESTManager {
 	 * 
 	 * @return all clients.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws Class UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
+	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
     public List<ClientTO> findAllClients() {
         List<ClientTO> clients = new ArrayList<>();
@@ -87,7 +87,7 @@ public class ClientRESTManager {
 	 * @param name
 	 * @return client with given name.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws Class UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
+	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
     public List<ClientTO> findClientsByName(String name) {
         List<ClientTO> clients = new ArrayList<>();
@@ -111,7 +111,7 @@ public class ClientRESTManager {
 	 * @param client
 	 * @return response from server.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws Class UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
+	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
     public ClientResponse createClient(ClientTO client) {
         return webResource.path("createClient")
@@ -129,7 +129,7 @@ public class ClientRESTManager {
 	 * @param client
 	 * @return response from server.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws Class UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
+	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
     public ClientResponse updateClient(ClientTO client) {
         return webResource.path("updateClient")
@@ -150,7 +150,7 @@ public class ClientRESTManager {
 	 * @return response from server.
 	 * @throws IllegalArgumentException if client is null or has null id.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws Class UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
+	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
     public ClientResponse deleteClient(ClientTO client) {
 		if (client == null) {
