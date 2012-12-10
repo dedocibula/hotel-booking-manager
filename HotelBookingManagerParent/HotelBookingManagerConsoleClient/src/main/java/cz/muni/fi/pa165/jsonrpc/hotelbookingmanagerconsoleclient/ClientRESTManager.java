@@ -35,7 +35,7 @@ public class ClientRESTManager {
 
     /**
 	 * Returns client with given id.
-	 * Error status codes are:
+	 * Error status codes (wrapped in UniformInterfaceException) are:
 	 * 400 Bad request				Not applicable for now, cannot send null id to server, because IllegalArgumentException is thrown.
 	 * 404 Not found				If client with given id was not found.
 	 * 500 Internal server error	Other error.
@@ -58,7 +58,7 @@ public class ClientRESTManager {
     
 	/**
 	 * Returns all clients.
-	 * Error status codes are:
+	 * Error status codes (wrapped in UniformInterfaceException) are:
 	 * 500 Internal server error	In case of any error on service layer.
 	 * 
 	 * @return all clients.
@@ -79,7 +79,7 @@ public class ClientRESTManager {
     
 	/**
 	 * Returns client with given name.
-	 * Error status codes are:
+	 * Error status codes (wrapped in UniformInterfaceException) are:
 	 * 400 Bad request				If name is null or empty string.
 	 * 404 Not found				If client with given name was not found.
 	 * 500 Internal server error	Other error.
@@ -104,14 +104,13 @@ public class ClientRESTManager {
     
 	/**
 	 * Creates client.
-	 * Error status codes are:
+	 * Error status codes (wrapped in server response) are:
 	 * 400 Bad request				In case of invalid client.
 	 * 500 Internal server error	Other error.
 	 * 
 	 * @param client
 	 * @return response from server.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
     public ClientResponse createClient(ClientTO client) {
         return webResource.path("createClient")
@@ -122,14 +121,13 @@ public class ClientRESTManager {
     
 	/**
 	 * Updates client.
-	 * Error status codes are:
+	 * Error status codes (wrapped in server response) are:
 	 * 400 Bad request				In case of invalid client.
 	 * 500 Internal server error	Other error.
 	 * 
 	 * @param client
 	 * @return response from server.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
     public ClientResponse updateClient(ClientTO client) {
         return webResource.path("updateClient")
@@ -140,7 +138,7 @@ public class ClientRESTManager {
     
 	/**
 	 * Deletes client.
-	 * Error status codes are:
+	 * Error status codes (wrapped in server response) are:
 	 * 400 Bad request				If client is invalid.
 	 * 404 Not found				If client was not found.
 	 * 417 Expectation Failed		In case of DB error, mainly DB constraint.
@@ -150,7 +148,6 @@ public class ClientRESTManager {
 	 * @return response from server.
 	 * @throws IllegalArgumentException if client is null or has null id.
 	 * @throws ClientHandlerException if signals a failure to process the HTTP request or HTTP response.
-	 * @throws UniformInterfaceException when the status code of the HTTP response indicates a response that is not expected.
 	 */
     public ClientResponse deleteClient(ClientTO client) {
 		if (client == null) {
