@@ -35,12 +35,16 @@ public class Main extends javax.swing.JFrame {
         clientTable.setModel(clientTableModel);
     }
 
-    private void refreshClientTable() {
+    public void refreshClientTable() {
         try {
             clientTableModel.setClients(clientRESTManager.findAllClients());
         } catch (ClientHandlerException ex) {
             JOptionPane.showMessageDialog(this, "Server connection is unavailable. Please contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
+        } catch (UniformInterfaceException uie) {
+            if (uie.getResponse().getStatus() == 500) {
+                JOptionPane.showMessageDialog(this, "Error on server side. Contact administrator for more information", "Error while getting client list.", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -50,6 +54,15 @@ public class Main extends javax.swing.JFrame {
         } catch (ClientHandlerException ex) {
             JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
+        } catch (UniformInterfaceException uie) {
+            int status = uie.getResponse().getStatus();
+            switch(status) {
+                case 500:
+                    JOptionPane.showMessageDialog(this, "Error on server side. Contact administrator for more information", "Error while getting client list.", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case 404:
+                    JOptionPane.showMessageDialog(this, "Client does not exist anymore. The client might have been deleted already.", "Error while getting client info.", JOptionPane.ERROR_MESSAGE);
+            }
         }
         return null;
     }
@@ -82,6 +95,7 @@ public class Main extends javax.swing.JFrame {
         editHotelButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
+        quitMenuItem = new javax.swing.JMenuItem();
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -255,6 +269,15 @@ public class Main extends javax.swing.JFrame {
         tabbedPane.addTab("Hotel", hotelPanel);
 
         menuFile.setText("File");
+
+        quitMenuItem.setText("Quit");
+        quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitMenuItemActionPerformed(evt);
+            }
+        });
+        menuFile.add(quitMenuItem);
+
         menuBar.add(menuFile);
 
         setJMenuBar(menuBar);
@@ -280,7 +303,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newClientButtonActionPerformed
-        new ClientDialogue().setVisible(true);
+        new ClientDialogue(clientTableModel).setVisible(true);
     }//GEN-LAST:event_newClientButtonActionPerformed
 
     private void deleteClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteClientButtonActionPerformed
@@ -326,7 +349,7 @@ public class Main extends javax.swing.JFrame {
             //Case ClientPane was selected
             case 0:
                 if (!clientTable.getModel().equals(clientTableModel)) {
-                    clientTable.setModel(clientTableModel);
+                    initTableModels();
                 }
                 //customerSearchField.setText(""); //NOI18N
                 refreshClientTable();
@@ -343,8 +366,12 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void editClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editClientButtonActionPerformed
-        new ClientDialogue(getSelectedClient(clientTable.getSelectedRow())).setVisible(true);
+        new ClientDialogue(getSelectedClient(clientTable.getSelectedRow()), clientTableModel).setVisible(true);
     }//GEN-LAST:event_editClientButtonActionPerformed
+
+    private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_quitMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -406,6 +433,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu menuFile;
     private javax.swing.JButton newClientButton;
     private javax.swing.JButton newHotelButton;
+    private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }

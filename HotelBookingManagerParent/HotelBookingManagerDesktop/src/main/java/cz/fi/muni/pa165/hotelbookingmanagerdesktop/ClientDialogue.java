@@ -4,15 +4,20 @@
  */
 package cz.fi.muni.pa165.hotelbookingmanagerdesktop;
 
+import com.sun.jersey.api.client.ClientHandlerException;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO;
+import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.ClientRESTManager;
+import cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels.ClientTableModel;
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.swing.JOptionPane;
-import sun.security.timestamp.TSRequest;
 
 /**
  *
@@ -20,18 +25,29 @@ import sun.security.timestamp.TSRequest;
  */
 public class ClientDialogue extends javax.swing.JFrame {
     private static final long serialVersionUID = 1L;
+    private boolean createClient = true;
+    private ClientRESTManager clientRESTManager = new ClientRESTManager();
+    private ClientTableModel clientTableModel;
+    private ClientTO client;
 
     /**
      * Creates new form clientDialogue
      */
-    public ClientDialogue() {
+    public ClientDialogue(ClientTableModel clientTableModel) {
         initComponents();
         initializeCountryPicker();
+        this.clientTableModel = clientTableModel;
+
+        client = new ClientTO();
     }
 
-    public ClientDialogue(ClientTO client) {
+    public ClientDialogue(ClientTO client, ClientTableModel clientTableModel) {
         initComponents();
         initializeCountryPicker();
+        this.clientTableModel = clientTableModel;
+        this.client = client;
+
+
         firstNameField.setText(client.getFirstName());
         lastNameField.setText(client.getLastName());
         addressField.setText(client.getContact().getAddress());
@@ -39,10 +55,14 @@ public class ClientDialogue extends javax.swing.JFrame {
         countryComboBox.setSelectedItem(client.getContact().getCountry());
         telephoneField.setText(client.getContact().getPhone());
         emailField.setText(client.getContact().getEmail());
+        okButton.setText("Save");
+        clientDialogueDescriptionLabel.setText("Edit client information");
+
+        createClient = false;
     }
 
     private void initializeCountryPicker() {
-        List<String> countries = new ArrayList<>();
+        Set<String> countries = new TreeSet<>();
 
         Locale[] locales = Locale.getAvailableLocales();
         for (Locale locale : locales) {
@@ -51,7 +71,6 @@ public class ClientDialogue extends javax.swing.JFrame {
                 countries.add(countryName);
             }
         }
-        Collections.sort(countries);
         for (String s : countries) {
             countryComboBox.addItem(s);
         }
@@ -209,7 +228,34 @@ public class ClientDialogue extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         if (validateInformation()) {
-            //TODO - Send requests to server AND update main frame
+            ContactTO contact = new ContactTO();
+            contact.setAddress(addressField.getText());
+            contact.setCity(cityField.getText());
+            contact.setCountry((String)countryComboBox.getSelectedItem());
+            contact.setPhone(telephoneField.getText());
+            contact.setEmail(emailField.getText());
+
+            client.setFirstName(firstNameField.getText());
+            client.setLastName(lastNameField.getText());
+            client.setContact(contact);
+
+            try {
+                int status = createClient ? clientRESTManager.createClient(client).getStatus() : clientRESTManager.updateClient(client).getStatus();
+                switch(status) {
+                    case 400:
+                        JOptionPane.showMessageDialog(this, "An invalid client was sent to the server. Please check the information and try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    case 500:
+                        JOptionPane.showMessageDialog(this, "An error occured on the server side. Please contact the administrator for more information.", "Error", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    default:
+                        clientTableModel.setClients(clientRESTManager.findAllClients());
+                }
+            } catch (ClientHandlerException che) {
+                JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            }
+            dispose();
         }
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -272,11 +318,11 @@ public class ClientDialogue extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientDialogue().setVisible(true);
             }
-        });
+        });*/
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField addressField;
