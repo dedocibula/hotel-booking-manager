@@ -11,8 +11,6 @@ import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.ClientRESTManager;
 import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.HotelRESTManager;
 import cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels.ClientTableModel;
 import javax.swing.JOptionPane;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -402,6 +400,7 @@ public class Main extends javax.swing.JFrame {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 Main dialog = new Main(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
