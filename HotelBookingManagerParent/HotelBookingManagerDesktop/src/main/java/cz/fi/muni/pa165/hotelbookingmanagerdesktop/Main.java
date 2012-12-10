@@ -4,20 +4,54 @@
  */
 package cz.fi.muni.pa165.hotelbookingmanagerdesktop;
 
-import java.awt.Frame;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.UniformInterfaceException;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
+import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.ClientRESTManager;
+import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.HotelRESTManager;
+import cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels.ClientTableModel;
 import javax.swing.JOptionPane;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 /**
  *
  * @author Inky Ashizuki
  */
 public class Main extends javax.swing.JFrame {
+    private static final long serialVersionUID = 1L;
+    private ClientTableModel clientTableModel = new ClientTableModel();
+    private static ClientRESTManager clientRESTManager = new ClientRESTManager();
+    private static HotelRESTManager hotelRESTManager = new HotelRESTManager();
 
     /**
      * Creates new form Main
      */
     public Main(java.awt.Frame parent, boolean modal) {
         initComponents();
+    }
+
+    private void initTableModels() {
+        clientTable.setModel(clientTableModel);
+    }
+
+    private void refreshClientTable() {
+        try {
+            clientTableModel.setClients(clientRESTManager.findAllClients());
+        } catch (ClientHandlerException ex) {
+            JOptionPane.showMessageDialog(this, "Server connection is unavailable. Please contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+    }
+
+    private ClientTO getSelectedClient(int row) {
+        try {
+            return clientRESTManager.findClient((Long) clientTable.getValueAt(row, 0));
+        } catch (ClientHandlerException ex) {
+            JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+        return null;
     }
 
     /**
@@ -58,6 +92,12 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabbedPaneStateChanged(evt);
+            }
+        });
+
         clientLabelDescription.setText("List of clients");
 
         clientTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -72,14 +112,13 @@ public class Main extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class
+                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        clientTable.setColumnSelectionAllowed(true);
         clientScrollPane.setViewportView(clientTable);
         clientTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -98,6 +137,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         editClientButton.setText("Edit client");
+        editClientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editClientButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout clientPanelLayout = new javax.swing.GroupLayout(clientPanel);
         clientPanel.setLayout(clientPanelLayout);
@@ -242,7 +286,26 @@ public class Main extends javax.swing.JFrame {
     private void deleteClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteClientButtonActionPerformed
         int reply = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this client?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-          //TODO - Delete request to server AND update main frame
+            try {
+                int status = clientRESTManager.deleteClient(getSelectedClient(clientTable.getSelectedRow())).getStatus();
+                switch(status) {
+                    case 404:
+                        JOptionPane.showMessageDialog(this, "Selected client cannot be deleted. The client is not present in the databse anymore - The record might have been deleted by someone else.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    case 417:
+                        JOptionPane.showMessageDialog(this, "Selected client cannot be deleted. The client still has an active reservation.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    case 500:
+                        JOptionPane.showMessageDialog(this, "There was an error on the server side. Please contact the administrator for furhter information.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                        break;
+                }
+                refreshClientTable();
+            } catch (ClientHandlerException che){
+                JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            } catch (IllegalArgumentException iae) {
+                JOptionPane.showMessageDialog(this, "Cannot delete a nonexistent client.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_deleteClientButtonActionPerformed
 
@@ -256,6 +319,32 @@ public class Main extends javax.swing.JFrame {
           //TODO - Delete request to server AND update main frame
         }
     }//GEN-LAST:event_deleteHotelButtonActionPerformed
+
+    private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
+        //try {
+            switch(tabbedPane.getSelectedIndex()) {
+            //Case ClientPane was selected
+            case 0:
+                if (!clientTable.getModel().equals(clientTableModel)) {
+                    clientTable.setModel(clientTableModel);
+                }
+                //customerSearchField.setText(""); //NOI18N
+                refreshClientTable();
+                break;
+            //Case HotelPane was selected
+            case 1:
+                /*mediaSearchField.setText(""); //NOI18N
+                refreshMedia();*/
+                break;
+        }
+        //} catch (SomeException e) {
+
+        //}
+    }//GEN-LAST:event_tabbedPaneStateChanged
+
+    private void editClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editClientButtonActionPerformed
+        new ClientDialogue(getSelectedClient(clientTable.getSelectedRow())).setVisible(true);
+    }//GEN-LAST:event_editClientButtonActionPerformed
 
     /**
      * @param args the command line arguments

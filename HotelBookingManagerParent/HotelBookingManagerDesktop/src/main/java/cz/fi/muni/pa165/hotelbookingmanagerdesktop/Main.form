@@ -75,6 +75,9 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JTabbedPane" name="tabbedPane">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tabbedPaneStateChanged"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
@@ -151,7 +154,7 @@
                         <Column editable="true" title="Address" type="java.lang.String"/>
                         <Column editable="true" title="City" type="java.lang.String"/>
                         <Column editable="true" title="Country" type="java.lang.String"/>
-                        <Column editable="true" title="Telephone" type="java.lang.Long"/>
+                        <Column editable="true" title="Telephone" type="java.lang.String"/>
                         <Column editable="true" title="Email" type="java.lang.String"/>
                       </Table>
                     </Property>
@@ -199,7 +202,6 @@
                         </Column>
                       </TableColumnModel>
                     </Property>
-                    <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
@@ -227,6 +229,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Edit client"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editClientButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

@@ -4,6 +4,7 @@
  */
 package cz.fi.muni.pa165.hotelbookingmanagerdesktop;
 
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,16 +29,16 @@ public class ClientDialogue extends javax.swing.JFrame {
         initializeCountryPicker();
     }
 
-    public ClientDialogue(String firstName, String lastName, String address, String city, String country, String telephone, String email) {
+    public ClientDialogue(ClientTO client) {
         initComponents();
         initializeCountryPicker();
-        firstNameField.setText(firstName);
-        lastNameField.setText(lastName);
-        addressField.setText(address);
-        cityField.setText(city);
-        countryComboBox.setSelectedItem(country);
-        telephoneField.setText(telephone);
-        emailField.setText(email);
+        firstNameField.setText(client.getFirstName());
+        lastNameField.setText(client.getLastName());
+        addressField.setText(client.getContact().getAddress());
+        cityField.setText(client.getContact().getCity());
+        countryComboBox.setSelectedItem(client.getContact().getCountry());
+        telephoneField.setText(client.getContact().getPhone());
+        emailField.setText(client.getContact().getEmail());
     }
 
     private void initializeCountryPicker() {
