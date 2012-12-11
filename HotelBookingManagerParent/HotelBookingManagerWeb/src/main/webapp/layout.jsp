@@ -16,12 +16,12 @@
         <title><c:out value="${title}" /></title>
         <meta name="keywords" content="Hotel, Room, Reservation, Client, Java, Tomcat, Spring, Hibernate, CSS, XHTML" />
         <meta name="description" content="Booking Manager - website allowing to create reservations all around the globe" />
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/style.css" />
 		
-		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/jquery-ui.css" />
 		
-		<script type="text/javascript" src="${pageContext.request.contextPath}/jquery-1.8.2.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/jquery-ui.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery-ui.js"></script>
         <s:layout-component name="head"/>
     </head>
     <body>
@@ -40,10 +40,9 @@
                 <div id="templatemo_menu">
                     <ul>
                         <li><s:link href="/index.jsp" class="${(pageInfo == 'index.jsp') ? 'current' : ''}"><fmt:message key="home"/></s:link></li>
-                        <li><s:link href="/client/client.jsp" class="${(pageInfo == 'client.jsp') ? 'current' : ''}"><fmt:message key="client"/></s:link></li>
-                        <li><s:link href="/hotel/showHotel.jsp" class="${(pageInfo == 'showHotel.jsp') ? 'current' : ''}"><fmt:message key="hotel"/></s:link></li>
+                        <li><s:link href="/clients/" class="${(pageInfo == 'client.jsp') ? 'current' : ''}"><fmt:message key="client"/></s:link></li>
+                        <li><s:link href="/hotels/" class="${(pageInfo == 'hotel.jsp') ? 'current' : ''}"><fmt:message key="hotel"/></s:link></li>
                         <li><s:link href="/reservations/" class="${(pageInfo == 'reservation.jsp') ? 'current' : ''}"><fmt:message key="reservation"/></s:link></li>
-                        <!--<li><s:link href="/test.jsp" class="${(pageInfo == 'test.jsp') ? 'current' : ''}">Test</s:link></li>-->
                         <li><s:link href="/contact_about.jsp" class="last ${(pageInfo == 'contact_about.jsp') ? 'current' : ''}"><fmt:message key="contact"/></s:link></li>
                     </ul>
                 </div>

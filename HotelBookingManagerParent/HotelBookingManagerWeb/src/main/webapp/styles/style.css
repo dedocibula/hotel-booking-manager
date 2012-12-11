@@ -34,7 +34,7 @@ img {
 }
 
 .date-picker {
-	background: white url("images/calendar.png") no-repeat right center;
+	background: white url("../images/calendar.png") no-repeat right center;
 	cursor: pointer;
 }
 
@@ -163,7 +163,7 @@ input.error {
 	width: 100%;
 	height: 2px;
 	font-size: 1px;	
-	background: url(images/templatemo_horizontal_divider_01.jpg) repeat-x;
+	background: url("../images/templatemo_horizontal_divider_01.jpg") repeat-x;
 }
 
 .rc_btn_01 a{
@@ -173,7 +173,7 @@ input.error {
 	width: 150px;
 	padding: 4px 0 5px 0;
 	text-align: center;
-	background: url(images/templatemo_button_01.jpg) no-repeat;
+	background: url("../images/templatemo_button_01.jpg") no-repeat;
 	color: #000000;
 	font-size: 14px;
 	font-weight: bold;
@@ -191,7 +191,7 @@ input.error {
 	width: 100px;
 	padding: 4px 0 5px 0;
 	text-align: center;
-	background: url(images/templatemo_button_02.jpg) no-repeat;
+	background: url("../images/templatemo_button_02.jpg") no-repeat;
 	color: #000000;
 	font-size: 14px;
 	font-weight: bold;
@@ -214,7 +214,7 @@ input.error {
 	margin: 0px;
 	padding: 0px;
 	font-family: "Times New Roman", Times, serif;
-	background: url(images/templatemo_header_bg.jpg) no-repeat;
+	background: url("../images/templatemo_header_bg.jpg") no-repeat;
 }
 
 #templatemo_header #website_title {
@@ -244,7 +244,7 @@ input.error {
 	height: 280px;
 	margin: 0px;
 	padding: 0px;
-	background: url(images/templatemo_banner_bg.jpg) no-repeat;
+	background: url("../images/templatemo_banner_bg.jpg") no-repeat;
 }
 
 #templatemo_banner #templatemo_menu{
@@ -252,7 +252,7 @@ input.error {
 	height: 45px;
 	margin: auto;
 	border: solid transparent;
-	/* background: url(images/templatemo_menu_bg.png) no-repeat; */
+	/* background: url("../images/templatemo_menu_bg.png") no-repeat; */
 }
 
 #templatemo_menu ul {
@@ -269,7 +269,7 @@ input.error {
 	font-size: 14px;
 	text-align: center;
 	text-decoration: none;
-	background: url(images/templatemo_menu_divider.gif) top right repeat-y;
+	background: url("../images/templatemo_menu_divider.gif") top right repeat-y;
 	color: #FFF;
 	font-weight: bold;
 	outline: none;
@@ -298,7 +298,7 @@ input.error {
 	left: 0;
 	width: 940px;
 	height: 20px;
-	background: url(images/templatemo_content_bottom.jpg) no-repeat;
+	background: url("../images/templatemo_content_bottom.jpg") no-repeat;
 }
 
 #templatemo_content #content_left{
@@ -308,7 +308,7 @@ input.error {
         position: relative;
 	margin: 0px;
 	padding:  30px 0 0 0;
-	background: #2f2c29 url(images/templatemo_left_column_top.jpg) top repeat-x;
+	background: #2f2c29 url("../images/templatemo_left_column_top.jpg") top repeat-x;
 }
 
 #content_left .content_title_01 {
@@ -316,7 +316,7 @@ input.error {
 	color: #eceb81;
 	padding-bottom: 10px;
 	margin-bottom: 20px;
-	background: url(images/templatemo_horizontal_divider_01.jpg) bottom repeat-x;	
+	background: url("../images/templatemo_horizontal_divider_01.jpg") bottom repeat-x;	
 }
 
 #content_left .content_title_02 {
@@ -324,12 +324,12 @@ input.error {
 	color: #eceb81;
 	padding-bottom: 10px;
 	margin-bottom: 20px;
-	background: url(images/templatemo_horizontal_divider_02.jpg) bottom repeat-x;	
+	background: url("../images/templatemo_horizontal_divider_02.jpg") bottom repeat-x;	
 }
 
 #content_left input[type="submit"] {
 	clear: both;
-	background: url(images/templatemo_button_01.jpg) no-repeat;
+	background: url("../images/templatemo_button_01.jpg") no-repeat;
 	border: 0;
 	color: #000000;
 	font-size: 14px;
@@ -347,7 +347,7 @@ input.error {
 #content_right input[type="submit"] {
 	float: left;
 	clear: both;
-	background: url(images/templatemo_button_02.jpg) no-repeat;
+	background: url("../images/templatemo_button_02.jpg") no-repeat;
 	border: 0;
 	color: #000000;
 	font-size: 14px;
@@ -367,7 +367,7 @@ input.error {
 	width: 565px;
 	margin: 0px;
 	padding:  30px 0 0 30px;
-	background: url(images/templatemo_content_top.jpg) top repeat-x;
+	background: url("../images/templatemo_content_top.jpg") top repeat-x;
 }
 
 #content_right .content_title_01 {
@@ -375,7 +375,7 @@ input.error {
 	color: #eceb81;
 	padding-bottom: 10px;
 	margin-bottom: 20px;
-	background: url(images/templatemo_horizontal_divider_02.jpg) bottom repeat-x;	
+	background: url("../images/templatemo_horizontal_divider_02.jpg") bottom repeat-x;	
 }
 
 #content_right .content_title_02 {
@@ -383,7 +383,7 @@ input.error {
 	color: #eceb81;
 	padding-bottom: 10px;
 	margin-bottom: 20px;
-	background: url(images/templatemo_horizontal_divider_02.jpg) bottom repeat-x;	
+	background: url("../images/templatemo_horizontal_divider_02.jpg") bottom repeat-x;	
 }
 
 #content_right .content_title_03 {
@@ -391,7 +391,7 @@ input.error {
 	color: #eceb81;
 	padding-bottom: 10px;
 	margin-bottom: 20px;
-	background: url(images/templatemo_horizontal_divider_02.jpg) bottom repeat-x;	
+	background: url("../images/templatemo_horizontal_divider_02.jpg") bottom repeat-x;	
 }
 
 #content_left .content_left_section {
@@ -460,7 +460,7 @@ input.error {
 #content_right .content_right_section {
 	padding: 0 0 15px 0;
 	margin: 0 30px 15px 0;
-	background: url(images/templatemo_horizontal_divider.jpg) bottom repeat-x;
+	background: url("../images/templatemo_horizontal_divider.jpg") bottom repeat-x;
 }
 */
 
@@ -520,7 +520,7 @@ input.error {
 	padding: 15px 0 10px 0;
 	text-align: center;
 	color: #b0af54;
-	background: #221f1d url(images/templatemo_content_bottom.jpg) bottom no-repeat;
+	background: #221f1d url("../images/templatemo_content_bottom.jpg") bottom no-repeat;
 }
 
 #templatemo_footer a{

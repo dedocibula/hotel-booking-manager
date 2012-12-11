@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <fmt:message var="pageTitle" key="room.pageTitle"/>
-<s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="showRoom.jsp">
+<s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="room.jsp">
     <s:layout-component name="left_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" var="actionBean"/>
 

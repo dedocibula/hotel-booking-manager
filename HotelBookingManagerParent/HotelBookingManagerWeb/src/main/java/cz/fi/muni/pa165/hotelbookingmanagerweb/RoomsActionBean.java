@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
 
 
@@ -9,15 +5,12 @@ import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RoomService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.HotelServiceImpl;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.RoomServiceImpl;
+import java.util.List;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
-
-import java.util.List;
-import net.sourceforge.stripes.integration.spring.SpringBean;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -36,7 +29,7 @@ public class RoomsActionBean implements ActionBean {
 
     @DefaultHandler
     public Resolution roomAll() {
-        return new ForwardResolution("/room/showRoom.jsp");
+        return new ForwardResolution("/room/room.jsp");
     }
 
     public List<RoomTO> getRooms() {
@@ -114,11 +107,11 @@ public class RoomsActionBean implements ActionBean {
     }
 
     public Resolution hotelRooms() {
-        return new ForwardResolution("/room/showRoom.jsp");
+        return new ForwardResolution("/room/room.jsp");
     }
 
     public Resolution backToHotels() {
-        return new ForwardResolution("/hotel/showHotel.jsp");
+        return new ForwardResolution("/hotel/hotel.jsp");
     }
 
 

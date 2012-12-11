@@ -1,19 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.HotelServiceImpl;
-import net.sourceforge.stripes.action.*;
-import net.sourceforge.stripes.controller.LifecycleStage;
-import net.sourceforge.stripes.validation.Validate;
-import net.sourceforge.stripes.validation.ValidateNestedProperties;
-
 import java.util.List;
 import java.util.Set;
+import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
+import net.sourceforge.stripes.validation.Validate;
+import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -33,7 +27,7 @@ public class HotelsActionBean implements ActionBean {
 
     @DefaultHandler
     public Resolution hotelAll() {
-        return new ForwardResolution("/hotel/showHotel.jsp");
+        return new ForwardResolution("/hotel/hotel.jsp");
     }
 
     public List<HotelTO> getHotels() {

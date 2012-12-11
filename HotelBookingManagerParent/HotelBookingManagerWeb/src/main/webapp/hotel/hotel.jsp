@@ -1,5 +1,5 @@
 <%--
-    Document   : showHotel
+    Document   : hotel
     Created on : 22.11.2012, 22:58:03
     Author     : Filip Bogyai
 --%>
@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <fmt:message var="pageTitle" key="hotel.pageTitle"/>
-<s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="showHotel.jsp">
+<s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="hotel.jsp">
     <s:layout-component name="left_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean" var="actionBean"/>
 
