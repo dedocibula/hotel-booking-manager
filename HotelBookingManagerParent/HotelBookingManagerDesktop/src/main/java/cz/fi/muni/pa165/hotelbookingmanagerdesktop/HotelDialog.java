@@ -4,6 +4,11 @@
  */
 package cz.fi.muni.pa165.hotelbookingmanagerdesktop;
 
+import com.sun.jersey.api.client.ClientHandlerException;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
+import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.HotelRESTManager;
+import cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels.HotelTableModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,26 +19,39 @@ import javax.swing.JOptionPane;
  *
  * @author FILIP
  */
-public class HotelDialog extends javax.swing.JDialog {
-
+public class HotelDialog extends javax.swing.JFrame {
+    
+    private static final long serialVersionUID = 1L;
+    private boolean createHotel = true;
+    private HotelRESTManager hotelRESTManager = new HotelRESTManager();
+    private HotelTableModel hotelTableModel;
+    private HotelTO hotel;
     /**
      * Creates new form hotelDialog
      */
-    public HotelDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public HotelDialog(HotelTableModel hotelTableModel) {        
         initComponents();
         initializeCountryPicker();
+        this.hotelTableModel=hotelTableModel;
+        hotel= new HotelTO();
     }
     
-    public HotelDialog(String name, String address, String city, String country, String telephone, String email){
+    public HotelDialog(HotelTO hotel,HotelTableModel hotelTableModel){
         initComponents();
         initializeCountryPicker();
-        hotelNameField.setText(name);        
-        hotelAddressField.setText(address);
-        hotelCityField.setText(city);
-        hotelCountryComboBox.setSelectedItem(country);
-        hotelTelephoneField.setText(telephone);
-        hotelEmailField.setText(email);
+        this.hotel=hotel;
+        this.hotelTableModel=hotelTableModel;
+        
+        hotelNameField.setText(hotel.getName());        
+        hotelAddressField.setText(hotel.getContact().getAddress());
+        hotelCityField.setText(hotel.getContact().getCity());
+        hotelCountryComboBox.setSelectedItem(hotel.getContact().getCity());
+        hotelTelephoneField.setText(hotel.getContact().getPhone());
+        hotelEmailField.setText(hotel.getContact().getEmail());
+        
+        createHotel = false;
+        hotelCreateButton.setText("Save");
+        hotelDescriptionLabel.setText("Edit existing hotel");
     }
 
     private void initializeCountryPicker() {
@@ -60,7 +78,7 @@ public class HotelDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        hotelDescriptionLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -79,7 +97,7 @@ public class HotelDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Create new hotel");
+        hotelDescriptionLabel.setText("Create new hotel");
 
         jLabel2.setText("Name");
 
@@ -128,7 +146,7 @@ public class HotelDialog extends javax.swing.JDialog {
                         .addComponent(hotelCreateButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(hotelDescriptionLabel)
                             .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,7 +171,7 @@ public class HotelDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(hotelDescriptionLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -199,9 +217,35 @@ public class HotelDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_hotelCancelButtonActionPerformed
 
     private void hotelCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelCreateButtonActionPerformed
-      if(validateInformation()){
-        //TODO - Send requests to server AND update main frame
-      }
+      if (validateInformation()) {
+            ContactTO contact = new ContactTO();
+            contact.setAddress(hotelAddressField.getText());
+            contact.setCity(hotelCityField.getText());
+            contact.setCountry((String)hotelCountryComboBox.getSelectedItem());
+            contact.setPhone(hotelTelephoneField.getText());
+            contact.setEmail(hotelEmailField.getText());
+
+            hotel.setName(hotelNameField.getText());            
+            hotel.setContact(contact);
+
+            try {
+                int status = createHotel ? hotelRESTManager.createHotel(hotel).getStatus() : hotelRESTManager.updateHotel(hotel).getStatus();
+                switch(status) {
+                    case 400:
+                        JOptionPane.showMessageDialog(this, "An invalid hotel was sent to the server. Please check the information and try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    case 500:
+                        JOptionPane.showMessageDialog(this, "An error occured on the server side. Please contact the administrator for more information.", "Error", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    default:
+                        hotelTableModel.setHotels(hotelRESTManager.findAllHotels());
+                }
+            } catch (ClientHandlerException che) {
+                JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            }
+            dispose();
+        }
     }//GEN-LAST:event_hotelCreateButtonActionPerformed
 
     private boolean validateInformation() {
@@ -258,20 +302,7 @@ public class HotelDialog extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(HotelDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                HotelDialog dialog = new HotelDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField hotelAddressField;
@@ -279,10 +310,10 @@ public class HotelDialog extends javax.swing.JDialog {
     private javax.swing.JTextField hotelCityField;
     private javax.swing.JComboBox hotelCountryComboBox;
     private javax.swing.JButton hotelCreateButton;
+    private javax.swing.JLabel hotelDescriptionLabel;
     private javax.swing.JTextField hotelEmailField;
     private javax.swing.JTextField hotelNameField;
     private javax.swing.JTextField hotelTelephoneField;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
