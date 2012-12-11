@@ -12,6 +12,8 @@ import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.ClientRESTManager;
 import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.HotelRESTManager;
 import cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels.ClientTableModel;
 import cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels.HotelTableModel;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,6 +32,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main(java.awt.Frame parent, boolean modal) {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     private void initTableModels() {
@@ -119,6 +122,10 @@ public class Main extends javax.swing.JFrame {
         newClientButton = new javax.swing.JButton();
         deleteClientButton = new javax.swing.JButton();
         editClientButton = new javax.swing.JButton();
+        searchClientLabel = new javax.swing.JLabel();
+        clientSearchField = new javax.swing.JTextField();
+        resetClientSearchButton = new javax.swing.JButton();
+        searchClientButton = new javax.swing.JButton();
         hotelPanel = new javax.swing.JPanel();
         hotelScrollPane = new javax.swing.JScrollPane();
         hotelTable = new javax.swing.JTable();
@@ -138,6 +145,7 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Hotel Booking Manager Desktop Client");
 
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -190,6 +198,28 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        searchClientLabel.setText("Search clients by name");
+
+        clientSearchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                clientSearchFieldKeyReleased(evt);
+            }
+        });
+
+        resetClientSearchButton.setText("Reset");
+        resetClientSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetClientSearchButtonActionPerformed(evt);
+            }
+        });
+
+        searchClientButton.setText("Search");
+        searchClientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchClientButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout clientPanelLayout = new javax.swing.GroupLayout(clientPanel);
         clientPanel.setLayout(clientPanelLayout);
         clientPanelLayout.setHorizontalGroup(
@@ -197,26 +227,41 @@ public class Main extends javax.swing.JFrame {
             .addGroup(clientPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(clientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(clientPanelLayout.createSequentialGroup()
-                        .addComponent(clientLabelDescription)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(clientScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+                    .addComponent(clientScrollPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, clientPanelLayout.createSequentialGroup()
                         .addComponent(deleteClientButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(editClientButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(newClientButton)))
+                        .addComponent(newClientButton))
+                    .addGroup(clientPanelLayout.createSequentialGroup()
+                        .addGroup(clientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(clientLabelDescription)
+                            .addComponent(searchClientLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(clientPanelLayout.createSequentialGroup()
+                        .addComponent(clientSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addComponent(searchClientButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resetClientSearchButton)))
                 .addContainerGap())
         );
         clientPanelLayout.setVerticalGroup(
             clientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(clientPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(clientLabelDescription)
+                .addComponent(searchClientLabel)
+                .addGap(7, 7, 7)
+                .addGroup(clientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clientSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resetClientSearchButton)
+                    .addComponent(searchClientButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(clientScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(clientLabelDescription)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(clientScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(clientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newClientButton)
                     .addComponent(deleteClientButton)
@@ -345,27 +390,31 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_newClientButtonActionPerformed
 
     private void deleteClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteClientButtonActionPerformed
-        int reply = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this client?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
-            try {
-                int status = clientRESTManager.deleteClient(getSelectedClient(clientTable.getSelectedRow())).getStatus();
-                switch(status) {
-                    case 404:
-                        JOptionPane.showMessageDialog(this, "Selected client cannot be deleted. The client is not present in the databse anymore - The record might have been deleted by someone else.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
-                        break;
-                    case 417:
-                        JOptionPane.showMessageDialog(this, "Selected client cannot be deleted. The client still has an active reservation.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
-                        break;
-                    case 500:
-                        JOptionPane.showMessageDialog(this, "There was an error on the server side. Please contact the administrator for furhter information.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
-                        break;
+        if (clientTable.getSelectedRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Please select a client you wish to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int reply = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this client?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                try {
+                    int status = clientRESTManager.deleteClient(getSelectedClient(clientTable.getSelectedRow())).getStatus();
+                    switch(status) {
+                        case 404:
+                            JOptionPane.showMessageDialog(this, "Selected client cannot be deleted. The client is not present in the databse anymore - The record might have been deleted by someone else.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case 417:
+                            JOptionPane.showMessageDialog(this, "Selected client cannot be deleted. The client still has an active reservation.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case 500:
+                            JOptionPane.showMessageDialog(this, "There was an error on the server side. Please contact the administrator for furhter information.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                            break;
+                    }
+                    refreshClientTable();
+                } catch (ClientHandlerException che){
+                    JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+                    System.exit(1);
+                } catch (IllegalArgumentException iae) {
+                    JOptionPane.showMessageDialog(this, "Cannot delete a nonexistent client.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
                 }
-                refreshClientTable();
-            } catch (ClientHandlerException che){
-                JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
-                System.exit(1);
-            } catch (IllegalArgumentException iae) {
-                JOptionPane.showMessageDialog(this, "Cannot delete a nonexistent client.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_deleteClientButtonActionPerformed
@@ -426,7 +475,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void editClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editClientButtonActionPerformed
-        new ClientDialogue(getSelectedClient(clientTable.getSelectedRow()), clientTableModel).setVisible(true);
+        if (clientTable.getSelectedRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Please select a client you wish to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            new ClientDialogue(getSelectedClient(clientTable.getSelectedRow()), clientTableModel).setVisible(true);
+        }
     }//GEN-LAST:event_editClientButtonActionPerformed
 
     private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
@@ -436,6 +489,43 @@ public class Main extends javax.swing.JFrame {
     private void editHotelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editHotelButtonActionPerformed
         new HotelDialog(getSelectedHotel(hotelTable.getSelectedRow()), hotelTableModel).setVisible(true);
     }//GEN-LAST:event_editHotelButtonActionPerformed
+
+    private void searchClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchClientButtonActionPerformed
+        String searchString = clientSearchField.getText();
+        try {
+            clientTableModel.setClients(clientRESTManager.findClientsByName(searchString));
+        } catch (ClientHandlerException ex) {
+            JOptionPane.showMessageDialog(this, "Server connection is unavailable. Please contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        } catch (UniformInterfaceException uie) {
+            int status = uie.getResponse().getStatus();
+            switch(status) {
+                case 400:
+                    refreshClientTable();
+                    break;
+                case 404:
+                    clientTableModel.setClients(new ArrayList<ClientTO>());
+                    break;
+                case 500:
+                    JOptionPane.showMessageDialog(this, "Error on server side. Contact administrator for more information", "Error while getting client list.", JOptionPane.ERROR_MESSAGE);
+                    break;
+            }
+        }
+    }//GEN-LAST:event_searchClientButtonActionPerformed
+
+    private void resetClientSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetClientSearchButtonActionPerformed
+        clientSearchField.setText("");
+        refreshClientTable();
+    }//GEN-LAST:event_resetClientSearchButtonActionPerformed
+
+    private void clientSearchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_clientSearchFieldKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            searchClientButtonActionPerformed(null);
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            resetClientSearchButtonActionPerformed(null);
+        }
+    }//GEN-LAST:event_clientSearchFieldKeyReleased
 
     /**
      * @param args the command line arguments
@@ -483,6 +573,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel clientLabelDescription;
     private javax.swing.JPanel clientPanel;
     private javax.swing.JScrollPane clientScrollPane;
+    private javax.swing.JTextField clientSearchField;
     private javax.swing.JTable clientTable;
     private javax.swing.JButton deleteClientButton;
     private javax.swing.JButton deleteHotelButton;
@@ -499,6 +590,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton newClientButton;
     private javax.swing.JButton newHotelButton;
     private javax.swing.JMenuItem quitMenuItem;
+    private javax.swing.JButton resetClientSearchButton;
+    private javax.swing.JButton searchClientButton;
+    private javax.swing.JLabel searchClientLabel;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }

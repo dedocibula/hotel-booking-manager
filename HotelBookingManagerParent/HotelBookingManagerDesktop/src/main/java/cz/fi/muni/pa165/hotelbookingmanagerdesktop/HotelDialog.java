@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author FILIP
  */
 public class HotelDialog extends javax.swing.JFrame {
-    
+
     private static final long serialVersionUID = 1L;
     private boolean createHotel = true;
     private HotelRESTManager hotelRESTManager = new HotelRESTManager();
@@ -29,26 +29,26 @@ public class HotelDialog extends javax.swing.JFrame {
     /**
      * Creates new form hotelDialog
      */
-    public HotelDialog(HotelTableModel hotelTableModel) {        
+    public HotelDialog(HotelTableModel hotelTableModel) {
         initComponents();
         initializeCountryPicker();
         this.hotelTableModel=hotelTableModel;
         hotel= new HotelTO();
     }
-    
+
     public HotelDialog(HotelTO hotel,HotelTableModel hotelTableModel){
         initComponents();
         initializeCountryPicker();
         this.hotel=hotel;
         this.hotelTableModel=hotelTableModel;
-        
-        hotelNameField.setText(hotel.getName());        
+
+        hotelNameField.setText(hotel.getName());
         hotelAddressField.setText(hotel.getContact().getAddress());
         hotelCityField.setText(hotel.getContact().getCity());
         hotelCountryComboBox.setSelectedItem(hotel.getContact().getCity());
         hotelTelephoneField.setText(hotel.getContact().getPhone());
         hotelEmailField.setText(hotel.getContact().getEmail());
-        
+
         createHotel = false;
         hotelCreateButton.setText("Save");
         hotelDescriptionLabel.setText("Edit existing hotel");
@@ -96,6 +96,7 @@ public class HotelDialog extends javax.swing.JFrame {
         hotelCreateButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Hotel");
 
         hotelDescriptionLabel.setText("Create new hotel");
 
@@ -225,7 +226,7 @@ public class HotelDialog extends javax.swing.JFrame {
             contact.setPhone(hotelTelephoneField.getText());
             contact.setEmail(hotelEmailField.getText());
 
-            hotel.setName(hotelNameField.getText());            
+            hotel.setName(hotelNameField.getText());
             hotel.setContact(contact);
 
             try {
@@ -252,7 +253,7 @@ public class HotelDialog extends javax.swing.JFrame {
         String errors = "";
         if (hotelNameField.getText().isEmpty()) {
             errors += "First name is a required field.\n";
-        }        
+        }
         if (hotelAddressField.getText().isEmpty()) {
             errors += "Address field is a required field.\n";
         }
@@ -275,34 +276,6 @@ public class HotelDialog extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, errors, "Errors found", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HotelDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HotelDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HotelDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HotelDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField hotelAddressField;
