@@ -19,12 +19,12 @@ import javax.ws.rs.core.MediaType;
  * @author Andrej Galád
  */
 public class HotelRESTManager {
-
+    
     private String url;
     private Client client;
     private ObjectMapper mapper = new ObjectMapper();
     private WebResource webResource;
-
+    
     public HotelRESTManager() {
         ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -39,19 +39,19 @@ public class HotelRESTManager {
                           .accept(MediaType.APPLICATION_JSON)
                           .get(HotelTO.class);
     }
-
+    
     public List<HotelTO> findAllHotels() {
         List<HotelTO> hotels = new ArrayList<>();
         String json = webResource.path("findAllHotels")
                                  .accept(MediaType.APPLICATION_JSON)
                                  .get(String.class);
         try {
-            hotels = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});
+            hotels = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});    
         } catch (IOException e) {
         }
         return hotels;
     }
-
+    
     public List<HotelTO> findHotelsByName(String name) {
         List<HotelTO> clients = new ArrayList<>();
         String json = webResource.path("findHotelsByName")
@@ -59,12 +59,12 @@ public class HotelRESTManager {
                                  .accept(MediaType.APPLICATION_JSON)
                                  .get(String.class);
         try {
-            clients = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});
+            clients = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});    
         } catch (IOException e) {
         }
         return clients;
     }
-
+    
     public List<HotelTO> findHotelsByAddress(String address) {
         List<HotelTO> clients = new ArrayList<>();
         String json = webResource.path("findHotelsByAddress")
@@ -72,12 +72,12 @@ public class HotelRESTManager {
                                  .accept(MediaType.APPLICATION_JSON)
                                  .get(String.class);
         try {
-            clients = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});
+            clients = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});    
         } catch (IOException e) {
         }
         return clients;
     }
-
+    
     public List<HotelTO> findHotelsByCity(String city) {
         List<HotelTO> clients = new ArrayList<>();
         String json = webResource.path("findHotelsByCity")
@@ -85,12 +85,12 @@ public class HotelRESTManager {
                                  .accept(MediaType.APPLICATION_JSON)
                                  .get(String.class);
         try {
-            clients = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});
+            clients = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});    
         } catch (IOException e) {
         }
         return clients;
     }
-
+    
     public List<HotelTO> findHotelsByCountry(String country) {
         List<HotelTO> clients = new ArrayList<>();
         String json = webResource.path("findHotelsByCountry")
@@ -98,26 +98,26 @@ public class HotelRESTManager {
                                  .accept(MediaType.APPLICATION_JSON)
                                  .get(String.class);
         try {
-            clients = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});
+            clients = mapper.readValue(json, new TypeReference<List<HotelTO>>() {});    
         } catch (IOException e) {
         }
         return clients;
     }
-
+    
     public ClientResponse createHotel(HotelTO hotel) {
         return webResource.path("createHotel")
                 .type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(ClientResponse.class, hotel);
     }
-
+    
     public ClientResponse updateHotel(HotelTO hotel) {
         return webResource.path("updateHotel")
                 .type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(ClientResponse.class, hotel);
     }
-
+    
     public ClientResponse deleteHotel(HotelTO hotel) {
         return webResource.path("deleteHotel")
                 .queryParam("id", hotel.getId().toString())

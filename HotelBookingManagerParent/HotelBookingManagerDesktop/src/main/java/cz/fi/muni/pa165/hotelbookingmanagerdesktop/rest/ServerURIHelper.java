@@ -11,17 +11,17 @@ import java.util.logging.Logger;
  * @author Andrej Galád
  */
 public class ServerURIHelper {
-
+    
     public static String loadURLForClient() {
         Properties properties = PropertiesInit();
         return properties.getProperty("urlClient");
     }
-
+    
     public static String loadURLForHotel() {
         Properties properties = PropertiesInit();
         return properties.getProperty("urlHotel");
     }
-
+    
     private static Properties PropertiesInit() {
         Properties properties = new Properties();
         try {
