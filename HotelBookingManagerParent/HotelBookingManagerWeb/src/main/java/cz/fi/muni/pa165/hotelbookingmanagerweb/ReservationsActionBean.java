@@ -303,10 +303,6 @@ public class ReservationsActionBean implements ActionBean {
 		reservation = reservationService.getReservation(Long.parseLong(ids));
 	}
 
-//	public Resolution edit() {
-//		return new ForwardResolution("/reservation/edit.jsp");
-//	}
-
 	public Resolution save() {
 		reservationService.updateReservation(reservation);
 		return new RedirectResolution(this.getClass(), "all");
