@@ -33,7 +33,6 @@ public class HotelRESTService {
                     Response.status(Responses.NOT_FOUND)
                             .entity("Hotel with id " + id + " wasn't found")
                             .build());
-        RemoveRooms(hotel);
         return hotel;
     }
     
@@ -42,7 +41,6 @@ public class HotelRESTService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<HotelTO> getAllHotelsInJSON() {
         List<HotelTO> temp = hotelService.findAllHotels();
-        RemoveRooms(temp);
         return temp;
     }
     
@@ -56,7 +54,6 @@ public class HotelRESTService {
                     Response.status(Responses.NOT_FOUND)
                             .entity("Hotels with name " + name + " weren't found")
                             .build());
-        RemoveRooms(temp);
         return temp;
     }
     
@@ -70,7 +67,6 @@ public class HotelRESTService {
                     Response.status(Responses.NOT_FOUND)
                             .entity("Hotels with address " + address + " weren't found")
                             .build());
-        RemoveRooms(temp);
         return temp;
     }
     
@@ -84,7 +80,6 @@ public class HotelRESTService {
                     Response.status(Responses.NOT_FOUND)
                             .entity("Hotels with city " + city + " weren't found")
                             .build());
-        RemoveRooms(temp);
         return temp;
     }
     
@@ -98,7 +93,6 @@ public class HotelRESTService {
                     Response.status(Responses.NOT_FOUND)
                             .entity("Hotels with country " + country + " weren't found")
                             .build());
-        RemoveRooms(temp);
         return temp;
     }
 
@@ -128,15 +122,5 @@ public class HotelRESTService {
         hotelService.deleteHotel(hotel);
         String result = "Hotel removed : " + hotel;
         return Response.ok(result).build();
-    }
-    
-    private void RemoveRooms(HotelTO hotel) {
-        hotel.setRooms(new ArrayList<RoomTO>());
-    }
-    
-    private void RemoveRooms(List<HotelTO> hotels) {
-        for (HotelTO hotel : hotels) {
-            RemoveRooms(hotel);
-        }
     }
 }

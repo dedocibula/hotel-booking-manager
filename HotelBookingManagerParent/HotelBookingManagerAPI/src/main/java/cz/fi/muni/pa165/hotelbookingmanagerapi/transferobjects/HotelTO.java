@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects;
 
 import java.util.List;
 import java.util.Objects;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 /**
@@ -44,10 +45,12 @@ public class HotelTO {
         this.contact = contact;
     }
 
+    @JsonIgnore
     public List<RoomTO> getRooms() {
         return this.rooms;
     }
 
+    @JsonIgnore
     public void setRooms(List<RoomTO> rooms) {
         this.rooms = rooms;
     }
