@@ -42,9 +42,9 @@ img {
 	border: 1px solid #e3e3e3;
 	background-color: #f2f2f2;
         width: 100%;
-	border-radius: 6px;
-	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
 }
 
 #table .info {
@@ -325,6 +325,10 @@ input.error {
 	padding-bottom: 10px;
 	margin-bottom: 20px;
 	background: url("../images/templatemo_horizontal_divider_02.jpg") bottom repeat-x;	
+}
+
+#content_left input[type="text"] {
+	margin-left: 0px;
 }
 
 #content_left input[type="submit"] {
