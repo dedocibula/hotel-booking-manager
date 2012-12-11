@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>cz.fi.muni.pa165</groupId>
-    <artifactId>HotelBookingManagerParent</artifactId>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cz.fi.muni.pa165</groupId>
+        <artifactId>HotelBookingManagerParent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <groupId>cz.fi.muni.pa165.hotelbookingmanagerdesktop</groupId>
+    <artifactId>HotelBookingManagerDesktop</artifactId>
     <version>1.0-SNAPSHOT</version>
-  </parent>
-  <groupId>cz.fi.muni.pa165.hotelbookingmanagerdesktop</groupId>
-  <artifactId>HotelBookingManagerDesktop</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>HotelBookingManagerDesktop</name>
-  <url>http://maven.apache.org</url>
+    <name>HotelBookingManagerDesktop</name>
+    <url>http://maven.apache.org</url>
     <build>
         <plugins>
             <plugin>
@@ -23,29 +23,44 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>cz.fi.muni.pa165.hotelbookingmanagerdesktop.Main</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <version>3.1.2.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.1.1</version>
-    </dependency>
-    <dependency>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>3.1.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>1.8</version>
@@ -56,10 +71,10 @@
             <version>1.8</version>
             <type>jar</type>
         </dependency>
-    <dependency>
-        <groupId>cz.fi.muni.pa165</groupId>
-        <artifactId>HotelBookingManagerAPI</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
+        <dependency>
+            <groupId>cz.fi.muni.pa165</groupId>
+            <artifactId>HotelBookingManagerAPI</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
