@@ -107,8 +107,7 @@
         
         <script type="text/javascript">
             (function() {
-                var $tbody = $('tbody');
-                $tbody.children('tr.info').children().wrapInner('<div class="wrapper">');
+                $('tbody').children('tr.info').children().wrapInner('<div class="wrapper">');
                 var $wrapper = $('div.wrapper');
                 var $left_content = $('div#content_left');
                 
@@ -125,16 +124,16 @@
                     }, 1000);
                 }
                 
-                $tbody.on('mouseleave', function() {
-                    $wrapper.slideUp();
-                });
-                
-                $tbody.on('mouseover', 'tr.main', function() {
-                   $(this).next().find('div.wrapper')
-                          .siblings('div.wrapper')
-                          .slideUp(200)
-                          .end()
-                          .slideDown(200);
+                $('tr.main').on('hover', function(e) {
+                    if (e.type == 'mouseenter') {
+                        $(this).next()
+                               .find('div.wrapper')
+                               .slideDown(200);
+                        console.log('mouseenter');
+                    } else {
+                        $wrapper.slideUp(200);
+                        console.log('mouseleave');
+                    }
                 });
                 
                 $('a.delete').on('click', function(e) {
