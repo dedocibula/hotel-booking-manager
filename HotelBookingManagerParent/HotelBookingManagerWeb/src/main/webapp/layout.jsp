@@ -130,10 +130,8 @@
                         $(this).next()
                                .find('div.wrapper')
                                .slideDown(200);
-                        console.log('mouseenter');
                     } else {
-                        $wrapper.slideUp(200);
-                        console.log('mouseleave');
+                        $wrapper.slideUp();
                     }
                 });
                 
