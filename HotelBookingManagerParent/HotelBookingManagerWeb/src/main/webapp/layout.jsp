@@ -16,6 +16,7 @@
         <title><c:out value="${title}" /></title>
         <meta name="keywords" content="Hotel, Room, Reservation, Client, Java, Tomcat, Spring, Hibernate, CSS, XHTML" />
         <meta name="description" content="Booking Manager - website allowing to create reservations all around the globe" />
+        <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/images/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/style.css" />
 		
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/jquery-ui.css" />
