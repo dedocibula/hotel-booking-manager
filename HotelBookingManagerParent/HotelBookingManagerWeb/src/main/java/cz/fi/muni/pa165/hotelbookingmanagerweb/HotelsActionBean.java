@@ -1,4 +1,5 @@
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
+
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import java.util.List;
@@ -14,7 +15,6 @@ import org.springframework.dao.DataAccessException;
  *
  * @author Filip Bogyai
  */
-
 @UrlBinding("/hotels/{$event}/{hotel.id}")
 public class HotelsActionBean implements ActionBean {
 
@@ -100,5 +100,3 @@ public class HotelsActionBean implements ActionBean {
         return new RedirectResolution( RoomsActionBean.class, "hotelRooms").addParameter("hotel", hotel.getId());
     }
 }
-
-

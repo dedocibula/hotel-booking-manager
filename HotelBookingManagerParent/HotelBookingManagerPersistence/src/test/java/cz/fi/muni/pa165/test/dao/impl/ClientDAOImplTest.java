@@ -1,6 +1,5 @@
 package cz.fi.muni.pa165.test.dao.impl;
 
-
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Marián Rusnák
  */
-
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
 public class ClientDAOImplTest {

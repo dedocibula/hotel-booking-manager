@@ -12,6 +12,8 @@ import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -73,6 +75,7 @@ public class ClientRESTManager {
         try {
             clients = mapper.readValue(json, new TypeReference<List<ClientTO>>() {});    
         } catch (IOException e) {
+			Logger.getLogger(ClientRESTManager.class.getName()).log(Level.SEVERE, null, e);
         }
         return clients;
     }
@@ -98,6 +101,7 @@ public class ClientRESTManager {
         try {
             clients = mapper.readValue(json, new TypeReference<List<ClientTO>>() {});    
         } catch (IOException e) {
+			Logger.getLogger(ClientRESTManager.class.getName()).log(Level.SEVERE, null, e);
         }
         return clients;
     }

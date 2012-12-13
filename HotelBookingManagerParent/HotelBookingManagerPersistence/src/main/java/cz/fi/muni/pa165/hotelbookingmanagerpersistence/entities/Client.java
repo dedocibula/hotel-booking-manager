@@ -1,6 +1,5 @@
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities;
 
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Contact;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.*;
