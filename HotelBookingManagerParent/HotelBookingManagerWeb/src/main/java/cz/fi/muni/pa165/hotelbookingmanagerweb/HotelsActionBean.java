@@ -83,7 +83,9 @@ public class HotelsActionBean implements ActionBean {
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save","rooms"})
     public void loadHotelFromDatabase() {
         String ids = context.getRequest().getParameter("hotel.id");
-        if (ids == null) return;
+        if (ids == null) {
+            return;
+        }
         hotel = hotelManager.findHotel(Long.parseLong(ids));
     }
 

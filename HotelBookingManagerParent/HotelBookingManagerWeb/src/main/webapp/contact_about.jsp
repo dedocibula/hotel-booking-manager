@@ -15,6 +15,7 @@
                         <li>ORM providing implementation: Hibernate</li>
                         <li>Service layer: Spring</li>
                         <li>Presentation layer: Sprites</li>
+                        <li>REST API: Jersey</li>
               </ul>
               <div class="cleaner_h10">&nbsp;</div>
        	  </div>

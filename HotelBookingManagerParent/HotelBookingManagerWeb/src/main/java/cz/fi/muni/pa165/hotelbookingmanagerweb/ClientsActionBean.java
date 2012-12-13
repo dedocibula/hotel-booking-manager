@@ -74,7 +74,9 @@ public class ClientsActionBean implements ActionBean {
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadHotelFromDatabase() {
         String ids = context.getRequest().getParameter("client.id");
-        if (ids == null) return;
+        if (ids == null) {
+            return;
+        }
         client = clientService.findClient(Long.parseLong(ids));
     }
 
