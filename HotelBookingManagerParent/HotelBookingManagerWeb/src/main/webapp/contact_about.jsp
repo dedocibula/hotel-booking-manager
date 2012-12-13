@@ -14,7 +14,7 @@
                 	<li>Persistence layer: JPA</li>
                         <li>ORM providing implementation: Hibernate</li>
                         <li>Service layer: Spring</li>
-                        <li>Presentation layer: Sprites</li>
+                        <li>Presentation layer: Stripes</li>
                         <li>REST API: Jersey</li>
               </ul>
               <div class="cleaner_h10">&nbsp;</div>
@@ -28,7 +28,7 @@
                 <div class="content_title_02">Contact</div>
                 <p>Project is publicly available on Google Code.</p>
                 <p>Authors are:</p>
-                <p>Marián Rusnák, Thanh Dang Hoang Minh, Filip Bogyai a Andrej Galád</p>
+                <p>Marián Rusnák, Thanh Dang Hoang Minh, Filip Bogyai, Andrej Galád</p>
                 <div class="cleaner_h10">&nbsp;</div>
        	  </div>
                
