@@ -55,7 +55,7 @@ public class ClientDAOImpl implements ClientDAO {
 	@Override
 	public List<Client> findClientsByName(String name) {
 		name = name.replaceAll(" ", "");
-		Query query = em.createQuery("SELECT c FROM Client c WHERE CONCAT(c.firstName,c.lastName,c.firstName) LIKE :name");
+		Query query = em.createQuery("SELECT c FROM Client c WHERE UPPER(CONCAT(c.firstName,c.lastName,c.firstName)) LIKE UPPER(:name)");
 		query.setParameter("name", "%" + name + "%");
 		return (List<Client>) query.getResultList();
 	}

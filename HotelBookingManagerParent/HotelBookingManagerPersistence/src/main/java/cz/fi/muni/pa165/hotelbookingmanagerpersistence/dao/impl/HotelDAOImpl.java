@@ -52,28 +52,28 @@ public class HotelDAOImpl implements HotelDAO {
 
 	@Override
 	public List<Hotel> findHotelsByName(String name) {
-		Query query = em.createQuery("SELECT h FROM Hotel h WHERE name LIKE :name");
+		Query query = em.createQuery("SELECT h FROM Hotel h WHERE UPPER(name) LIKE UPPER(:name)");
 		query.setParameter("name", name + "%");
 		return (List<Hotel>) query.getResultList();
 	}
 
 	@Override
 	public List<Hotel> findHotelsByAddress(String address) {
-		Query query = em.createQuery("SELECT h FROM Hotel h WHERE address LIKE :address");
+		Query query = em.createQuery("SELECT h FROM Hotel h WHERE UPPER(address) LIKE UPPER(:address)");
 		query.setParameter("address", address + "%");
 		return (List<Hotel>) query.getResultList();
 	}
 
 	@Override
 	public List<Hotel> findHotelsByCity(String city) {
-		Query query = em.createQuery("SELECT h FROM Hotel h WHERE city LIKE :city");
+		Query query = em.createQuery("SELECT h FROM Hotel h WHERE UPPER(city) LIKE UPPER(:city)");
 		query.setParameter("city", city + "%");
 		return (List<Hotel>) query.getResultList();
 	}
 
 	@Override
 	public List<Hotel> findHotelsByCountry(String country) {
-		Query query = em.createQuery("SELECT h FROM Hotel h WHERE country LIKE :country");
+		Query query = em.createQuery("SELECT h FROM Hotel h WHERE UPPER(country) LIKE UPPER(:country)");
 		query.setParameter("country", country + "%");
 		return (List<Hotel>) query.getResultList();
 	}
