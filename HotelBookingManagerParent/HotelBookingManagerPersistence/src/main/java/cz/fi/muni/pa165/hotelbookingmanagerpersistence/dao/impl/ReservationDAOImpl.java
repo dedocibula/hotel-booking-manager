@@ -1,7 +1,6 @@
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ReservationDAO;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Reservation;
 import java.util.Date;
@@ -38,12 +37,6 @@ public class ReservationDAOImpl implements ReservationDAO {
     }
 
     @Override
-    @Transactional
-    public void update(Reservation reservation) {
-        em.merge(reservation);
-    }
-
-    @Override
     public Reservation get(Long id) {
         return em.find(Reservation.class, id);
     }
@@ -52,13 +45,6 @@ public class ReservationDAOImpl implements ReservationDAO {
     public List<Reservation> findAllReservations() {
         List<Reservation> reservations = em.createQuery("Select r FROM Reservation r").getResultList();
         return reservations;
-    }
-
-    @Override
-    public List<Reservation> findReservationsByClient(Client client) {
-        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.client = :client");
-        query.setParameter("client" , client);
-        return (List<Reservation>) query.getResultList();
     }
 
     @Override

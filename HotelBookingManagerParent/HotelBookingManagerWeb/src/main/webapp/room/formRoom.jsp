@@ -18,6 +18,3 @@
         <th><s:label for="b3" name="room.pricePerNight"/></th>
         <td><s:text id="b3" name="room.pricePerNight"/></td>
 </div>
-
-</table>
-

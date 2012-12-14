@@ -46,13 +46,6 @@ public interface RoomService {
     RoomTO getRoom(Long id);
 
     /**
-     * Returns all rooms.
-     * @return all rooms
-     * @throws DataAccessException in case of error on a persistence layer.
-     */
-    List<RoomTO> findAllRooms();
-
-    /**
      * Returns all rooms attached to a hotel
      *
      * @param hotel hotel, whose rooms to return

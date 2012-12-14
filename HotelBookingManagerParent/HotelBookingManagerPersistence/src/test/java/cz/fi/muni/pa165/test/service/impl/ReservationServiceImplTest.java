@@ -9,7 +9,6 @@ import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ReservationDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RoomDAO;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Room;
@@ -23,6 +22,7 @@ import org.junit.After;
 import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -244,17 +244,7 @@ public class ReservationServiceImplTest {
         verify(mockReservationDao).delete(mapper.map(reservation1, Reservation.class));
         verify(mockReservationDao, never()).delete(mapper.map(reservation2, Reservation.class));
     }
-
-    @Test
-    public void testUpdateReservation() {
-        ReservationTO reservation = sampleReservation();
-        reservation.setId(1L);
-        
-        reservationService.updateReservation(reservation);
-        
-        verify(mockReservationDao).update(mapper.map(reservation, Reservation.class));
-    }
-
+    
     @Test
     public void testGetReservation() {
         reservationService.getReservation(1L);
@@ -267,38 +257,6 @@ public class ReservationServiceImplTest {
         reservationService.findAllReservations();
         
         verify(mockReservationDao).findAllReservations();
-    }
-
-    @Test
-    public void testFindReservationsByClient() {
-        ClientTO client = sampleClient();
-        client.setId(1L);
-        
-        reservationService.findReservationsByClient(client);
-        
-        verify(mockReservationDao).findReservationsByClient(mapper.map(client, Client.class));
-    }
-    
-    @Test
-    public void testFindReservationsByClientWithWrongAttributes() {
-        // Test with null client
-        try {
-            reservationService.findReservationsByClient(null);
-            fail("Cannot find reservations of null client.");
-        } catch (IllegalArgumentException ex) {
-            // OK
-        }
-        
-        // Test with client with null id
-        ClientTO client = newClient("Jozko", "Mrkvicka", sampleContact());
-        try {
-            reservationService.findReservationsByClient(client);
-            fail("Cannot find reservations of client with null id.");
-        } catch (IllegalArgumentException ex) {
-            // OK
-        }
-        
-        verify(mockReservationDao, never()).findReservationsByClient(any(Client.class));
     }
 
     @Test

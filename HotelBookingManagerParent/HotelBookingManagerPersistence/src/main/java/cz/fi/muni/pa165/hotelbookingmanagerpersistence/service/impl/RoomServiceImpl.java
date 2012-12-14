@@ -89,16 +89,6 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public List<RoomTO> findAllRooms() {
-		List<Room> rooms = roomDAO.findAllRooms();
-		List<RoomTO> roomsTO = new ArrayList<>();
-		for (Room roomDO : rooms) {
-			roomsTO.add(mapper.map(roomDO, RoomTO.class));
-		}
-		return roomsTO;
-	}
-
-	@Override
 	public List<RoomTO> findRoomsByHotel(HotelTO hotelTO) {
 		if (hotelTO == null) {
 			throw new IllegalArgumentException("Hotel cannot be null.");

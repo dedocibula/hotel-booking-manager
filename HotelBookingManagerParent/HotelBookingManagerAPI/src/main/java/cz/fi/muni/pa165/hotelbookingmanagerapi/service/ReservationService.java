@@ -32,16 +32,6 @@ public interface ReservationService {
      */
     void deleteReservation(ReservationTO reservationTO);
 
-     
-    /**
-     * Updates the reservation according to the ID of the reservation in the parameter.
-     *
-     * @param reservationTO transfer object describing reservation to update.
-     * @throws IllegalArgumentException if reservation id is null and see createReservation() method.
-     * @throws DataAccessException in case of error on a persistence layer.
-     */
-    void updateReservation(ReservationTO reservationTO);
-
     /**
      * Returns the transfer object describing reservation that has the specified ID.
      *
@@ -60,16 +50,6 @@ public interface ReservationService {
      * @throws DataAccessException in case of error on a persistence layer.
      */
     List<ReservationTO> findAllReservations();
-    
-    /**
-     * Return transfer object describing all reservations of given client.
-     * 
-     * @param client client
-     * @return reservations of given client.
-     * @throws IllegalArgumentException if client is null or client's id is null.
-     * @throws DataAccessException in case of error on a persistence layer.
-     */
-    List<ReservationTO> findReservationsByClient(ClientTO clientTO);
     
     /**
      * Return transfer object describing reservations within given date interval.

@@ -294,18 +294,13 @@ public class ReservationsActionBean implements ActionBean {
 		return new RedirectResolution(this.getClass(), "all");
 	}
 
-	@Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save", "delete"})
+	@Before(stages = LifecycleStage.BindingAndValidation, on = {"delete"})
 	public void loadReservationFromDatabase() {
 		String ids = context.getRequest().getParameter("reservation.id");
 		if (ids == null) {
 			return;
 		}
 		reservation = reservationService.getReservation(Long.parseLong(ids));
-	}
-
-	public Resolution save() {
-		reservationService.updateReservation(reservation);
-		return new RedirectResolution(this.getClass(), "all");
 	}
 
 	public Resolution delete() {

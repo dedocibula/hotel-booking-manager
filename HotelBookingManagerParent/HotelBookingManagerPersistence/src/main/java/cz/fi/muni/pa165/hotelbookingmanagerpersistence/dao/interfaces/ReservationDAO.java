@@ -1,6 +1,5 @@
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces;
 
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Reservation;
 import java.util.Date;
@@ -28,15 +27,6 @@ public interface ReservationDAO {
      */
     void delete(Reservation reservation);
 
-     
-    /**
-     * Updates the reservation according to the ID of the reservation in the parameter.
-     *
-     * @param reservation reservation to update.
-     * @throws DataAccessException in case of error.
-     */
-    void update(Reservation reservation);
-
     /**
      * Returns the reservation that has the specified ID.
      *
@@ -54,15 +44,6 @@ public interface ReservationDAO {
      * @throws DataAccessException in case of error.
      */
     List<Reservation> findAllReservations();
-    
-    /**
-     * Return all reservations of given client.
-     * 
-     * @param client client
-     * @return reservations of given client.
-     * @throws DataAccessException in case of error.
-     */
-    List<Reservation> findReservationsByClient(Client client);
     
     /**
      * Return reservations within given date interval.

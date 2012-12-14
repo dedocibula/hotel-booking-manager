@@ -30,10 +30,6 @@ public class RoomsActionBean implements ActionBean {
 		return new ForwardResolution("/room/room.jsp");
 	}
 
-	public List<RoomTO> getRooms() {
-		return roomManager.findAllRooms();
-	}
-
 	@Override
 	public void setContext(ActionBeanContext context) {
 		this.context = context;

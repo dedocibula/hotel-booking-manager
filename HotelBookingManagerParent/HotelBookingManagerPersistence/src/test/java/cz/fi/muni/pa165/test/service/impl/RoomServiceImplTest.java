@@ -154,15 +154,6 @@ public class RoomServiceImplTest {
     }
 
     /**
-     * Test of findAllRooms method, of class RoomServiceImpl.
-     */
-    @Test
-    public void testFindAllRooms() {
-       List<RoomTO> rooms = roomService.findAllRooms();
-       Mockito.verify(roomDAO).findAllRooms();
-    }
-
-    /**
      * Test of findRoomsByName method, of class RoomServiceImpl.
      */
     @Test

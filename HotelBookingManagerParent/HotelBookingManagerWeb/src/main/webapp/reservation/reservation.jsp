@@ -79,10 +79,6 @@
 								<td>${reservation.room.roomType} - ${reservation.room.hotel.name}</td>
 								<td><f:formatDate type="date" dateStyle="LONG" value="${reservation.fromDate}" /></td>
 								<td><f:formatDate type="date" dateStyle="LONG" value="${reservation.toDate}" /></td>
-								<%--<s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="edit">
-									<s:param name="reservation.id" value="${reservation.id}"/>
-									Edit
-								</s:link> --%>
 								<td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" event="delete" class="delete"><s:param name="reservation.id" value="${reservation.id}"/><img src="${pageContext.request.contextPath}/images/remove_icon.png" alt="delete" /></s:link> </td>
 								</tr>
 						</c:forEach>
