@@ -74,33 +74,4 @@ public interface HotelService {
      */
     List<HotelTO> findHotelsByName(String name);
     
-    /**
-     * Returns list of transfer objects describing hotels with given address.
-     * 
-     * @param address address of requested hotels
-     * @return all hotels with given address or empty list if there are none.
-     * @throws IllegalArgumentException if parameter is null or empty string.
-     * @throws DataAccessException in case of error on a persistence layer.
-     */
-    List<HotelTO> findHotelsByAddress(String address);
-    
-    /**
-     * Returns list of transfer objects describing hotels with given city.
-     * 
-     * @param city city of requested hotels
-     * @return all hotels with given city or empty list if there are none.
-     * @throws IllegalArgumentException if parameter is null or empty string.
-     * @throws DataAccessException in case of error on a persistence layer.
-     */
-    List<HotelTO> findHotelsByCity(String city);
-    
-    /**
-     * Returns list of transfer objects describing hotels with given country.
-     * 
-     * @param country country of requested hotels
-     * @return all hotels with given country or empty list if there are none.
-     * @throws IllegalArgumentException if parameter is null or empty string.
-     * @throws DataAccessException in case of error on a persistence layer.
-     */
-    List<HotelTO> findHotelsByCountry(String country);
 }

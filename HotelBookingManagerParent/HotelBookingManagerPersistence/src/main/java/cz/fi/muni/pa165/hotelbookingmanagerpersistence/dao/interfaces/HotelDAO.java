@@ -63,30 +63,5 @@ public interface HotelDAO {
      * @return hotels with given name or empty list if there are none.
      * @throws DataAccessException in case of error.
      */
-    List<Hotel> findHotelsByName(String name);
-
-    /**
-     * Returns list of hotels in the database with given address.
-     *
-     * @return hotels with given address or empty list if there are none.
-     * @throws DataAccessException in case of error.
-     */
-    List<Hotel> findHotelsByAddress(String address);
-
-    /**
-     * Returns list of hotels in the database with given city.
-     *
-     * @return hotels with given city or empty list if there are none.
-     * @throws DataAccessException in case of error.
-     */
-    List<Hotel> findHotelsByCity(String city);
-
-    /**
-     * Returns list of hotels in the database with given country.
-     *
-     *
-     * @return hotels with given country or empty list if there are none.
-     * @throws DataAccessException in case of error.
-     */
-    List<Hotel> findHotelsByCountry(String country);
+    List<Hotel> findHotelsByName(String name);    
 }

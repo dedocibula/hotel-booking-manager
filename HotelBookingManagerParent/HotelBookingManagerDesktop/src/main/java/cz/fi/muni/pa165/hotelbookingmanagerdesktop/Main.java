@@ -133,6 +133,10 @@ public class Main extends javax.swing.JFrame {
         newHotelButton = new javax.swing.JButton();
         deleteHotelButton = new javax.swing.JButton();
         editHotelButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        hotelSearchField = new javax.swing.JTextField();
+        hotelSearchButton = new javax.swing.JButton();
+        hotelResetSearchButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         quitMenuItem = new javax.swing.JMenuItem();
@@ -315,6 +319,28 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Search hotels by name");
+
+        hotelSearchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                hotelSearchFieldKeyReleased(evt);
+            }
+        });
+
+        hotelSearchButton.setText("Search");
+        hotelSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hotelSearchButtonActionPerformed(evt);
+            }
+        });
+
+        hotelResetSearchButton.setText("Reset");
+        hotelResetSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hotelResetSearchButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout hotelPanelLayout = new javax.swing.GroupLayout(hotelPanel);
         hotelPanel.setLayout(hotelPanelLayout);
         hotelPanelLayout.setHorizontalGroup(
@@ -323,25 +349,40 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(hotelScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
-                    .addGroup(hotelPanelLayout.createSequentialGroup()
-                        .addComponent(hotelLabelDescription)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hotelPanelLayout.createSequentialGroup()
                         .addComponent(deleteHotelButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(editHotelButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(newHotelButton)))
+                        .addComponent(newHotelButton))
+                    .addGroup(hotelPanelLayout.createSequentialGroup()
+                        .addComponent(hotelSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(hotelSearchButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hotelResetSearchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(hotelPanelLayout.createSequentialGroup()
+                        .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(hotelLabelDescription))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         hotelPanelLayout.setVerticalGroup(
             hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(hotelPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(hotelLabelDescription)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hotelScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hotelSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hotelSearchButton)
+                    .addComponent(hotelResetSearchButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hotelLabelDescription)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hotelScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newHotelButton)
                     .addComponent(deleteHotelButton)
@@ -424,28 +465,32 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_newHotelButtonActionPerformed
 
     private void deleteHotelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHotelButtonActionPerformed
-        int reply = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this hotel?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
-            try {
-                int status = hotelRESTManager.deleteHotel(getSelectedHotel(hotelTable.getSelectedRow())).getStatus();
-                switch(status) {
-                    case 404:
-                        JOptionPane.showMessageDialog(this, "Selected hotel cannot be deleted. The hotel is not present in the databse anymore - The record might have been deleted by someone else.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
-                        break;
-                    case 417:
-                        JOptionPane.showMessageDialog(this, "Selected hotel cannot be deleted. The hotel still has an existing room.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
-                        break;
-                    case 500:
-                        JOptionPane.showMessageDialog(this, "There was an error on the server side. Please contact the administrator for furhter information.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
-                        break;
+        if (hotelTable.getSelectedRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Please select a hotel you wish to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }else{
+            int reply = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this hotel?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                try {
+                    int status = hotelRESTManager.deleteHotel(getSelectedHotel(hotelTable.getSelectedRow())).getStatus();
+                    switch(status) {
+                        case 404:
+                            JOptionPane.showMessageDialog(this, "Selected hotel cannot be deleted. The hotel is not present in the databse anymore - The record might have been deleted by someone else.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case 417:
+                            JOptionPane.showMessageDialog(this, "Selected hotel cannot be deleted. The hotel still has an existing room.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case 500:
+                            JOptionPane.showMessageDialog(this, "There was an error on the server side. Please contact the administrator for furhter information.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
+                            break;
+                    }
+                    refreshHotelTable();
+                } catch (ClientHandlerException che){
+                    JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+                    System.exit(1);
+                } catch (IllegalArgumentException iae) {
+                    JOptionPane.showMessageDialog(this, "Cannot delete a nonexistent hotel.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
                 }
-                refreshHotelTable();
-            } catch (ClientHandlerException che){
-                JOptionPane.showMessageDialog(this, "Server connection was lost. Please check your connection, or contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
-                System.exit(1);
-            } catch (IllegalArgumentException iae) {
-                JOptionPane.showMessageDialog(this, "Cannot delete a nonexistent hotel.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
-            }
+            } 
         }
     }//GEN-LAST:event_deleteHotelButtonActionPerformed
 
@@ -487,7 +532,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_quitMenuItemActionPerformed
 
     private void editHotelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editHotelButtonActionPerformed
-        new HotelDialog(getSelectedHotel(hotelTable.getSelectedRow()), hotelTableModel).setVisible(true);
+        if(hotelTable.getSelectedRowCount() ==0){
+            JOptionPane.showMessageDialog(this, "Please select a hotel you wish to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }else{
+            new HotelDialog(getSelectedHotel(hotelTable.getSelectedRow()), hotelTableModel).setVisible(true);
+        }
     }//GEN-LAST:event_editHotelButtonActionPerformed
 
     private void searchClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchClientButtonActionPerformed
@@ -526,6 +575,43 @@ public class Main extends javax.swing.JFrame {
             resetClientSearchButtonActionPerformed(null);
         }
     }//GEN-LAST:event_clientSearchFieldKeyReleased
+
+    private void hotelSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelSearchButtonActionPerformed
+        String searchString = hotelSearchField.getText();
+        try {
+            hotelTableModel.setHotels(hotelRESTManager.findHotelsByName(searchString));
+        } catch (ClientHandlerException ex) {
+            JOptionPane.showMessageDialog(this, "Server connection is unavailable. Please contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        } catch (UniformInterfaceException uie) {
+            int status = uie.getResponse().getStatus();
+            switch(status) {
+                case 400:
+                    refreshClientTable();
+                    break;
+                case 404:
+                    hotelTableModel.setHotels(new ArrayList<HotelTO>());
+                    break;
+                case 500:
+                    JOptionPane.showMessageDialog(this, "Error on server side. Contact administrator for more information", "Error while getting client list.", JOptionPane.ERROR_MESSAGE);
+                    break;
+            }
+        }
+    }//GEN-LAST:event_hotelSearchButtonActionPerformed
+
+    private void hotelResetSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelResetSearchButtonActionPerformed
+        hotelSearchField.setText("");
+        refreshHotelTable();
+    }//GEN-LAST:event_hotelResetSearchButtonActionPerformed
+
+    private void hotelSearchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hotelSearchFieldKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            hotelSearchButtonActionPerformed(null);
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            hotelResetSearchButtonActionPerformed(null);
+        }
+    }//GEN-LAST:event_hotelSearchFieldKeyReleased
 
     /**
      * @param args the command line arguments
@@ -581,8 +667,12 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton editHotelButton;
     private javax.swing.JLabel hotelLabelDescription;
     private javax.swing.JPanel hotelPanel;
+    private javax.swing.JButton hotelResetSearchButton;
     private javax.swing.JScrollPane hotelScrollPane;
+    private javax.swing.JButton hotelSearchButton;
+    private javax.swing.JTextField hotelSearchField;
     private javax.swing.JTable hotelTable;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar menuBar;

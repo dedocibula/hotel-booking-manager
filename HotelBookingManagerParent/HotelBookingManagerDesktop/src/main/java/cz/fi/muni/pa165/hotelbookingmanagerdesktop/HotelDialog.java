@@ -45,7 +45,7 @@ public class HotelDialog extends javax.swing.JFrame {
         hotelNameField.setText(hotel.getName());
         hotelAddressField.setText(hotel.getContact().getAddress());
         hotelCityField.setText(hotel.getContact().getCity());
-        hotelCountryComboBox.setSelectedItem(hotel.getContact().getCity());
+        hotelCountryComboBox.setSelectedItem(hotel.getContact().getCountry());
         hotelTelephoneField.setText(hotel.getContact().getPhone());
         hotelEmailField.setText(hotel.getContact().getEmail());
 
