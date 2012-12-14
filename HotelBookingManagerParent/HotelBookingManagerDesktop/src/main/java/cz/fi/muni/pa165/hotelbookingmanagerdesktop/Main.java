@@ -137,6 +137,7 @@ public class Main extends javax.swing.JFrame {
         hotelSearchField = new javax.swing.JTextField();
         hotelSearchButton = new javax.swing.JButton();
         hotelResetSearchButton = new javax.swing.JButton();
+        hotelSearchByComboBox = new javax.swing.JComboBox();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         quitMenuItem = new javax.swing.JMenuItem();
@@ -319,7 +320,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Search hotels by name");
+        jLabel1.setText("Search hotels by:");
 
         hotelSearchField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -340,6 +341,8 @@ public class Main extends javax.swing.JFrame {
                 hotelResetSearchButtonActionPerformed(evt);
             }
         });
+
+        hotelSearchByComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Name", "Address", "City", "Country" }));
 
         javax.swing.GroupLayout hotelPanelLayout = new javax.swing.GroupLayout(hotelPanel);
         hotelPanel.setLayout(hotelPanelLayout);
@@ -363,8 +366,11 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(hotelResetSearchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(hotelPanelLayout.createSequentialGroup()
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(hotelLabelDescription))
+                            .addComponent(hotelLabelDescription)
+                            .addGroup(hotelPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(hotelSearchByComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -372,7 +378,9 @@ public class Main extends javax.swing.JFrame {
             hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(hotelPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(hotelSearchByComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hotelSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -382,7 +390,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(hotelLabelDescription)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(hotelScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newHotelButton)
                     .addComponent(deleteHotelButton)
@@ -579,7 +587,17 @@ public class Main extends javax.swing.JFrame {
     private void hotelSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotelSearchButtonActionPerformed
         String searchString = hotelSearchField.getText();
         try {
-            hotelTableModel.setHotels(hotelRESTManager.findHotelsByName(searchString));
+            switch(hotelSearchByComboBox.getSelectedIndex()){
+                case 0: hotelTableModel.setHotels(hotelRESTManager.findHotelsByName(searchString)); 
+                        break;
+                case 1: hotelTableModel.setHotels(hotelRESTManager.findHotelsByAddress(searchString));
+                        break;                    
+                case 2: hotelTableModel.setHotels(hotelRESTManager.findHotelsByCity(searchString));
+                        break;
+                case 3: hotelTableModel.setHotels(hotelRESTManager.findHotelsByCountry(searchString));
+                        break;            
+            }
+            //hotelTableModel.setHotels(hotelRESTManager.findHotelsByName(searchString));
         } catch (ClientHandlerException ex) {
             JOptionPane.showMessageDialog(this, "Server connection is unavailable. Please contact the administrator for further information. The application will now close.", "Cannot connect to server.", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
@@ -670,6 +688,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton hotelResetSearchButton;
     private javax.swing.JScrollPane hotelScrollPane;
     private javax.swing.JButton hotelSearchButton;
+    private javax.swing.JComboBox hotelSearchByComboBox;
     private javax.swing.JTextField hotelSearchField;
     private javax.swing.JTable hotelTable;
     private javax.swing.JLabel jLabel1;

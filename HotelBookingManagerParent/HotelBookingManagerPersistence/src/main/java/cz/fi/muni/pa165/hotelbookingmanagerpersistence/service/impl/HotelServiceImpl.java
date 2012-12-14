@@ -119,7 +119,43 @@ public class HotelServiceImpl implements HotelService {
 		}
 		return hotelTOs;
 	}
-	
+
+	@Override
+	public List<HotelTO> findHotelsByAddress(String address) {
+		if (address == null || "".equals(address.trim())) {
+			throw new IllegalArgumentException("address cannot be empty");
+		}
+		List<HotelTO> hotelTOs = new ArrayList<>();
+		for (Hotel hotel : hotelDAO.findHotelsByAddress(address)) {
+			hotelTOs.add(mapper.map(hotel, HotelTO.class));
+		}
+		return hotelTOs;
+	}
+
+	@Override
+	public List<HotelTO> findHotelsByCity(String city) {
+		if (city == null || "".equals(city.trim())) {
+			throw new IllegalArgumentException("city cannot be empty");
+		}
+		List<HotelTO> hotelTOs = new ArrayList<>();
+		for (Hotel hotel : hotelDAO.findHotelsByCity(city)) {
+			hotelTOs.add(mapper.map(hotel, HotelTO.class));
+		}
+		return hotelTOs;
+	}
+
+	@Override
+	public List<HotelTO> findHotelsByCountry(String country) {
+		if (country == null || "".equals(country.trim())) {
+			throw new IllegalArgumentException("country cannot be empty");
+		}
+		List<HotelTO> hotelTOs = new ArrayList<>();
+		for (Hotel hotel : hotelDAO.findHotelsByCountry(country)) {
+			hotelTOs.add(mapper.map(hotel, HotelTO.class));
+		}
+		return hotelTOs;
+	}
+
 	private void validateHotelAttributes(Hotel hotel) throws IllegalArgumentException {
 		Set<ConstraintViolation<Hotel>> validationResults = validator.validate(hotel);
 		if (!validationResults.isEmpty()) {

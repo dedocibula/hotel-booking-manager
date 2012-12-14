@@ -413,5 +413,74 @@ public class HotelServiceImplTest {
 
         List<HotelTO> hotels = hotelService.findHotelsByName("Dude");
         Mockito.verify(hotelDAO).findHotelsByName("Dude");
-    }   
+    }
+
+    /**
+     * Test of findHotelsByAddress method, of class HotelServiceImpl.
+     */
+    @Test
+    public void testFindHotelsByAddress() {
+        try {
+            hotelService.findHotelsByAddress(null);
+            fail("Did not throw IllegalArgumentException on null");
+        } catch (Exception e) {
+            //OK
+        }
+        try {
+            hotelService.findHotelsByAddress("");
+            fail("Did not throw IllegalArgumentException on empty string");
+        } catch (Exception e) {
+            //OK
+        }
+        Mockito.verifyZeroInteractions(hotelDAO);
+
+        List<HotelTO> hotels = hotelService.findHotelsByAddress("Dude");
+        Mockito.verify(hotelDAO).findHotelsByAddress("Dude");
+    }
+
+    /**
+     * Test of findHotelsByCity method, of class HotelServiceImpl.
+     */
+    @Test
+    public void testFindHotelsByCity() {
+        try {
+            hotelService.findHotelsByCity(null);
+            fail("Did not throw IllegalArgumentException on null");
+        } catch (Exception e) {
+            //OK
+        }
+        try {
+            hotelService.findHotelsByCity("");
+            fail("Did not throw IllegalArgumentException on empty string");
+        } catch (Exception e) {
+            //OK
+        }
+        Mockito.verifyZeroInteractions(hotelDAO);
+
+        List<HotelTO> hotels = hotelService.findHotelsByCity("Dude");
+        Mockito.verify(hotelDAO).findHotelsByCity("Dude");
+    }
+
+    /**
+     * Test of findHotelsByCountry method, of class HotelServiceImpl.
+     */
+    @Test
+    public void testFindHotelsByCountry() {
+        try {
+            hotelService.findHotelsByCountry(null);
+            fail("Did not throw IllegalArgumentException on null");
+        } catch (Exception e) {
+            //OK
+        }
+        try {
+            hotelService.findHotelsByCountry("");
+            fail("Did not throw IllegalArgumentException on empty string");
+        } catch (Exception e) {
+            //OK
+        }
+        Mockito.verifyZeroInteractions(hotelDAO);
+
+        List<HotelTO> hotels = hotelService.findHotelsByCountry("Dude");
+        Mockito.verify(hotelDAO).findHotelsByCountry("Dude");
+    }
 }
