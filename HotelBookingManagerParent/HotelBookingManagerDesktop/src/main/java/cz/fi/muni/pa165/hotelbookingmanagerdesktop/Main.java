@@ -435,7 +435,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newClientButtonActionPerformed
-        new ClientDialogue(clientTableModel).setVisible(true);
+        new ClientDialog(clientTableModel).setVisible(true);
     }//GEN-LAST:event_newClientButtonActionPerformed
 
     private void deleteClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteClientButtonActionPerformed
@@ -531,7 +531,7 @@ public class Main extends javax.swing.JFrame {
         if (clientTable.getSelectedRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "Please select a client you wish to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            new ClientDialogue(getSelectedClient(clientTable.getSelectedRow()), clientTableModel).setVisible(true);
+            new ClientDialog(getSelectedClient(clientTable.getSelectedRow()), clientTableModel).setVisible(true);
         }
     }//GEN-LAST:event_editClientButtonActionPerformed
 

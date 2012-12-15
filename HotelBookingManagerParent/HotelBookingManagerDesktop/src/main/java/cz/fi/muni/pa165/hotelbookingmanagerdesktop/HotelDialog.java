@@ -9,15 +9,11 @@ import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanagerdesktop.rest.HotelRESTManager;
 import cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels.HotelTableModel;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author FILIP
+ * @author Filip Bogyai
  */
 public class HotelDialog extends javax.swing.JFrame {
 
@@ -26,20 +22,23 @@ public class HotelDialog extends javax.swing.JFrame {
     private HotelRESTManager hotelRESTManager = new HotelRESTManager();
     private HotelTableModel hotelTableModel;
     private HotelTO hotel;
+    private CountryPicker countryPicker = new CountryPicker();
     /**
      * Creates new form hotelDialog
      */
     public HotelDialog(HotelTableModel hotelTableModel) {
-        initComponents();
-        initializeCountryPicker();
+        initComponents(); 
+        countryPicker.initializeComboBox(hotelCountryComboBox);
+        setLocationRelativeTo(null);
         this.hotelTableModel=hotelTableModel;
         hotel= new HotelTO();
     }
 
     public HotelDialog(HotelTO hotel,HotelTableModel hotelTableModel){
         initComponents();
-        initializeCountryPicker();
+        countryPicker.initializeComboBox(hotelCountryComboBox);
         this.hotel=hotel;
+        setLocationRelativeTo(null);
         this.hotelTableModel=hotelTableModel;
 
         hotelNameField.setText(hotel.getName());
@@ -53,22 +52,7 @@ public class HotelDialog extends javax.swing.JFrame {
         hotelCreateButton.setText("Save");
         hotelDescriptionLabel.setText("Edit existing hotel");
     }
-
-    private void initializeCountryPicker() {
-        List<String> countries = new ArrayList<>();
-
-        Locale[] locales = Locale.getAvailableLocales();
-        for (Locale locale : locales) {
-            String countryName = locale.getDisplayCountry();
-            if (!countryName.isEmpty()) {
-                countries.add(countryName);
-            }
-        }
-        Collections.sort(countries);
-        for (String s : countries) {
-            hotelCountryComboBox.addItem(s);
-        }
-    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
