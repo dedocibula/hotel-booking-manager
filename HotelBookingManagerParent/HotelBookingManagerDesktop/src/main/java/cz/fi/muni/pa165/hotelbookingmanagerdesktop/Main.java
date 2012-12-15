@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.hotelbookingmanagerdesktop;
 
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -18,7 +14,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Inky Ashizuki
+ * @author Thanh Dang Hoang Minh
  */
 public class Main extends javax.swing.JFrame {
     private static final long serialVersionUID = 1L;
@@ -498,7 +494,7 @@ public class Main extends javax.swing.JFrame {
                 } catch (IllegalArgumentException iae) {
                     JOptionPane.showMessageDialog(this, "Cannot delete a nonexistent hotel.", "Error while deleting.", JOptionPane.ERROR_MESSAGE);
                 }
-            } 
+            }
         }
     }//GEN-LAST:event_deleteHotelButtonActionPerformed
 
@@ -588,14 +584,14 @@ public class Main extends javax.swing.JFrame {
         String searchString = hotelSearchField.getText();
         try {
             switch(hotelSearchByComboBox.getSelectedIndex()){
-                case 0: hotelTableModel.setHotels(hotelRESTManager.findHotelsByName(searchString)); 
+                case 0: hotelTableModel.setHotels(hotelRESTManager.findHotelsByName(searchString));
                         break;
                 case 1: hotelTableModel.setHotels(hotelRESTManager.findHotelsByAddress(searchString));
-                        break;                    
+                        break;
                 case 2: hotelTableModel.setHotels(hotelRESTManager.findHotelsByCity(searchString));
                         break;
                 case 3: hotelTableModel.setHotels(hotelRESTManager.findHotelsByCountry(searchString));
-                        break;            
+                        break;
             }
             //hotelTableModel.setHotels(hotelRESTManager.findHotelsByName(searchString));
         } catch (ClientHandlerException ex) {

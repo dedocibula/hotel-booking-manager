@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Inky Ashizuki
+ * @author Thanh Dang Hoang Minh
  */
 public class ClientDialog extends javax.swing.JFrame {
     private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public class ClientDialog extends javax.swing.JFrame {
      */
     public ClientDialog(ClientTableModel clientTableModel) {
         initComponents();
-        countryPicker.initializeComboBox(countryComboBox);        
+        countryPicker.initializeComboBox(countryComboBox);
         setLocationRelativeTo(null);
         this.clientTableModel = clientTableModel;
 
@@ -37,7 +37,7 @@ public class ClientDialog extends javax.swing.JFrame {
 
     public ClientDialog(ClientTO client, ClientTableModel clientTableModel) {
         initComponents();
-        countryPicker.initializeComboBox(countryComboBox);        
+        countryPicker.initializeComboBox(countryComboBox);
         setLocationRelativeTo(null);
         this.clientTableModel = clientTableModel;
         this.client = client;

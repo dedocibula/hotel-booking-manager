@@ -2,13 +2,12 @@ package cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author Inky Ashizuki
+ * @author Thanh Dang Hoang Minh
  */
 public class ClientTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
