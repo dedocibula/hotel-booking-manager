@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.hotelbookingmanagerdesktop.tablemodels;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
@@ -11,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author Filip
+ * @author Filip Bogyai
  */
 public class HotelTableModel extends AbstractTableModel{
     private static final long serialVersionUID = 1L;
