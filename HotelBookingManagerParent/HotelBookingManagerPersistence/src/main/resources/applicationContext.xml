@@ -25,6 +25,7 @@
     <bean id="roomDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.RoomDAOImpl"></bean>
     <bean id="hotelDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.HotelDAOImpl"></bean>
     <bean id="reservationDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.ReservationDAOImpl"></bean>
+    <bean id="regUserDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.RegUserDAOImpl"></bean>
     
     <context:component-scan base-package="cz.fi.muni.pa165.hotelbookingmanagerpersistence"/>
 

@@ -6,6 +6,7 @@
     <class>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel</class>
     <class>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Reservation</class>
     <class>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Room</class>
+    <class>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.RegUser</class>
     <properties>
       <property name="hibernate.connection.username" value="pa165"/>
       <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver"/>
