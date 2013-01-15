@@ -29,6 +29,7 @@
 		</plugins>
 	</build>
 	<properties>
+		<org.springframework.version>3.1.0.RELEASE</org.springframework.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
@@ -91,22 +92,22 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>3.1.1.RELEASE</version>
+			<version>${org.springframework.version}</version>
 		</dependency> 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>3.1.1.RELEASE</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>3.1.1.RELEASE</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>3.1.1.RELEASE</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
   
 		<!-- validation -->
@@ -141,7 +142,7 @@
                 <dependency>
                   <groupId>org.springframework.security</groupId>
                   <artifactId>spring-security-core</artifactId>
-                  <version>3.1.1.RELEASE</version>
+                  <version>${org.springframework.version}</version>
                   <type>jar</type>
                 </dependency>
 	</dependencies>
