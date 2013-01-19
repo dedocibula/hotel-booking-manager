@@ -59,11 +59,25 @@
 			</list>
 		</property>
 	</bean>
+        
+        <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+            <property name="basenames">
+                <list>
+                    <value>StripesResources</value>
+                    <value>StripesResources_cs</value>
+                </list>
+            </property>
+        </bean>
+        
+        <s:http pattern="/styles/**" security="none"/>
+        <s:http pattern="/scripts/**" security="none"/>
+        <s:http pattern="/images/**" security="none"/>
 	
 	<s:http auto-config='true'>
 		<s:intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<s:intercept-url pattern="/**" access="ROLE_USER" />
-		<!--<form-login login-page='/login.jsp'/>-->
+		<s:form-login login-page="/login.jsp" default-target-url="/index.jsp"
+			authentication-failure-url="/login.jsp?loginerror=1" />
 	</s:http>
   
 	<bean id="dbProvider" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.RegUserDetailsService"/>  

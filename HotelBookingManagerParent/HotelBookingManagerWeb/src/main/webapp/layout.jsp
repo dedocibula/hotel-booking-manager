@@ -8,6 +8,7 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <s:layout-definition>
 <html>
@@ -38,15 +39,18 @@
             </div> <!-- end of header -->
 
             <div id="templatemo_banner">
+                <sec:authorize url="/index.jsp">
                 <div id="templatemo_menu">
                     <ul>
                         <li><s:link href="/index.jsp" class="${(pageInfo == 'index.jsp') ? 'current' : ''}"><fmt:message key="home"/></s:link></li>
                         <li><s:link href="/clients/" class="${(pageInfo == 'client.jsp') ? 'current' : ''}"><fmt:message key="client"/></s:link></li>
                         <li><s:link href="/hotels/" class="${(pageInfo == 'hotel.jsp') ? 'current' : ''}"><fmt:message key="hotel"/></s:link></li>
                         <li><s:link href="/reservations/" class="${(pageInfo == 'reservation.jsp') ? 'current' : ''}"><fmt:message key="reservation"/></s:link></li>
-                        <li><s:link href="/contact_about.jsp" class="last ${(pageInfo == 'contact_about.jsp') ? 'current' : ''}"><fmt:message key="contact"/></s:link></li>
+                        <li><s:link href="/contact_about.jsp" class="${(pageInfo == 'contact_about.jsp') ? 'current' : ''}"><fmt:message key="contact"/></s:link></li>
+                        <li><s:link href="/j_spring_security_logout" class="last">Logout</s:link></li>
                     </ul>
                 </div>
+                </sec:authorize>
             </div> <!-- end of banner -->
 
             <div id="templatemo_content">
@@ -140,6 +144,24 @@
                     if (!answer) {
                         e.preventDefault();
                     }
+                });
+                
+                $('a.last').on('click', function(e) {
+                    e.preventDefault();
+                    $('<div>Are you sure you want to logout?</div>').dialog({
+                        title: "Logout confirmation",
+                        position: { my: "center", at: "center", of: "#templatemo_banner" },
+                       modal: true,
+                       hide: "clip",
+                       buttons: {
+                           'Yes': function() {
+                               $(this).dialog('close');
+                           },
+                           'No': function() {
+                               $(this).dialog('close');
+                           }
+                       }
+                    });
                 })
             })();
         </script>
