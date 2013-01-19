@@ -147,15 +147,18 @@
                 });
                 
                 $('a.last').on('click', function(e) {
+                    var self = this;
                     e.preventDefault();
                     $('<div>Are you sure you want to logout?</div>').dialog({
                         title: "Logout confirmation",
                         position: { my: "center", at: "center", of: "#templatemo_banner" },
                        modal: true,
-                       hide: "clip",
+                       show: { effect: "clip", duration: 300 },
+                       hide: { effect: "clip", duration: 100 },
                        buttons: {
                            'Yes': function() {
                                $(this).dialog('close');
+                               document.location = self.href;
                            },
                            'No': function() {
                                $(this).dialog('close');
