@@ -36,7 +36,7 @@ public class UsersActionBean implements ActionBean {
     private RegUser user; // temporary, must be DTO
 
     public RegUser getUser() {
-        if (user != null) {
+        if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String username = auth.getName();
             user = userDAO.findUserByUsername(username);
