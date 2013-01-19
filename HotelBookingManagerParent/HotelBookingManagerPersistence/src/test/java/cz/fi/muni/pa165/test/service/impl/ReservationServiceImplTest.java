@@ -9,6 +9,7 @@ import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ReservationDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RoomDAO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Reservation;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Room;
@@ -257,6 +258,38 @@ public class ReservationServiceImplTest {
         reservationService.findAllReservations();
         
         verify(mockReservationDao).findAllReservations();
+    }
+    
+    @Test		
+    public void testFindReservationsByClient() {		
+        ClientTO client = sampleClient();		
+        client.setId(1L);		
+		
+        reservationService.findReservationsByClient(client);		
+		
+        verify(mockReservationDao).findReservationsByClient(mapper.map(client, Client.class));		
+    }		
+		
+    @Test		
+    public void testFindReservationsByClientWithWrongAttributes() {		
+        // Test with null client		
+        try {		
+            reservationService.findReservationsByClient(null);		
+            fail("Cannot find reservations of null client.");		
+        } catch (IllegalArgumentException ex) {		
+            // OK		
+        }		
+		
+        // Test with client with null id		
+        ClientTO client = newClient("Jozko", "Mrkvicka", sampleContact());		
+        try {		
+            reservationService.findReservationsByClient(client);		
+            fail("Cannot find reservations of client with null id.");		
+        } catch (IllegalArgumentException ex) {		
+            // OK		
+        }		
+		
+        verify(mockReservationDao, never()).findReservationsByClient(any(Client.class));		
     }
 
     @Test

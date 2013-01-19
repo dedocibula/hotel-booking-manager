@@ -12,6 +12,7 @@
         </div>
         
         <div class="cleaner_h20">&nbsp;</div>
+        <form action="<c:url value="j_spring_security_check" />" method="POST">
         <div class="content_right_section">
               <div class="content_title_03">Login with username and password</div>
               <c:if test="${not empty param.loginerror}">
@@ -20,7 +21,7 @@
                       ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
                   </div>
               </c:if>
-              <form action="<c:url value="j_spring_security_check" />" method="POST">
+              
                     <label for="j_username">User</label>
                     <input type="text" name="j_username" id="j_username"/>
                     <div class="cleaner_h10">&nbsp;</div>
@@ -28,12 +29,19 @@
                     <label for="j_password">Password</label>
                     <input type="password" name="j_password" id="j_password"/>
                     
-                    <div class="cleaner_h20">&nbsp;</div>
+                    <div class="cleaner_h30">&nbsp;</div>
+                </div>
+        
+                    <div class="content_right_2column_box">
                     <input type="submit" value="Login"/>
+                    <div class="cleaner_h10">&nbsp;</div>
+                    </div>
+                    
+                    <div class="content_right_2column_box">
+                    <s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RegisterActionBean" event="register" />
+                    <div class="cleaner_h10">&nbsp;</div>
+                    </div>
             </form>
-                
-       	  </div>
-            
             
 	<div class="cleaner_h20">&nbsp;</div>
                         

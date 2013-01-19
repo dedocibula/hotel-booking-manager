@@ -51,6 +51,16 @@ public interface ReservationService {
      */
     List<ReservationTO> findAllReservations();
     
+    /**		
+     * Return transfer object describing all reservations of given client.		
+     *		
+     * @param client client		
+     * @return reservations of given client.		
+     * @throws IllegalArgumentException if client is null or client's id is null.		
+     * @throws DataAccessException in case of error on a persistence layer.		
+     */		
+    List<ReservationTO> findReservationsByClient(ClientTO clientTO);
+    
     /**
      * Return transfer object describing reservations within given date interval.
      * 

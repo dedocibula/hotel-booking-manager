@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ReservationService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ReservationTO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
@@ -84,6 +85,22 @@ public class ReservationServiceImpl implements ReservationService {
 			reservationTOs.add(mapper.map(reservation, ReservationTO.class));
 		}
 		return reservationTOs;
+	}
+        
+        @Override		
+	public List<ReservationTO> findReservationsByClient(ClientTO clientTO) {		
+		if (clientTO == null) {		
+			throw new IllegalArgumentException("Client cannot be null.");		
+		}		
+		if (clientTO.getId() == null) {		
+			throw new IllegalArgumentException("Client's id cannot be null.");		
+		}		
+		Client client = mapper.map(clientTO, Client.class);		
+		List<ReservationTO> reservationTOs = new ArrayList<>();		
+		for (Reservation reservation : reservationDAO.findReservationsByClient(client)) {		
+			reservationTOs.add(mapper.map(reservation, ReservationTO.class));		
+		}		
+		return reservationTOs;		
 	}
 
 	@Override

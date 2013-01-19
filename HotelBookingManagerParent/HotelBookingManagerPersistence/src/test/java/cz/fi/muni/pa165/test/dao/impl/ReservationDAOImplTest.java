@@ -272,6 +272,77 @@ public class ReservationDAOImplTest {
 
         assertThat(reservationDAO.findAllReservations(), hasItems(reservation1, reservation2));
     }
+    
+    @Test		
+    public void testFindReservationsByClient() {		
+        Contact contact = App.DatabaseSampler.buildContact("13", "blondina@azet.sk",		
+                "address", "city", "country");		
+        Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);		
+        Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);		
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);		
+        Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room,		
+                new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));		
+		
+        Contact contact2 = App.DatabaseSampler.buildContact("7", "smajda@azet.sk",		
+                "address", "city", "country");		
+        Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);		
+        Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);		
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);		
+        Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2,		
+                new Date(2014, 5, 20), new Date(2014, 7, 21), BigDecimal.valueOf(410));		
+		
+        em.getTransaction().begin();		
+        em.persist(hotel);		
+        em.persist(hotel2);		
+        em.persist(client);		
+        em.persist(client2);		
+        em.persist(room);		
+        em.persist(room2);		
+        em.getTransaction().commit();		
+        reservationDAO.create(reservation1);		
+        reservationDAO.create(reservation2);		
+		
+        List<Reservation> result = reservationDAO.findReservationsByClient(client);		
+		
+        assertTrue(result.contains(reservation1));		
+        assertFalse(result.contains(reservation2));		
+    }		
+		
+    @Test		
+    public void testFindReservationsByClientWithNull() {		
+        Contact contact = App.DatabaseSampler.buildContact("13", "blondina@azet.sk",		
+                "address", "city", "country");		
+        Hotel hotel = App.DatabaseSampler.buildHotel("Hilton", contact);		
+        Client client = App.DatabaseSampler.buildClient("Jozko", "Morky" , contact);		
+        Room room = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(777), hotel);		
+        Reservation reservation1 = App.DatabaseSampler.buildReservation(client, room,		
+                new Date(2014, 5, 2), new Date(2014, 6, 2), BigDecimal.valueOf(1580));		
+		
+        Contact contact2 = App.DatabaseSampler.buildContact("7", "smajda@azet.sk",		
+                "address", "city", "country");		
+        Hotel hotel2 = App.DatabaseSampler.buildHotel("Crown", contact2);		
+        Client client2 = App.DatabaseSampler.buildClient("Adolf", "Suchy" , contact2);		
+        Room room2 = App.DatabaseSampler.buildRoom(RoomType.Single, BigDecimal.valueOf(69), hotel2);		
+        Reservation reservation2 = App.DatabaseSampler.buildReservation(client2, room2,		
+                new Date(2014, 5, 20), new Date(2014, 7, 21), BigDecimal.valueOf(410));		
+		
+        em.getTransaction().begin();		
+        em.persist(hotel);		
+        em.persist(hotel2);		
+        em.persist(client);		
+        em.persist(client2);		
+        em.persist(room);		
+        em.persist(room2);		
+        em.getTransaction().commit();		
+        reservationDAO.create(reservation1);		
+        reservationDAO.create(reservation2);		
+		
+        List<Reservation> result = reservationDAO.findReservationsByClient(null);		
+		
+        assertFalse(result.contains(reservation1));		
+        assertFalse(result.contains(reservation2));		
+    }		
+
 
     @Test
     public void testFindReservationsByDate_3args() {
