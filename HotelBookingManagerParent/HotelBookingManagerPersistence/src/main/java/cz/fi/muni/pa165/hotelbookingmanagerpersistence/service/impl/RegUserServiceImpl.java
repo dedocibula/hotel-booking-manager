@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RegUserService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RegUserTO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RegUserDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.RegUser;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class RegUserServiceImpl implements RegUserService {
 
 	@Autowired
 	private RegUserDAO userDAO;
+	@Autowired
+	private ClientDAO clientDAO;
 	@Autowired
 	private Validator validator;
 	@Autowired
@@ -65,7 +68,8 @@ public class RegUserServiceImpl implements RegUserService {
 		}
 		RegUser user = mapper.map(userTO, RegUser.class);
 		validateUserIncludingId(user);
-
+		
+		clientDAO.update(user.getClient());
 		userDAO.update(user);
 	}
 
@@ -77,6 +81,7 @@ public class RegUserServiceImpl implements RegUserService {
 		RegUser user = mapper.map(userTO, RegUser.class);
 
 		userDAO.delete(user);
+		clientDAO.delete(user.getClient());
 	}
 
 	@Override
