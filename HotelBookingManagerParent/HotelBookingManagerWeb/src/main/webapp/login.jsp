@@ -33,12 +33,12 @@
                 </div>
         
                     <div class="content_right_2column_box">
-                    <input type="submit" value="Login"/>
+                        <input type="submit" value="Login"/>
                     <div class="cleaner_h10">&nbsp;</div>
                     </div>
                     
                     <div class="content_right_2column_box">
-                    <s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RegisterActionBean" event="register" />
+                        <div class="rc_btn_02"><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.UsersActionBean" event="register">Register</s:link></div>
                     <div class="cleaner_h10">&nbsp;</div>
                     </div>
             </form>

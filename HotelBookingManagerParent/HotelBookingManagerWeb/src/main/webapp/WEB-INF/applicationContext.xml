@@ -72,6 +72,7 @@
         <s:http pattern="/styles/**" security="none"/>
         <s:http pattern="/scripts/**" security="none"/>
         <s:http pattern="/images/**" security="none"/>
+        <s:http pattern="/register.jsp" security="none"/>
 	
 	<s:http auto-config='true'>
 		<s:intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
