@@ -3,7 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <s:errors/>
-<div class="content_title_03"><fmt:message key="primaryDetails"/></div>
+<div class="content_title_04"><fmt:message key="primaryDetails"/></div>
 <sec:authorize access="isAnonymous()">
 <div class="form_row">
         <s:label for="b1" name="user.username"/>
@@ -17,7 +17,7 @@
 
 <div class="cleaner_h30">&nbsp;</div>
 
-<div class="content_title_03"><fmt:message key="secondaryDetails"/></div>
+<div class="content_title_04"><fmt:message key="secondaryDetails"/></div>
 <div class="form_row">
         <s:label for="b3" name="client.firstName"/>
         <s:text id="b3" name="user.client.firstName"/>

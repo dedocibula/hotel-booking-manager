@@ -19,6 +19,7 @@ import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -36,6 +37,7 @@ public class RegUserServiceImpl implements RegUserService {
 	private Mapper mapper;
 	
 	@Override
+        @Transactional
 	public void create(RegUserTO userTO) {
 		if (userTO == null) {
 			throw new IllegalArgumentException("User cannot be null.");
@@ -62,6 +64,7 @@ public class RegUserServiceImpl implements RegUserService {
 	}
 
 	@Override
+        @Transactional
 	public void update(RegUserTO userTO) {
 		if (userTO == null) {
 			throw new IllegalArgumentException("User cannot be null.");
@@ -74,6 +77,7 @@ public class RegUserServiceImpl implements RegUserService {
 	}
 
 	@Override
+        @Transactional
 	public void delete(RegUserTO userTO) {
 		if (userTO == null) {
 			throw new IllegalArgumentException("User cannot be null.");

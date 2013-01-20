@@ -43,7 +43,12 @@
                 <div id="templatemo_menu">
                     <ul>
                         <li><s:link href="/index.jsp" class="${(pageInfo == 'index.jsp') ? 'current' : ''}"><fmt:message key="home"/></s:link></li>
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <li><s:link href="/clients/" class="${(pageInfo == 'client.jsp') ? 'current' : ''}"><fmt:message key="client"/></s:link></li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('ROLE_USER')">
+                        <li><s:link href="/users/" class="${(pageInfo == 'user.jsp') ? 'current' : ''}"><fmt:message key="user"/></s:link></li>
+                        </sec:authorize>
                         <li><s:link href="/hotels/" class="${(pageInfo == 'hotel.jsp') ? 'current' : ''}"><fmt:message key="hotel"/></s:link></li>
                         <li><s:link href="/reservations/" class="${(pageInfo == 'reservation.jsp') ? 'current' : ''}"><fmt:message key="reservation"/></s:link></li>
                         <li><s:link href="/contact_about.jsp" class="${(pageInfo == 'contact_about.jsp') ? 'current' : ''}"><fmt:message key="contact"/></s:link></li>

@@ -77,16 +77,19 @@
 	<s:http auto-config='true' use-expressions="true">
 		<s:intercept-url pattern="/login.jsp*" access="true"/>
                 <s:intercept-url pattern="/users/register*" access="true"/>
-		<s:intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+                <s:intercept-url pattern="/users/add*" access="true"/>
+                <s:intercept-url pattern="/users/*" access="hasRole('ROLE_USER')" />
+                <s:intercept-url pattern="/clients/*" access="hasRole('ROLE_ADMIN')" />
+		<s:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')" />
 		<s:form-login login-page="/login.jsp" default-target-url="/index.jsp"
-			authentication-failure-url="/login.jsp?loginerror=1" />
+			authentication-failure-url="/login.jsp?loginerror=1" always-use-default-target="true"/>
 	</s:http>
   
 	<s:authentication-manager>
 		<s:authentication-provider>
 			<s:user-service id="userDetailsService">
 				<s:user name="admin" password="admin"
-						authorities="ROLE_USER, ROLE_ADMIN" />
+						authorities="ROLE_ADMIN" />
 			</s:user-service>
 		</s:authentication-provider>
 		<s:authentication-provider user-service-ref="regUserService" />

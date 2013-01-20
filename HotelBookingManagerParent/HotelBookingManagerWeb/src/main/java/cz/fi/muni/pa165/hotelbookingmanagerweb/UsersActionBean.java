@@ -35,13 +35,14 @@ public class UsersActionBean implements ActionBean {
             @Validate(on = {"add", "save"}, field = "client.contact.city", required = true, minlength = 2, maxlength = 50)
     })
     private RegUserTO user;
+    
+    public RegUserTO getLogged() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        return userService.findUserByUsername(username);
+    }
 
     public RegUserTO getUser() {
-        if (user == null) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth.getName();
-            user = userService.findUserByUsername(username);
-        }
         return user;
     }
 
@@ -90,7 +91,7 @@ public class UsersActionBean implements ActionBean {
     }
     
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
-    public void loadHotelFromDatabase() {
+    public void loadUserFromDatabase() {
         String ids = context.getRequest().getParameter("user.id");
         if (ids == null) {
             return;

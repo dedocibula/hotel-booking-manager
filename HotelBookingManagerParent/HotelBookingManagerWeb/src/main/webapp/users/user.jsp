@@ -20,7 +20,7 @@
 
                 <div class="content_right_section">
                     <div class="content_title_02"><fmt:message key="userInfo"/></div>
-                        <c:set var="user" value="${actionBean.user}" />
+                        <c:set var="user" value="${actionBean.logged}" />
                         </div>
                         
                         <div class="content_right_2column_box details_header">
