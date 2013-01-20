@@ -6,6 +6,7 @@ import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ReservationTO;
 import java.util.Date;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  *
@@ -21,6 +22,7 @@ public interface ReservationService {
      *          reservation id is not null, the client/room doesn't exist or the room is not vacant.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     void createReservation(ReservationTO reservationTO);
 
     /**
@@ -30,6 +32,7 @@ public interface ReservationService {
      * @throws IllegalArgumentException if reservation id is null and see createReservation() method.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     void deleteReservation(ReservationTO reservationTO);
 
     /**
@@ -41,6 +44,7 @@ public interface ReservationService {
      * @throws IllegalArgumentException if id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     ReservationTO getReservation(Long id);
 
     /**
@@ -49,6 +53,7 @@ public interface ReservationService {
      * @return all reservations or empty list if there are none.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     List<ReservationTO> findAllReservations();
     
     /**		
@@ -58,7 +63,8 @@ public interface ReservationService {
      * @return reservations of given client.		
      * @throws IllegalArgumentException if client is null or client's id is null.		
      * @throws DataAccessException in case of error on a persistence layer.		
-     */		
+     */	
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     List<ReservationTO> findReservationsByClient(ClientTO clientTO);
     
     /**
@@ -71,6 +77,7 @@ public interface ReservationService {
      *          or the date from is after the date to.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     List<ReservationTO> findReservationsByDate(Date from, Date to);
     
     /**
@@ -84,6 +91,7 @@ public interface ReservationService {
      *          the date from is after the date to or hotel id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     List<ReservationTO> findReservationsByDate(Date from, Date to, HotelTO hotelTO);
     
 }

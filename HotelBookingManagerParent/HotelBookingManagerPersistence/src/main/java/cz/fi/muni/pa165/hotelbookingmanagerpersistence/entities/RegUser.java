@@ -36,7 +36,7 @@ public class RegUser implements Serializable {
     
     @NotNull
     @Valid
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     private Client client;  
 
     public Long getId() {

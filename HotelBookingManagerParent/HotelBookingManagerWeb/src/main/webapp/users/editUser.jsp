@@ -23,7 +23,7 @@
 
             <div class="cleaner_h40">&nbsp;</div>
 
-            <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.UsersActionBean">
+            <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.UsersActionBean" action="/users/save/">
                 <div class="content_right_section">
                     <div class="content_title_03"><fmt:message key="attributesUser"/> ${actionBean.user.username}: </div>
 

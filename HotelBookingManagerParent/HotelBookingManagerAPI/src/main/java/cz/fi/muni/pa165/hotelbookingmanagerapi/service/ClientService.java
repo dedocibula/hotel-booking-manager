@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.hotelbookingmanagerapi.service;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  *
@@ -27,6 +28,7 @@ public interface ClientService {
      * @throws IllegalArgumentException when given id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     ClientTO findClient(Long id);
     
     /**
@@ -37,6 +39,7 @@ public interface ClientService {
      *         if validation for client attributes fails.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     void updateClient(ClientTO client);
     
     /**
@@ -46,6 +49,7 @@ public interface ClientService {
      * @throws IllegalArgumentException if parameter is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteClient(ClientTO client);
     
     /**
@@ -54,6 +58,7 @@ public interface ClientService {
      * @return all clients in the DB or empty list if there are none. 
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     List<ClientTO> findAllClients();
     
     /**
@@ -64,6 +69,7 @@ public interface ClientService {
      * @throws IllegalArgumentException if parameter is null or empty string.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     List<ClientTO> findClientsByName(String name);
             
 }

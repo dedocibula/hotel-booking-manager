@@ -84,6 +84,8 @@
 		<s:form-login login-page="/login.jsp" default-target-url="/index.jsp"
 			authentication-failure-url="/login.jsp?loginerror=1" always-use-default-target="true"/>
 	</s:http>
+
+	<s:global-method-security pre-post-annotations="enabled"/>
   
 	<s:authentication-manager>
 		<s:authentication-provider>

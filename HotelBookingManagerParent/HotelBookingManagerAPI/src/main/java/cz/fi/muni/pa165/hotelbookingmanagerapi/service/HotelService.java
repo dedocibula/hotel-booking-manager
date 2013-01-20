@@ -3,6 +3,7 @@ package cz.fi.muni.pa165.hotelbookingmanagerapi.service;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 
 /**
@@ -22,6 +23,7 @@ public interface HotelService {
      *         if validation for hotel's rooms fails provided it has any.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     void createHotel(HotelTO hotelTO);
     
     /**
@@ -32,6 +34,7 @@ public interface HotelService {
      * @throws IllegalArgumentException when given id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     HotelTO findHotel(Long id);
     
     /**
@@ -45,6 +48,7 @@ public interface HotelService {
      *         if validation for hotel's rooms fails provided it has any.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     void updateHotel(HotelTO hotelTO);
     
     /**
@@ -54,6 +58,7 @@ public interface HotelService {
      * @throws IllegalArgumentException if parameter is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteHotel(HotelTO hotel);
     
     /**
@@ -62,6 +67,7 @@ public interface HotelService {
      * @return all hotels in the DB or empty list if there are none.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     List<HotelTO> findAllHotels();
     
     /**
@@ -72,6 +78,7 @@ public interface HotelService {
      * @throws IllegalArgumentException if parameter is null or empty string.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     List<HotelTO> findHotelsByName(String name);
     
     /**
@@ -82,6 +89,7 @@ public interface HotelService {
      * @throws IllegalArgumentException if parameter is null or empty string.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     List<HotelTO> findHotelsByAddress(String address);
     
     /**
@@ -92,6 +100,7 @@ public interface HotelService {
      * @throws IllegalArgumentException if parameter is null or empty string.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     List<HotelTO> findHotelsByCity(String city);
     
     /**
@@ -102,5 +111,6 @@ public interface HotelService {
      * @throws IllegalArgumentException if parameter is null or empty string.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     List<HotelTO> findHotelsByCountry(String country);
 }

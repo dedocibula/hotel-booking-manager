@@ -72,7 +72,6 @@ public class RegUserServiceImpl implements RegUserService {
 		RegUser user = mapper.map(userTO, RegUser.class);
 		validateUserIncludingId(user);
 		
-		clientDAO.update(user.getClient());
 		userDAO.update(user);
 	}
 
@@ -85,7 +84,6 @@ public class RegUserServiceImpl implements RegUserService {
 		RegUser user = mapper.map(userTO, RegUser.class);
 
 		userDAO.delete(user);
-		clientDAO.delete(user.getClient());
 	}
 
 	@Override

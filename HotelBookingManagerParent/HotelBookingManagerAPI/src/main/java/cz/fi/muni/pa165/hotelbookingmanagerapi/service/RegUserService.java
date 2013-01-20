@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.hotelbookingmanagerapi.service;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RegUserTO;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -27,6 +28,7 @@ public interface RegUserService extends UserDetailsService {
      * @throws IllegalArgumentException if id is null
      * @throws DataAccessException in case of error.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     RegUserTO get(Long id);
 
     /**
@@ -36,6 +38,7 @@ public interface RegUserService extends UserDetailsService {
      * @throws IllegalArgumentException if user is null
      * @throws DataAccessException in case of error.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     void update(RegUserTO userTO);
 
     /**
@@ -46,6 +49,7 @@ public interface RegUserService extends UserDetailsService {
      * @throws ConstraintViolationException if user has any invalid parameter
      * @throws DataAccessException in case of error.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     void delete(RegUserTO userTO);
 
         

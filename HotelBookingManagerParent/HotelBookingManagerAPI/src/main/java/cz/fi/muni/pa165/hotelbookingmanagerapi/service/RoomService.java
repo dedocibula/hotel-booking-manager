@@ -5,6 +5,7 @@ import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
 import java.util.Date;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  *
@@ -18,6 +19,7 @@ public interface RoomService {
      * @throws IllegalArgumentException if room is null, hotel is null, or ID of room is manually set.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     void createRoom(RoomTO room);
 
     /**
@@ -26,6 +28,7 @@ public interface RoomService {
      * @throws IllegalArgumentException if room is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteRoom(RoomTO room);
 
     /**
@@ -34,6 +37,7 @@ public interface RoomService {
      * @throws IllegalArgumentException if room is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     void updateRoom(RoomTO room);
 
     /**
@@ -43,6 +47,7 @@ public interface RoomService {
      * @throws IllegalArgumentException if id is null.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     RoomTO getRoom(Long id);
 
     /**
@@ -53,6 +58,7 @@ public interface RoomService {
      * @throws IllegalArgumentException if hotel is null
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     List<RoomTO> findRoomsByHotel(HotelTO hotel);
 
     /**
@@ -64,6 +70,7 @@ public interface RoomService {
      * @throws IllegalArgumentException if from, to date, hotel are null, or if hotel is not in the database, or if from date is after to date.
      * @throws DataAccessException in case of error on a persistence layer.
      */
+	@PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     List<RoomTO> findVacantRooms(Date from, Date to, HotelTO hotel);
 
 }
