@@ -1,30 +1,37 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <artifactId>HotelBookingManagerParent</artifactId>
-        <groupId>cz.fi.muni.pa165</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>   
-    <groupId>cz.fi.muni.pa165</groupId>
-    <artifactId>HotelBookingManagerAPI</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+	<parent>
+		<artifactId>HotelBookingManagerParent</artifactId>
+		<groupId>cz.fi.muni.pa165</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>   
+	<groupId>cz.fi.muni.pa165</groupId>
+	<artifactId>HotelBookingManagerAPI</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-    <name>HotelBookingManagerAPI</name>
-    <url>http://maven.apache.org</url>
+	<name>HotelBookingManagerAPI</name>
+	<url>http://maven.apache.org</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+	<properties>
+		<org.springframework.version>3.1.0.RELEASE</org.springframework.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-json</artifactId>
-            <version>1.9</version>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${org.springframework.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>1.9</version>
+		</dependency>
+	</dependencies>
 </project>

@@ -3,7 +3,9 @@ package cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ClientService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RegUserDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.RegUser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +13,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,8 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private ClientDAO clientDAO;
+	@Autowired
+	private RegUserDAO userDAO;
 	@Autowired
 	private Validator validator;
 	@Autowired
@@ -79,8 +84,17 @@ public class ClientServiceImpl implements ClientService {
 			throw new IllegalArgumentException("client cannot be null");
 		}
 		Client clientDO = mapper.map(client, Client.class);
-
+		
+		// TODO - remove, if database updated
+		try {
+			RegUser user = userDAO.findUserByClient(clientDO);
+			userDAO.delete(user);
+		} catch (DataAccessException e) {
+			// No user found
+		}
+		
 		clientDAO.delete(clientDO);
+		
 	}
 
 	@Override

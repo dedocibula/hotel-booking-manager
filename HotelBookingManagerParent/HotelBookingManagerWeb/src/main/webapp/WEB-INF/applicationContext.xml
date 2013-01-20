@@ -20,6 +20,7 @@
 	<bean id="roomService" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.RoomServiceImpl"></bean>
 	<bean id="hotelService" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.HotelServiceImpl"></bean>
 	<bean id="reservationService" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.ReservationServiceImpl"></bean>
+	<bean id="regUserService" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.RegUserServiceImpl"></bean>
     
 	<bean id="clientDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.ClientDAOImpl"></bean>
 	<bean id="roomDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.RoomDAOImpl"></bean>
@@ -81,8 +82,6 @@
 			authentication-failure-url="/login.jsp?loginerror=1" />
 	</s:http>
   
-	<bean id="dbProvider" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.RegUserDetailsService"/>  
-    
 	<s:authentication-manager>
 		<s:authentication-provider>
 			<s:user-service id="userDetailsService">
@@ -90,7 +89,7 @@
 						authorities="ROLE_USER, ROLE_ADMIN" />
 			</s:user-service>
 		</s:authentication-provider>
-		<s:authentication-provider user-service-ref="dbProvider" />
+		<s:authentication-provider user-service-ref="regUserService" />
 	</s:authentication-manager>
  
 	<!-- Use a Md5 encoder since the user's passwords are stored as Md5 in the database -->

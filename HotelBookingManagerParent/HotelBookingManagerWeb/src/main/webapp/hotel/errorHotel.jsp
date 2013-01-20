@@ -18,6 +18,6 @@
                     <fmt:message key="hotelDeleteError"/>
             </div>                   
             <div class="cleaner_h20">&nbsp;</div>
-            <div class="rc_btn_01"><s:link href="/hotel/showHotel.jsp"><fmt:message key="backToHotels"/></s:link></div>
+            <div class="rc_btn_01"><s:link href="/hotels/"><fmt:message key="backToHotels"/></s:link></div>
     </s:layout-component>
 </s:layout-render>

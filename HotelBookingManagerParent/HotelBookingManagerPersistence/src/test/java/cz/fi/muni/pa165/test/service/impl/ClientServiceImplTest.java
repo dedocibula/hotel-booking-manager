@@ -5,6 +5,7 @@ import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ContactTO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.App;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.ClientDAO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RegUserDAO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.ClientServiceImpl;
 import javax.validation.Validator;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClientServiceImplTest {
 
     private ClientDAO mockClientDao;
+	private RegUserDAO mockUserDAO;
     private ClientServiceImpl clientService;
     private Mapper mapper;
 
@@ -40,10 +42,12 @@ public class ClientServiceImplTest {
         clientService = new ClientServiceImpl();
 
         mockClientDao = mock(ClientDAO.class);
+		mockUserDAO = mock(RegUserDAO.class);
         Validator validator = context.getBean("validator", org.springframework.validation.beanvalidation.LocalValidatorFactoryBean.class);
         mapper = context.getBean("mapper", DozerBeanMapper.class);
 
         ReflectionTestUtils.setField(clientService, "clientDAO", mockClientDao);
+		ReflectionTestUtils.setField(clientService, "userDAO", mockUserDAO);
         ReflectionTestUtils.setField(clientService, "validator", validator);
         ReflectionTestUtils.setField(clientService, "mapper", mapper);
     }

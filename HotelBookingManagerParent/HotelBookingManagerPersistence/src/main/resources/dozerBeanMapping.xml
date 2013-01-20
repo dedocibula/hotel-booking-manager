@@ -132,6 +132,26 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
         </field>
     </mapping>
 
- 
+	<mapping>
+        <class-a>cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.RegUser</class-a>
+        <class-b>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RegUserTO</class-b>
+        <field>
+            <a>id</a>
+            <b>id</b>
+        </field>
+        <field>
+            <a>username</a>
+            <b>username</b>
+        </field>
+        <field>
+            <a>password</a>
+            <b>password</b>
+        </field>
+        <field>
+            <a>client</a>
+            <b>client</b>
+			<b-hint>cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO</b-hint>
+        </field>
+    </mapping>
 
 </mappings>

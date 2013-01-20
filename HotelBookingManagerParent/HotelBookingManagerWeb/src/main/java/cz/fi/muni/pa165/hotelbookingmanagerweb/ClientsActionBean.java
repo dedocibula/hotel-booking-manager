@@ -71,7 +71,7 @@ public class ClientsActionBean implements ActionBean {
         return new RedirectResolution(this.getClass(), "all");
     }
 
-    @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
+    @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save", "delete"})
     public void loadClientFromDatabase() {
         String ids = context.getRequest().getParameter("client.id");
         if (ids == null) {

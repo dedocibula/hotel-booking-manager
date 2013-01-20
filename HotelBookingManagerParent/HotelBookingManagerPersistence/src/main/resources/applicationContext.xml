@@ -15,7 +15,7 @@
         <property name="password" value="pa165"/>
         <property name="url" value="jdbc:derby://localhost:1527/pa165"/>
     </bean>
-    
+    <!--
     <bean id="clientService" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.ClientServiceImpl"></bean>
     <bean id="roomService" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.RoomServiceImpl"></bean>
     <bean id="hotelService" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.HotelServiceImpl"></bean>
@@ -26,7 +26,7 @@
     <bean id="hotelDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.HotelDAOImpl"></bean>
     <bean id="reservationDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.ReservationDAOImpl"></bean>
     <bean id="regUserDAO" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl.RegUserDAOImpl"></bean>
-    
+    -->
     <context:component-scan base-package="cz.fi.muni.pa165.hotelbookingmanagerpersistence"/>
 
     <tx:annotation-driven/>

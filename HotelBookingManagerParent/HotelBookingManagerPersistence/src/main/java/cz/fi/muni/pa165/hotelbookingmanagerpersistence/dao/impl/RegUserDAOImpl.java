@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.impl;
 
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RegUserDAO;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.RegUser;
-import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -50,6 +46,13 @@ public class RegUserDAOImpl implements RegUserDAO{
 		em.remove(em.merge(user));
 	}
 
+	
+	@Override
+	public RegUser findUserByClient(Client client) {
+		Query query = em.createQuery("SELECT u FROM RegUser u WHERE u.client = :client");
+		query.setParameter("client", client);
+		return (RegUser) query.getSingleResult();
+	}
 
 	@Override
 	public RegUser findUserByUsername(String username) {
