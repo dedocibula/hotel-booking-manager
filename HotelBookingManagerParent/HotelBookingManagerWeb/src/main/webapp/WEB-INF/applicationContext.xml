@@ -72,11 +72,11 @@
         <s:http pattern="/styles/**" security="none"/>
         <s:http pattern="/scripts/**" security="none"/>
         <s:http pattern="/images/**" security="none"/>
-        <s:http pattern="/users/register**" security="none"/>
 	
-	<s:http auto-config='true'>
-		<s:intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-		<s:intercept-url pattern="/**" access="ROLE_USER" />
+	<s:http auto-config='true' use-expressions="true">
+		<s:intercept-url pattern="/login.jsp*" access="true"/>
+                <s:intercept-url pattern="/users/register*" access="true"/>
+		<s:intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 		<s:form-login login-page="/login.jsp" default-target-url="/index.jsp"
 			authentication-failure-url="/login.jsp?loginerror=1" />
 	</s:http>
