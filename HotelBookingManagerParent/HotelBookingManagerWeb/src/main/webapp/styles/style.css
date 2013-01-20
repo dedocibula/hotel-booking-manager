@@ -204,7 +204,6 @@ input.error {
 
 .details_header {
     font-variant: small-caps;
-    text-align: center;
 }
 
 #templatemo_container{
@@ -504,6 +503,7 @@ input.error {
 	margin-right: 30px;
         font-size: 15px;
         font-weight: bold;
+        text-align: center;
 }
 
 #content_right .gallery_box {
