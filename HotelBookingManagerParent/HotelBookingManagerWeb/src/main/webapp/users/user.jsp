@@ -19,10 +19,11 @@
 
 
                 <div class="content_right_section">
-                    <div class="content_title_02"><fmt:message key="userDetails"/></div>
+                    <div class="content_title_02"><fmt:message key="userInfo"/></div>
                         <c:set var="user" value="${actionBean.user}" />
+                        </div>
                         
-                        <div class="content_right_2column_box">
+                        <div class="content_right_2column_box details_header">
                             <fmt:message key="user.userName"/>:
                         </div>
                         <div class="content_right_2column_box">
@@ -31,8 +32,9 @@
                         <div class="cleaner_h20">&nbsp;</div>
                         
                         <div class="cleaner_horizontal_divider_01">&nbsp;</div>
+                        <div class="cleaner_h20">&nbsp;</div>
                             
-                        <div class="content_right_2column_box">
+                        <div class="content_right_2column_box details_header">
                             <fmt:message key="client.firstName"/>:
                         </div>
                         <div class="content_right_2column_box">
@@ -40,7 +42,7 @@
                         </div>
                         <div class="cleaner_h20">&nbsp;</div>
                         
-                        <div class="content_right_2column_box">
+                        <div class="content_right_2column_box details_header">
                             <fmt:message key="client.lastName"/>:
                         </div>
                         <div class="content_right_2column_box">
@@ -48,7 +50,7 @@
                         </div>
                         <div class="cleaner_h20">&nbsp;</div>
                         
-                        <div class="content_right_2column_box">
+                        <div class="content_right_2column_box details_header">
                             <fmt:message key="client.phone"/>:
                         </div>
                         <div class="content_right_2column_box">
@@ -56,7 +58,7 @@
                         </div>
                         <div class="cleaner_h20">&nbsp;</div>
                         
-                        <div class="content_right_2column_box">
+                        <div class="content_right_2column_box details_header">
                             <fmt:message key="client.email"/>:
                         </div>
                         <div class="content_right_2column_box">
@@ -64,7 +66,7 @@
                         </div>
                         <div class="cleaner_h20">&nbsp;</div>
                         
-                        <div class="content_right_2column_box">
+                        <div class="content_right_2column_box details_header">
                             <fmt:message key="client.address"/>:
                         </div>
                         <div class="content_right_2column_box">
@@ -72,7 +74,7 @@
                         </div>
                         <div class="cleaner_h20">&nbsp;</div>
                         
-                        <div class="content_right_2column_box">
+                        <div class="content_right_2column_box details_header">
                             <fmt:message key="client.city"/>:
                         </div>
                         <div class="content_right_2column_box">
@@ -80,7 +82,7 @@
                         </div>
                         <div class="cleaner_h20">&nbsp;</div>
                         
-                        <div class="content_right_2column_box">
+                        <div class="content_right_2column_box details_header">
                             <fmt:message key="client.country"/>:
                         </div>
                         <div class="content_right_2column_box">
@@ -89,9 +91,9 @@
                         <div class="cleaner_h20">&nbsp;</div>
                         
                         <div class="cleaner_horizontal_divider_01">&nbsp;</div>
+                        <div class="cleaner_h20">&nbsp;</div>
                         
-                        <s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.UsersActionBean" event="edit"><s:param name="client.id" value="${client.id}"/><fmt:message key="edit"/></s:link>
-                        
-            </div>
+                        <div class="rc_btn_02"><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.UsersActionBean" event="edit"><s:param name="user.id" value="${user.id}"/><fmt:message key="edit"/></s:link></div>
+                       
     </s:layout-component>
 </s:layout-render>

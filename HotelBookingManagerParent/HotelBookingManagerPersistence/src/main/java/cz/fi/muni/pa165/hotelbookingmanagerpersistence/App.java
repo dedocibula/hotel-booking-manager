@@ -1,11 +1,7 @@
 package cz.fi.muni.pa165.hotelbookingmanagerpersistence;
 
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.*;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Client;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Contact;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Hotel;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Reservation;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.Room;
+import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +36,10 @@ public class App {
 			Client client1 = buildClient("Fero", "Taraba", contact3);
 			Client client2 = buildClient("Vaclav", "Havel", contact2);
 			Client client3 = buildClient("Pepa", "Brandejs", contact1);
+                        
+                        RegUser user1 = buildRegUser(client1, "111", "feri");
+                        RegUser user2 = buildRegUser(client2, "222", "vaclav");
+                        RegUser user3 = buildRegUser(client3, "333", "pepo");
 
 			Hotel hotel1 = buildHotel("Hilton", contact4);
 			Hotel hotel2 = buildHotel("Crowne", contact5);
@@ -56,6 +56,9 @@ public class App {
 			em.persist(client1);
 			em.persist(client2);
 			em.persist(client3);
+                        em.persist(user1);
+                        em.persist(user2);
+                        em.persist(user3);
 			em.persist(hotel1);
 			em.persist(hotel2);
 			em.persist(room1);
@@ -128,6 +131,14 @@ public class App {
 			reservation.setPrice(price);
 			return reservation;
 		}
+                
+                public static RegUser buildRegUser(Client client, String password, String username) {
+                        RegUser user = new RegUser();
+                        user.setClient(client);
+                        user.setPassword(password);
+                        user.setUsername(username);
+                        return user;
+                }
 
 		public static ClientTO buildClientTO(String firstName, String lastName, ContactTO contact) {
 			ClientTO clientTO = new ClientTO();

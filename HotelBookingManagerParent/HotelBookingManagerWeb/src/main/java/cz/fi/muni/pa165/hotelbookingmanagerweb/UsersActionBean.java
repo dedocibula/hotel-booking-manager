@@ -1,7 +1,8 @@
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
 
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RegUserService;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RegUserTO;
 import cz.fi.muni.pa165.hotelbookingmanagerpersistence.dao.interfaces.RegUserDAO;
-import cz.fi.muni.pa165.hotelbookingmanagerpersistence.entities.RegUser;
 import java.util.Set;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
@@ -33,23 +34,23 @@ public class UsersActionBean implements ActionBean {
             @Validate(on = {"add", "save"}, field = "client.clcontact.address", required = true, maxlength = 30),
             @Validate(on = {"add", "save"}, field = "client.contact.city", required = true, minlength = 2, maxlength = 50)
     })
-    private RegUser user; // temporary, must be DTO
+    private RegUserTO user;
 
-    public RegUser getUser() {
+    public RegUserTO getUser() {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String username = auth.getName();
-            user = userDAO.findUserByUsername(username);
+            user = userService.findUserByUsername(username);
         }
         return user;
     }
 
-    public void setUser(RegUser user) {
+    public void setUser(RegUserTO user) {
         this.user = user;
     }
     
     @SpringBean
-    private RegUserDAO userDAO; // temporary, must be service
+    private RegUserService userService;
     
     private CountryPicker countryPicker = new CountryPicker();
 
@@ -78,11 +79,11 @@ public class UsersActionBean implements ActionBean {
     
     public Resolution add() {
         try {
-            userDAO.create(user);
+            userService.create(user);
             return new ForwardResolution("/index.jsp");
         } catch (DataAccessException e) {
             ValidationErrors errors = new ValidationErrors();
-            errors.add( "user.userName", new LocalizableError("/users/validation.user.nameIsExisting") );
+            errors.add( "user.username", new LocalizableError("validation.user.nameIsExisting") );
             getContext().setValidationErrors(errors);
             return getContext().getSourcePageResolution();
         }
@@ -94,7 +95,7 @@ public class UsersActionBean implements ActionBean {
         if (ids == null) {
             return;
         }
-        user = userDAO.get(Long.parseLong(ids));
+        user = userService.get(Long.parseLong(ids));
     }
 
     public Resolution edit() {
@@ -102,7 +103,7 @@ public class UsersActionBean implements ActionBean {
     }
 
     public Resolution save() {
-        userDAO.update(user);
+        userService.update(user);
         return new RedirectResolution(this.getClass(), "details");
     }
 }

@@ -25,7 +25,7 @@
 
             <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.HotelsActionBean">
                 <div class="content_right_section">
-                    <div class="content_title_03"><fmt:message key="attributes"/> ${actionBean.hotel.name}:</div>
+                    <div class="content_title_03"><fmt:message key="attributesHotel"/> ${actionBean.hotel.name}:</div>
 
                         <s:hidden name="hotel.id"/>
                         <s:hidden name="hotel.rooms"/>

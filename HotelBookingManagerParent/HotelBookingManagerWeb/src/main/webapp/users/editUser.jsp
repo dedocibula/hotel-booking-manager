@@ -25,7 +25,7 @@
 
             <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.UsersActionBean">
                 <div class="content_right_section">
-                    <div class="content_title_03"><fmt:message key="attributes"/> ${actionBean.user.userName}: </div>
+                    <div class="content_title_03"><fmt:message key="attributesUser"/> ${actionBean.user.username}: </div>
 
                         <s:hidden name="user.id"/>
                         <%@include file="formUser.jsp"%>
