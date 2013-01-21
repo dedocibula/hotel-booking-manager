@@ -87,9 +87,10 @@
                 <s:intercept-url pattern="/rooms/edit*" access="hasRole('ROLE_ADMIN')" />
                 <s:intercept-url pattern="/rooms/save*" access="hasRole('ROLE_ADMIN')" />
                 <s:intercept-url pattern="/rooms/delete*" access="hasRole('ROLE_ADMIN')" />
+                <s:intercept-url pattern="/rest/*" access="hasRole('ROLE_ADMIN')" />
 		<s:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')" />
 		<s:form-login login-page="/login.jsp" default-target-url="/index.jsp"
-			authentication-failure-url="/login.jsp?loginerror=1" always-use-default-target="true"/>
+			authentication-failure-url="/login.jsp?loginerror=1" />
 	</s:http>
 
 	<s:global-method-security pre-post-annotations="enabled"/>
@@ -98,6 +99,8 @@
 		<s:authentication-provider>
 			<s:user-service id="userDetailsService">
 				<s:user name="admin" password="admin"
+						authorities="ROLE_ADMIN" />
+                                <s:user name="rest" password="rest"
 						authorities="ROLE_ADMIN" />
 			</s:user-service>
 		</s:authentication-provider>
