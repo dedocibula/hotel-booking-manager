@@ -2,9 +2,11 @@
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <f:message var="pageTitle" key="reservation.pageTitle"/>
 <s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="reservation.jsp">
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
 	<s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ReservationsActionBean" var="actionBean"/>
 	<s:layout-component name="left_content">
 
@@ -37,7 +39,7 @@
 		<div class="cleaner_h30">&nbsp;</div>
 
     </s:layout-component>
-
+</sec:authorize>
     <s:layout-component name="right_content">
 
 		<div class="content_right_section">

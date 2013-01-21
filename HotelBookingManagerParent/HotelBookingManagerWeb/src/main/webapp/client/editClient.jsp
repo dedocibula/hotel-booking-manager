@@ -25,7 +25,7 @@
 
             <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean">
                 <div class="content_right_section">
-                    <div class="content_title_02"><fmt:message key="attributesClient"/> ${actionBean.client.firstName} ${actionBean.client.lastName}: </div>
+                    <div class="content_title_03"><fmt:message key="attributesClient"/> ${actionBean.client.firstName} ${actionBean.client.lastName}: </div>
 
                         <s:hidden name="client.id"/>
                         <%@include file="formClient.jsp"%>
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="content_right_2column_box">
-                    <s:submit name="clientAll"/>
+                    <div class="rc_btn_02"/><s:link href="/clients/clientAll"><fmt:message key="clientAll"/></s:link></div>
                     <div class="cleaner_h10">&nbsp;</div>
                 </div>
             </s:form>

@@ -1,8 +1,10 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
  
 <s:layout-render name="/layout.jsp" title="Booking Manager - Home" pageInfo="index.jsp">
     <s:layout-component name="right_content">
+        <sec:authorize access="hasRole('ROLE_USER')">
         <div class="content_right_section">
         	
                 <div class="content_title_01">Welcome to  Hotel Booking Manager</div>
@@ -32,7 +34,27 @@
                
             
             <div class="cleaner_h20">&nbsp;</div>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <div class="content_right_section">
+                    <div class="content_title_01">Welcome Administrator</div>
+                <img src="images/templatemo_image_01.jpg" alt="image" />
+                <p>Your account allows you to manage client, hotels, rooms and reservations on this webpage.</p>
+                </div>
+                <div class="cleaner_h10">&nbsp;</div>
+                <div class="content_right_section">
+                <p>List of your competencies:</p>
+                <ul>
+                    <li>Edit and delete client profiles</li>
+                    <li>Add new hotels, edit existing ones, delete them</li>
+                    <li>Add new rooms to hotels, edit existing ones, delete them</li>
+                    <li>Create new reservations for clients or delete existing ones</li>
+                </ul>
+                </div>
             
+            
+			<div class="cleaner_h20">&nbsp;</div>
+            </sec:authorize>
             
             <div class="content_right_section">
                 <div class="content_title_02">Gallery of hottest places</div>

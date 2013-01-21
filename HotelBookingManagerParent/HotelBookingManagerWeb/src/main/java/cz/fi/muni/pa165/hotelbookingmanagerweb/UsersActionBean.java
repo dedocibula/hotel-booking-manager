@@ -26,7 +26,7 @@ public class UsersActionBean implements ActionBean {
     @ValidateNestedProperties(value = {
             @Validate(on = {"add"}, field = "username", required = true, minlength = 2, maxlength = 30),
             @Validate(on = {"add"}, field = "password", required = true, minlength = 2, maxlength = 30),
-			@Validate(on = {"save"}, field = "password", minlength = 2, maxlength = 30),
+            @Validate(on = {"save"}, field = "password", minlength = 2, maxlength = 30),
             @Validate(on = {"add", "save"}, field = "client.firstName", required = true, minlength = 2, maxlength = 50),
             @Validate(on = {"add", "save"}, field = "client.lastName", required = true, minlength = 2, maxlength = 50),
             @Validate(on = {"add", "save"}, field = "client.contact.phone", required = true, mask = "\\d*", maxlength = 30),
@@ -104,16 +104,16 @@ public class UsersActionBean implements ActionBean {
     }
 
     public Resolution save() {
-		String ids = context.getRequest().getParameter("user.id");
+        String ids = context.getRequest().getParameter("user.id");
         if (ids == null) {
             return new RedirectResolution(this.getClass(), "details");
         }
-		RegUserTO userTmp = userService.get(Long.parseLong(ids));
-		user.setUsername(userTmp.getUsername());
-		if (user.getPassword() == null) {
-			user.setPassword(userTmp.getPassword());
-		}
-		user.getClient().setId(userTmp.getClient().getId());
+        RegUserTO userTmp = userService.get(Long.parseLong(ids));
+        user.setUsername(userTmp.getUsername());
+        if (user.getPassword() == null) {
+                user.setPassword(userTmp.getPassword());
+        }
+        user.getClient().setId(userTmp.getClient().getId());
 		
         userService.update(user);
         return new RedirectResolution(this.getClass(), "details");

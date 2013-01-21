@@ -91,8 +91,8 @@ public class ClientServiceImpl implements ClientService {
 			userDAO.delete(user);
 		} catch (DataAccessException e) {
 			// No user found
-			clientDAO.delete(clientDO);
 		}
+                clientDAO.delete(clientDO);
 	}
 
 	@Override

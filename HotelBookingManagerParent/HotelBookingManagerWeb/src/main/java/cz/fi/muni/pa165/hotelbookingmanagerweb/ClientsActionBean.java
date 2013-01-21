@@ -66,11 +66,6 @@ public class ClientsActionBean implements ActionBean {
         return new ForwardResolution("/client/client.jsp");
     }
 
-    public Resolution add() {
-        clientService.createClient(client);
-        return new RedirectResolution(this.getClass(), "all");
-    }
-
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save", "delete"})
     public void loadClientFromDatabase() {
         String ids = context.getRequest().getParameter("client.id");

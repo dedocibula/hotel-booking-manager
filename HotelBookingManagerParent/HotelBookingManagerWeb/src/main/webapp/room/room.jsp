@@ -7,9 +7,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:message var="pageTitle" key="room.pageTitle"/>
 <s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="room.jsp">
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
     <s:layout-component name="left_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" var="actionBean"/>
 
@@ -30,14 +32,14 @@
             <div class="cleaner_h30">&nbsp;</div>
 
     </s:layout-component>
-
+    </sec:authorize>
     <s:layout-component name="right_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" var="actionBean"/>
 
             <div class="content_right_section">
-                    <div class="content_title_01"><fmt:message key="roomManagement"/></div>
+                    <div class="content_title_01"><sec:authorize access="hasRole('ROLE_ADMIN')"><fmt:message key="roomManagement"/></sec:authorize><sec:authorize access="hasRole('ROLE_USER')"><fmt:message key="roomOverview"/></sec:authorize></div>
                     <img src="${pageContext.request.contextPath}/images/templatemo_image_04.jpg" alt="image" />
-                    <fmt:message key="roomManagementDescription"/>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')"><fmt:message key="roomManagementDescription"/></sec:authorize><sec:authorize access="hasRole('ROLE_USER')"><fmt:message key="roomManagementDescriptionUser"/></sec:authorize>
                 </div>
 
                 <div class="cleaner_h40">&nbsp;</div>
@@ -58,9 +60,10 @@
                                     <th><fmt:message key="room.roomType"/></th>
                                     <th><fmt:message key="room.pricePerNight"/></th>
                                     <th><fmt:message key="room.hotel"/></th>
-
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
                                     <th></th>
                                     <th></th>
+                                    </sec:authorize>
                                 </thead>
                                 <c:forEach items="${actionBean.hotelRooms}" var="room">
                                     <tr>
@@ -68,8 +71,10 @@
                                         <td><c:out value="${room.roomType}"/></td>
                                              <td><c:out value="${room.pricePerNight}"/></td>
                                              <td><c:out value="${room.hotel.name}"/></td>
+                                             <sec:authorize access="hasRole('ROLE_ADMIN')">
                                              <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="edit"><s:param name="room.id" value="${room.id}"/><img src="${pageContext.request.contextPath}/images/edit_icon.png" alt="edit" /></s:link> </td>
                                              <td><s:link beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.RoomsActionBean" event="delete" class="delete"><s:param name="room.id" value="${room.id}"/><img src="${pageContext.request.contextPath}/images/remove_icon.png" alt="delete" /></s:link> </td>
+                                             </sec:authorize>
                                              </tr>
                                 </c:forEach>
                             </table>

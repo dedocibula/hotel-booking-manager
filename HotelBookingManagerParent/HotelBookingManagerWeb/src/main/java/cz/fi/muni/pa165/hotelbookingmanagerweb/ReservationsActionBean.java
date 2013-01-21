@@ -1,13 +1,7 @@
 package cz.fi.muni.pa165.hotelbookingmanagerweb;
 
-import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ClientService;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.service.HotelService;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.service.ReservationService;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RoomService;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ClientTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.HotelTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.ReservationTO;
-import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RoomTO;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.service.*;
+import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.*;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -20,6 +14,9 @@ import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -39,6 +36,8 @@ public class ReservationsActionBean implements ActionBean {
 	private ClientService clientService;
 	@SpringBean
 	private RoomService roomService;
+        @SpringBean
+        private RegUserService userService;
 	
 	// DTO
 	private ReservationTO reservation;
@@ -192,6 +191,8 @@ public class ReservationsActionBean implements ActionBean {
 	
 	@DefaultHandler
 	public Resolution all() {
+            RegUserTO user = getLoggedUser();
+            if (user == null) {
 		if (from != null && !from.equals("") && to != null && !to.equals("")) {
 			String hotelID = context.getRequest().getParameter("hotel.id");
 			HotelTO hotel = null;
@@ -206,8 +207,11 @@ public class ReservationsActionBean implements ActionBean {
 		} else {
 			reservations = reservationService.findAllReservations();
 		}
+            } else {
+                reservations = reservationService.findReservationsByClient(user.getClient());
+            }
 
-		return new ForwardResolution("/reservation/reservation.jsp");
+            return new ForwardResolution("/reservation/reservation.jsp");
 	}
 
 	private Date getDateFrom() {
@@ -259,6 +263,10 @@ public class ReservationsActionBean implements ActionBean {
 			return;
 		}
 		hotel = hotelService.findHotel(Long.parseLong(hotelID));
+                RegUserTO user = getLoggedUser();
+                if (user != null) {
+                    client = user.getClient();
+                }
 	}
 
 	public Resolution createContinue() {
@@ -271,14 +279,21 @@ public class ReservationsActionBean implements ActionBean {
 
 	@Before(stages = LifecycleStage.BindingAndValidation, on = {"add"})
 	public void loadClientAndRoomFromDatabase() {
-		String clientID = context.getRequest().getParameter("client.id");
+                RegUserTO user = getLoggedUser();
+                if (user == null) {
+                    String clientID = context.getRequest().getParameter("client.id");
+                    if (clientID == null)
+                        return;
+                    client = clientService.findClient(Long.parseLong(clientID));
+                } else {
+                    client = user.getClient();
+                }
 		String roomID = context.getRequest().getParameter("room.id");
 		dateFrom = getDateFrom();
 		dateTo = getDateTo();
-		if (clientID == null || roomID == null || dateFrom == null || dateTo == null) {
+		if (roomID == null || dateFrom == null || dateTo == null) {
 			return;
-		}
-		client = clientService.findClient(Long.parseLong(clientID));
+                }
 		room = roomService.getRoom(Long.parseLong(roomID));
 
 		reservation = new ReservationTO();
@@ -307,4 +322,14 @@ public class ReservationsActionBean implements ActionBean {
 		reservationService.deleteReservation(reservation);
 		return new RedirectResolution(this.getClass(), "all");
 	}
+        
+        private RegUserTO getLoggedUser() {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            for (GrantedAuthority authority : auth.getAuthorities()) {
+                if (authority.getAuthority().equals("ROLE_ADMIN"))
+                    return null;
+            }
+            String username = auth.getName();
+            return userService.findUserByUsername(username);
+        }
 }

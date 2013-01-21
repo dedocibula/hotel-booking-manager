@@ -5,27 +5,6 @@
 
 <fmt:message var="pageTitle" key="client.pageTitle"/>
 <s:layout-render name="/layout.jsp" title="${pageTitle}" pageInfo="client.jsp">
-    <s:layout-component name="left_content">
-        <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" var="actionBean"/>
-
-            <div class="content_left_section">
-                <div class="content_title_01"><fmt:message key="newClient"/><br/></div>
-
-                <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean">
-                    <%@include file="formClient.jsp"%>
-                    <div class="cleaner_h20">&nbsp;</div>
-                    <s:submit name="add"></s:submit>
-                </s:form>
-
-                <div class="cleaner">&nbsp;</div>
-            </div> <!-- end of booking -->
-
-            <div class="cleaner_h30">&nbsp;</div>
-            <div class="cleaner_horizontal_divider_01">&nbsp;</div>
-            <div class="cleaner_h30">&nbsp;</div>
-
-    </s:layout-component>
-
     <s:layout-component name="right_content">
         <s:useActionBean beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.ClientsActionBean" var="actionBean"/>
 

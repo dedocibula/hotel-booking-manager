@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="content_right_2column_box">
-                    <s:submit name="hotelAll"/>
+                    <div class="rc_btn_02"/><s:link href="/hotels/hotelAll"><fmt:message key="hotelAll"/></s:link></div>
                     <div class="cleaner_h10">&nbsp;</div>
                 </div>
             </s:form>
