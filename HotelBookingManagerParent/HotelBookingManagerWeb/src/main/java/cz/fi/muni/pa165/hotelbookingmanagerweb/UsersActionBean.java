@@ -3,6 +3,8 @@ package cz.fi.muni.pa165.hotelbookingmanagerweb;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.service.RegUserService;
 import cz.fi.muni.pa165.hotelbookingmanagerapi.transferobjects.RegUserTO;
 import java.util.Set;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
@@ -96,7 +98,11 @@ public class UsersActionBean implements ActionBean {
         if (ids == null) {
             return;
         }
-        user = userService.get(Long.parseLong(ids));
+		Long id = Long.parseLong(ids);
+		if (!getLogged().getId().equals(id)) {
+			throw new WebApplicationException(Response.Status.FORBIDDEN);
+		}
+        user = userService.get(id);
     }
 
     public Resolution edit() {
@@ -108,7 +114,11 @@ public class UsersActionBean implements ActionBean {
         if (ids == null) {
             return new RedirectResolution(this.getClass(), "details");
         }
-        RegUserTO userTmp = userService.get(Long.parseLong(ids));
+		Long id = Long.parseLong(ids);
+		if (!getLogged().getId().equals(id)) {
+			throw new WebApplicationException(Response.Status.FORBIDDEN);
+		}
+        RegUserTO userTmp = userService.get(id);
         user.setUsername(userTmp.getUsername());
         if (user.getPassword() == null) {
                 user.setPassword(userTmp.getPassword());

@@ -79,12 +79,12 @@
 		<s:http-basic />
 	</s:http>
 
-	<s:http auto-config='true' use-expressions="true">
+	<s:http auto-config='true' use-expressions="true">	
 		<s:intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
 		<s:intercept-url pattern="/users/register*" access="isAnonymous()"/>
-		<s:intercept-url pattern="/users/add*" access="isAnonymous()"/>
-		<s:intercept-url pattern="/users/**" access="hasRole('ROLE_USER')" />
-		<s:intercept-url pattern="/clients/*" access="hasRole('ROLE_ADMIN')" />
+		<s:intercept-url pattern="/users/add*" access="true"/>
+		<s:intercept-url pattern="/users/**" access="true" />
+		<s:intercept-url pattern="/clients/**" access="hasRole('ROLE_ADMIN')" />
 		<s:intercept-url pattern="/hotels/add*" access="hasRole('ROLE_ADMIN')" />
 		<s:intercept-url pattern="/hotels/edit*" access="hasRole('ROLE_ADMIN')" />
 		<s:intercept-url pattern="/hotels/save*" access="hasRole('ROLE_ADMIN')" />
@@ -93,7 +93,6 @@
 		<s:intercept-url pattern="/rooms/edit*" access="hasRole('ROLE_ADMIN')" />
 		<s:intercept-url pattern="/rooms/save*" access="hasRole('ROLE_ADMIN')" />
 		<s:intercept-url pattern="/rooms/delete*" access="hasRole('ROLE_ADMIN')" />
-		<!--<s:intercept-url pattern="/rest/**" access="hasRole('ROLE_ADMIN')" />-->
 		<s:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')" />
 		<s:form-login login-page="/login.jsp" default-target-url="/index.jsp"
 					  authentication-failure-url="/login.jsp?loginerror=1" />
