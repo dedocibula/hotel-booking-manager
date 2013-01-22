@@ -30,8 +30,6 @@ public class RegUserServiceImpl implements RegUserService {
 	@Autowired
 	private RegUserDAO userDAO;
 	@Autowired
-	private ClientDAO clientDAO;
-	@Autowired
 	private Validator validator;
 	@Autowired
 	private Mapper mapper;

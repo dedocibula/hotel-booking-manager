@@ -25,8 +25,8 @@ public class UsersActionBean implements ActionBean {
     
     @ValidateNestedProperties(value = {
             @Validate(on = {"add"}, field = "username", required = true, minlength = 2, maxlength = 30),
+			@Validate(on = {"save"}, field = "password", minlength = 2, maxlength = 30),
             @Validate(on = {"add"}, field = "password", required = true, minlength = 2, maxlength = 30),
-            @Validate(on = {"save"}, field = "password", minlength = 2, maxlength = 30),
             @Validate(on = {"add", "save"}, field = "client.firstName", required = true, minlength = 2, maxlength = 50),
             @Validate(on = {"add", "save"}, field = "client.lastName", required = true, minlength = 2, maxlength = 50),
             @Validate(on = {"add", "save"}, field = "client.contact.phone", required = true, mask = "\\d*", maxlength = 30),
@@ -81,7 +81,7 @@ public class UsersActionBean implements ActionBean {
     public Resolution add() {
         try {
             userService.create(user);
-            return new ForwardResolution("/index.jsp");
+            return new RedirectResolution("/index.jsp");
         } catch (DataAccessException e) {
             ValidationErrors errors = new ValidationErrors();
             errors.add( "user.username", new LocalizableError("validation.user.nameIsExisting") );

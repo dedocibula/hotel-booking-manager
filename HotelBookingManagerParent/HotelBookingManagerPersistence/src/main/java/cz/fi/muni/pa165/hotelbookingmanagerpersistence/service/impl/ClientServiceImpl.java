@@ -85,7 +85,7 @@ public class ClientServiceImpl implements ClientService {
 		}
 		Client clientDO = mapper.map(client, Client.class);
 		
-		// TODO - remove, if database updated
+		// Backward compatibility
 		try {
 			RegUser user = userDAO.findUserByClient(clientDO);
 			userDAO.delete(user);

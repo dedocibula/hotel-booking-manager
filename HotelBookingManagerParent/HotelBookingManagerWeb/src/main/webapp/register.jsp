@@ -16,7 +16,7 @@
 
             <div class="cleaner_h40">&nbsp;</div>
 
-            <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.UsersActionBean">
+            <s:form beanclass="cz.fi.muni.pa165.hotelbookingmanagerweb.UsersActionBean" action="/users/add/">
                 <div class="content_right_section">
                     <%@include file="users/formUser.jsp"%>
                     <div class="cleaner_h20">&nbsp;</div>
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="content_right_2column_box">
-                    <s:submit name="userDetails"/>
+                    <div class="rc_btn_02"/><s:link href="/login.jsp"><fmt:message key="userDetails"/></s:link></div>
                     <div class="cleaner_h10">&nbsp;</div>
                 </div>
             </s:form>
