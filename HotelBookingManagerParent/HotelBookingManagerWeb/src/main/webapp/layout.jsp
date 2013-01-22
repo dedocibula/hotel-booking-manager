@@ -39,7 +39,7 @@
             </div> <!-- end of header -->
 
             <div id="templatemo_banner">
-                <sec:authorize url="/index.jsp">
+                <sec:authorize access="hasAnyRole('ROLE_USER, ROLE_ADMIN')">
                 <div id="templatemo_menu">
                     <ul>
                         <li><s:link href="/index.jsp" class="${(pageInfo == 'index.jsp') ? 'current' : ''}"><fmt:message key="home"/></s:link></li>
