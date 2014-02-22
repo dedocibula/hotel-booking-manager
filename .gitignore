@@ -8,3 +8,5 @@ target
 MANIFEST.MF
 .idea
 *.iml
+webapps
+.openshift
