@@ -1,4 +1,4 @@
-HOTEL BOOKING MANAGER
+Hotel Booking Manager
 =====================
 
 Project Hotel Booking Manager simulates an ordinary online hotel booking service.
