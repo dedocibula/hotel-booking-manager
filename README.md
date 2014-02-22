@@ -17,7 +17,7 @@ Web application
 Web application is deployed on Red Hat's public cloud application development and 
 hosting platform - OpenShift Online - with the following url:
 
-hotelbookingmanager-javarockstars.rhcloud.com
+http://hotelbookingmanager-javarockstars.rhcloud.com
 
 It uses Tomcat 7 (JBoss EWS 2.0) and MySQL 5.5 catridges.
 
@@ -26,5 +26,5 @@ Desktop client:
 Desktop client is configured with exec maven plugin and can be run from command
 line.
 
-1) Locate the desktop client folder in your filesystem.
-2) Type mvn exec:java.
+1. Locate the desktop client folder in your filesystem.
+2. Type mvn exec:java.
