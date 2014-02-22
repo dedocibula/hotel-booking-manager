@@ -13,7 +13,7 @@
         <property name="username" value="pa165"/>
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="password" value="pa165"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/pa165"/>
+        <property name="url" value="jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/pa165"/>
     </bean>
     <!--
     <bean id="clientService" class="cz.fi.muni.pa165.hotelbookingmanagerpersistence.service.impl.ClientServiceImpl"></bean>
