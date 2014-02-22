@@ -58,7 +58,6 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.1.4.Final</version>
-			<scope></scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -72,15 +71,19 @@
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyclient</artifactId>
 			<version>10.7.1.1</version>
-			<scope></scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
 			<version>10.7.1.1</version>
-			<scope></scope>
 			<type>jar</type>
 		</dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.29</version>
+        </dependency>
 
 		<dependency>
 			<groupId>javax.transaction</groupId>
