@@ -19,7 +19,7 @@ hosting platform - OpenShift Online - with the following url:
 
 http://hotelbookingmanager-javarockstars.rhcloud.com
 
-It uses Tomcat 7 (JBoss EWS 2.0) and MySQL 5.5 catridges.
+It uses Tomcat 7 (JBoss EWS 2.0) and MySQL 5.5 cartridges.
 
 Desktop client:
 ---------------
