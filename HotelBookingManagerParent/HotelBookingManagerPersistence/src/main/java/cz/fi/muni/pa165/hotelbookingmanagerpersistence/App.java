@@ -49,8 +49,8 @@ public class App {
 			Room room3 = buildRoom(RoomType.Quad, BigDecimal.valueOf(100), hotel2);
 			Room room4 = buildRoom(RoomType.Single, BigDecimal.valueOf(80), hotel2);
 
-			Reservation reservation1 = buildReservation(client1, room2, new Date(115, 1, 1), new Date(115, 2, 4), BigDecimal.valueOf(5000));
-			Reservation reservation2 = buildReservation(client3, room3, new Date(115, 4, 5), new Date(115, 5, 20), BigDecimal.valueOf(4200));
+			Reservation reservation1 = buildReservation(client1, room2, new Date(130, 1, 1), new Date(130, 2, 4), BigDecimal.valueOf(5000));
+			Reservation reservation2 = buildReservation(client3, room3, new Date(130, 4, 5), new Date(130, 5, 20), BigDecimal.valueOf(4200));
 
 			em.getTransaction().begin();
 			em.persist(client1);
