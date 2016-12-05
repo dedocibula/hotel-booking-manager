@@ -357,7 +357,7 @@ public class ReservationServiceImplTest {
     
     private ReservationTO sampleReservation() {
         return newReservation(sampleClient(), sampleRoom(), 
-                new Date(113, 5, 20), new Date(113, 5, 25), BigDecimal.TEN);
+                new Date(120, 5, 20), new Date(120, 5, 25), BigDecimal.TEN);
     }
     
     private ClientTO sampleClient() {
